@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="6 khu vực chức năng của BioLab - Khám phá, Thí nghiệm, Công nghệ sinh học, Sáng tạo, Ngoài trời, Học liệu">
+  <title>Khu Vực Chức Năng — BioLab</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧬</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/zones.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+</head>
+<body>
+  <nav class="navbar navbar-solid" id="navbar">
+    <div class="container nav-container">
+      <a href="index.html" class="nav-logo"><span class="logo-icon">🧬</span><span>BioLab</span></a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html" class="nav-link">Trang chủ</a></li>
+        <li><a href="zones.html" class="nav-link active">Khu vực</a></li>
+        <li><a href="activities.html" class="nav-link">Hoạt động</a></li>
+        <li><a href="contact.html" class="nav-link">Liên hệ</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <section class="zones-hero">
+    <div class="container">
+      <h1 class="section-title">Khu Vực Chức Năng</h1>
+      <p class="section-subtitle">Học sinh đóng vai trò là "Nhà khoa học trẻ", tự thiết kế thí nghiệm, giải quyết vấn đề và tạo ra sản phẩm có ý nghĩa.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="zones-grid" id="zonesGrid">
+
+        <div class="zone-card reveal" data-zone="1">
+          <div class="zone-card-image">
+            <img src="assets/images/zone1.png" alt="Khu Khám Phá" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">1</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Khám Phá</h3>
+            <p class="zone-card-subtitle">Quan sát – Tìm hiểu</p>
+            <p>Kính hiển vi, mô hình, tiêu bản, mẫu vật. Góc trưng bày sinh vật sống (terrarium, bể cá, vườn mini).</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">Kính hiển vi</span>
+              <span class="zone-tag">Mẫu vật</span>
+              <span class="zone-tag">Terrarium</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+
+        <div class="zone-card reveal" data-zone="2">
+          <div class="zone-card-image">
+            <img src="assets/images/zone2.png" alt="Khu Thí Nghiệm" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">2</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Thí Nghiệm</h3>
+            <p class="zone-card-subtitle">Thực hành – Thử nghiệm</p>
+            <p>Bàn thí nghiệm linh hoạt, dụng cụ an toàn. Thí nghiệm vi sinh, enzyme, quang hợp, di truyền...</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">Vi sinh</span>
+              <span class="zone-tag">Enzyme</span>
+              <span class="zone-tag">Di truyền</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+
+        <div class="zone-card reveal" data-zone="3">
+          <div class="zone-card-image">
+            <img src="assets/images/zone3.png" alt="Khu Công Nghệ Sinh Học" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">3</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Công Nghệ Sinh Học</h3>
+            <p class="zone-card-subtitle">Công nghệ – Ứng dụng</p>
+            <p>PCR, gel điện di (mô phỏng), nuôi cấy mô, vi sinh. Công nghệ sinh học trong đời sống.</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">PCR</span>
+              <span class="zone-tag">Gel điện di</span>
+              <span class="zone-tag">Nuôi cấy mô</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+
+        <div class="zone-card reveal" data-zone="4">
+          <div class="zone-card-image">
+            <img src="assets/images/zone4.png" alt="Khu Dự Án & Sáng Tạo" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">4</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Dự Án & Sáng Tạo</h3>
+            <p class="zone-card-subtitle">Thiết kế – Chế tạo – Trình bày</p>
+            <p>Không gian làm việc nhóm. Thiết kế poster, mô hình, sản phẩm sinh học. Trình bày & phản biện.</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">Poster</span>
+              <span class="zone-tag">Mô hình</span>
+              <span class="zone-tag">Thuyết trình</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+
+        <div class="zone-card reveal" data-zone="5">
+          <div class="zone-card-image">
+            <img src="assets/images/zone5.png" alt="Khu Xanh & Ngoài Trời" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">5</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Xanh & Học Ngoài Trời</h3>
+            <p class="zone-card-subtitle">Trải nghiệm – Kết nối thiên nhiên</p>
+            <p>Vườn thực vật, hệ sinh thái mini. Quan sát côn trùng, chim, đất. Học ngoài trời, ghi chép và thu thập dữ liệu.</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">Vườn thực vật</span>
+              <span class="zone-tag">Sinh thái</span>
+              <span class="zone-tag">Ngoài trời</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+
+        <div class="zone-card reveal" data-zone="6">
+          <div class="zone-card-image">
+            <img src="assets/images/zone6.png" alt="Khu Lưu Trữ & Học Liệu" onerror="this.style.background='linear-gradient(135deg,#e8f5e9,#c8e6c9)';this.style.display='flex';this.alt=''">
+            <div class="zone-number">6</div>
+          </div>
+          <div class="zone-card-content">
+            <h3>Khu Lưu Trữ & Học Liệu</h3>
+            <p class="zone-card-subtitle">Tài nguyên – Chia sẻ</p>
+            <p>Tủ mẫu vật, tiêu bản. Thư viện sách, video, phần mềm. Kho học liệu số & cơ liệu thí nghiệm.</p>
+            <div class="zone-card-tags">
+              <span class="zone-tag">Thư viện</span>
+              <span class="zone-tag">Phần mềm</span>
+              <span class="zone-tag">Học liệu số</span>
+            </div>
+          </div>
+          <div class="zone-card-arrow">→</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Zone Detail Modal -->
+  <div class="modal-overlay" id="zoneModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">✕</button>
+      <h3 id="modalTitle"></h3>
+      <p id="modalDesc"></p>
+      <ul id="modalList"></ul>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo-link">🧬 BioLab</a>
+          <p>Phòng thí nghiệm STEM Sinh Học — nơi khoa học sự sống được học bằng trải nghiệm.</p>
+        </div>
+        <div>
+          <h4 class="footer-title">Khám Phá</h4>
+          <ul class="footer-links">
+            <li><a href="zones.html">Khu vực chức năng</a></li>
+            <li><a href="activities.html">Hoạt động tiêu biểu</a></li>
+            <li><a href="contact.html">Đăng ký tham quan</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Liên Hệ</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:info@biolab.edu.vn">info@biolab.edu.vn</a></li>
+            <li><a href="tel:+84123456789">0123 456 789</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 BioLab — STEM Lab Sinh Học. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="scripts/main.js"></script>
+  <script src="scripts/animations.js"></script>
+  <script src="scripts/zones.js"></script>
+</body>
+</html>

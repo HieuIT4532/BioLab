@@ -1,0 +1,70 @@
+:root {
+  /* Primary - Green tones */
+  --color-primary: #2D8B4E;
+  --color-primary-light: #4CAF50;
+  --color-primary-dark: #1B5E20;
+  --color-primary-rgb: 45, 139, 78;
+
+  /* Accent */
+  --color-accent: #81C784;
+  --color-accent-warm: #A5D6A7;
+
+  /* Neutrals */
+  --color-bg: #F1F8E9;
+  --color-surface: #FFFFFF;
+  --color-text: #1A1A2E;
+  --color-text-muted: #5A6B5C;
+  --color-text-light: #8A9B8C;
+
+  /* Glass */
+  --glass-bg: rgba(255, 255, 255, 0.12);
+  --glass-border: rgba(255, 255, 255, 0.25);
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #1B5E20, #2D8B4E, #4CAF50);
+  --gradient-hero: linear-gradient(160deg, #0a2e1a 0%, #1B5E20 30%, #2D8B4E 60%, #1a4a2e 100%);
+  --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(241,248,233,0.85));
+
+  /* Typography */
+  --font-heading: 'Outfit', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --fs-hero: clamp(2.5rem, 5vw, 4.5rem);
+  --fs-h1: clamp(2rem, 4vw, 3.5rem);
+  --fs-h2: clamp(1.5rem, 3vw, 2.5rem);
+  --fs-h3: clamp(1.2rem, 2vw, 1.75rem);
+  --fs-body: clamp(0.95rem, 1.2vw, 1.1rem);
+  --fs-small: clamp(0.8rem, 1vw, 0.9rem);
+
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: 4rem;
+  --space-2xl: 6rem;
+  --space-3xl: 8rem;
+
+  /* Borders */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+  --radius-full: 50%;
+
+  /* Shadows */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
+  --shadow-glow: 0 0 20px rgba(76, 175, 80, 0.3);
+
+  /* Transitions */
+  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Z-index */
+  --z-nav: 1000;
+  --z-modal: 2000;
+}
