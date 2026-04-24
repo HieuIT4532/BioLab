@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BioVerse Zone 1: Immersive Biology — Khám phá tế bào 360°, hành trình miễn dịch nhập vai">
+  <title>🔍 Immersive Biology — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+
+  <!-- Navbar -->
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../index.html#zones">Khu Vực</a></li>
+      <li><a href="cell-explorer.html">Cell Explorer</a></li>
+      <li><a href="story-mode.html">Story Mode</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+
+  <!-- Zone Hero -->
+  <section class="zone-hero">
+    <div class="container">
+      <a href="../../index.html#zones" class="back-btn">← Quay lại Hub</a>
+      <div class="zone-hero-badge">🔍 Zone 01 — Khu Khám Phá</div>
+      <h1><span class="text-gradient">Immersive Biology</span></h1>
+      <p class="zone-subtitle">
+        Trải nghiệm nhập vai vào thế giới vi mô. Xoay 360° tế bào,
+        du hành cùng bạch cầu chống virus — học bằng "sống" trong sinh học.
+      </p>
+    </div>
+  </section>
+
+  <!-- Modules -->
+  <section class="section">
+    <div class="container">
+      <div class="modules-grid">
+
+        <!-- Module 1: Cell Explorer -->
+        <a href="cell-explorer.html" class="module-card reveal">
+          <div class="module-icon">🔬</div>
+          <h3>Cell Explorer 360°</h3>
+          <p>
+            Khám phá cấu tạo tế bào 3D: Tế bào động vật, thực vật, vi khuẩn.
+            Xoay, zoom, click từng bào quan để xem thông tin chi tiết.
+          </p>
+          <div class="module-features">
+            <span class="module-feature">3D Interactive</span>
+            <span class="module-feature">3 loại tế bào</span>
+            <span class="module-feature">Zoom</span>
+          </div>
+        </a>
+
+        <!-- Module 2: Story Mode -->
+        <a href="story-mode.html" class="module-card reveal reveal-delay-2">
+          <div class="module-icon">⚔️</div>
+          <h3>Hành Trình Miễn Dịch</h3>
+          <p>
+            "Bạn là tế bào bạch cầu. Một virus nguy hiểm vừa xâm nhập cơ thể.
+            Hãy bảo vệ cơ thể chủ nhân!" — 5 chương, 10 quyết định.
+          </p>
+          <div class="module-features">
+            <span class="module-feature">Story-based</span>
+            <span class="module-feature">5 chương</span>
+            <span class="module-feature">Quiz</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <script src="../../scripts/animations.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

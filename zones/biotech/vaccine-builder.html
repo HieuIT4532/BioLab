@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💉 Vaccine Builder — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Future Lab</a></li>
+      <li><a href="crispr-lab.html">CRISPR</a></li>
+      <li><a href="vaccine-builder.html" class="active">Vaccine</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Future Lab</a>
+      <h2 style="margin-bottom: var(--space-sm);">💉 <span class="text-gradient">Vaccine Builder</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Thiết kế vaccine: chọn loại pathogen, phương pháp sản xuất, mô phỏng đáp ứng miễn dịch.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>🦠 Chọn Pathogen</h3>
+          <select class="zone-select" id="pathogenSelect">
+            <option value="sars_cov2">SARS-CoV-2 (COVID-19)</option>
+            <option value="influenza">Influenza (Cúm)</option>
+            <option value="hpv">HPV (U nhú)</option>
+            <option value="rabies">Rabies (Dại)</option>
+          </select>
+          <div id="pathogenInfo" style="margin-top: var(--space-sm); font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.5;"></div>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>💊 Phương Pháp Vaccine</h3>
+          <div id="vaccineTypes" style="display: flex; flex-direction: column; gap: 8px;">
+            <label class="symptom-item" style="cursor:pointer">
+              <input type="radio" name="vaccineType" value="mRNA" style="display:none">
+              <div class="symptom-checkbox"></div>
+              <div>
+                <strong>mRNA</strong>
+                <div style="font-size:var(--fs-xs);color:var(--color-text-dim)">Pfizer/Moderna</div>
+              </div>
+            </label>
+            <label class="symptom-item" style="cursor:pointer">
+              <input type="radio" name="vaccineType" value="inactivated" style="display:none">
+              <div class="symptom-checkbox"></div>
+              <div>
+                <strong>Bất hoạt</strong>
+                <div style="font-size:var(--fs-xs);color:var(--color-text-dim)">Sinovac</div>
+              </div>
+            </label>
+            <label class="symptom-item" style="cursor:pointer">
+              <input type="radio" name="vaccineType" value="attenuated" style="display:none">
+              <div class="symptom-checkbox"></div>
+              <div>
+                <strong>Giảm độc lực</strong>
+                <div style="font-size:var(--fs-xs);color:var(--color-text-dim)">MMR, OPV</div>
+              </div>
+            </label>
+            <label class="symptom-item" style="cursor:pointer">
+              <input type="radio" name="vaccineType" value="subunit" style="display:none">
+              <div class="symptom-checkbox"></div>
+              <div>
+                <strong>Tiểu đơn vị</strong>
+                <div style="font-size:var(--fs-xs);color:var(--color-text-dim)">Novavax</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📝 Giả Thuyết</h3>
+          <textarea class="zone-textarea" id="vaccineHypothesis"
+            placeholder="Dự đoán: Vaccine mRNA sẽ tạo kháng thể nhanh hơn vaccine bất hoạt vì..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm); flex-wrap: wrap;">
+          <button class="zone-btn zone-btn-primary" id="btnSimulate">▶ Mô phỏng</button>
+          <button class="zone-btn zone-btn-ghost" id="btnCompare">📊 So sánh</button>
+          <button class="zone-btn zone-btn-ghost" id="btnExport">📁 Xuất CSV</button>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">📈 Đáp Ứng Miễn Dịch Theo Thời Gian</div>
+          <canvas id="immuneChart" height="300"></canvas>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">🧪 Kết Quả Vaccine</div>
+          <div id="vaccineResult" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md);">
+            <div style="text-align:center;padding:var(--space-md);background:rgba(0,212,170,0.06);border-radius:var(--radius-md);">
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted)">Hiệu quả</div>
+              <div style="font-size:var(--fs-h2);font-weight:800;color:var(--color-primary)" id="efficacy">—%</div>
+            </div>
+            <div style="text-align:center;padding:var(--space-md);background:rgba(124,77,255,0.06);border-radius:var(--radius-md);">
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted)">Thời gian đáp ứng</div>
+              <div style="font-size:var(--fs-h2);font-weight:800;color:var(--color-accent)" id="responseTime">—h</div>
+            </div>
+            <div style="text-align:center;padding:var(--space-md);background:rgba(0,188,212,0.06);border-radius:var(--radius-md);">
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted)">Kháng thể đỉnh</div>
+              <div style="font-size:var(--fs-h2);font-weight:800;color:var(--color-secondary)" id="peakAntibody">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">📚 So Sánh Các Loại Vaccine</div>
+          <div style="overflow-x:auto">
+            <table class="data-table" style="width:100%;font-size:var(--fs-xs);">
+              <thead>
+                <tr>
+                  <th>Loại</th><th>Hiệu quả</th><th>Tốc độ</th><th>Bảo quản</th><th>Ưu điểm</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>mRNA</td><td>90-95%</td><td>Nhanh</td><td>-70°C</td><td>Phát triển nhanh, hiệu quả cao</td></tr>
+                <tr><td>Bất hoạt</td><td>70-80%</td><td>Trung bình</td><td>2-8°C</td><td>Công nghệ truyền thống, an toàn</td></tr>
+                <tr><td>Giảm độc lực</td><td>85-95%</td><td>Chậm</td><td>2-8°C</td><td>Miễn dịch lâu dài</td></tr>
+                <tr><td>Tiểu đơn vị</td><td>80-90%</td><td>Trung bình</td><td>2-8°C</td><td>Ít tác dụng phụ</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script src="scripts/vaccine-builder.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

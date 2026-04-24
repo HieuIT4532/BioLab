@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 AI Quiz Generator — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Adaptive Learning</a></li>
+      <li><a href="quiz-generator.html" class="active">Quiz AI</a></li>
+      <li><a href="competency.html">Năng Lực</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Adaptive Learning</a>
+      <h2>🧠 <span class="text-gradient">AI Quiz Generator</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        AI tạo đề kiểm tra sinh học cá nhân hóa. Chọn chủ đề, độ khó — bắt đầu ngay!
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>📘 Chọn Chủ Đề</h3>
+          <select class="zone-select" id="quizTopic">
+            <option value="Tế bào học">🔬 Tế bào học</option>
+            <option value="Di truyền học">🧬 Di truyền học</option>
+            <option value="Sinh thái học">🌿 Sinh thái học</option>
+            <option value="Tiến hóa">🦕 Tiến hóa</option>
+            <option value="Sinh lý thực vật">🌱 Sinh lý thực vật</option>
+            <option value="Sinh lý động vật">🐕 Sinh lý động vật</option>
+            <option value="Vi sinh vật">🦠 Vi sinh vật</option>
+            <option value="Công nghệ sinh học">🧪 Công nghệ sinh học</option>
+          </select>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>⚙️ Cài Đặt</h3>
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Độ khó:</label>
+          <select class="zone-select" id="quizDifficulty" style="margin-bottom:8px;">
+            <option value="easy">Dễ (Nhận biết)</option>
+            <option value="normal" selected>Trung bình (Thông hiểu)</option>
+            <option value="hard">Khó (Vận dụng)</option>
+          </select>
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Số câu:</label>
+          <select class="zone-select" id="quizCount">
+            <option value="3">3 câu</option>
+            <option value="5" selected>5 câu</option>
+            <option value="10">10 câu</option>
+          </select>
+        </div>
+
+        <button class="zone-btn zone-btn-primary" id="btnGenQuiz" style="width:100%;">🤖 Tạo Đề</button>
+
+        <!-- Score Panel -->
+        <div class="zone-control-group" id="scorePanel" style="display:none;">
+          <h3>📊 Kết Quả</h3>
+          <div style="text-align:center;">
+            <div style="font-size:3rem;font-weight:900;margin-bottom:8px;" id="scoreDisplay">0/0</div>
+            <div style="font-size:var(--fs-small);color:var(--color-text-muted);" id="scorePercent">0%</div>
+            <div style="margin-top:12px;padding:8px 16px;background:rgba(0,212,170,0.1);border-radius:var(--radius-md);font-size:var(--fs-small);color:var(--color-primary);" id="scoreMessage"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <div id="quizContainer">
+          <div class="vis-box" style="text-align:center;padding:var(--space-3xl);">
+            <div style="font-size:4rem;margin-bottom:16px;">🧠</div>
+            <h3 style="color:var(--color-light);margin-bottom:8px;">AI Quiz Generator</h3>
+            <p style="color:var(--color-text-muted);">Chọn chủ đề và nhấn "Tạo Đề" để bắt đầu.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let questions = [];
+      let currentQ = 0;
+      let score = 0;
+      let answered = [];
+
+      document.getElementById('btnGenQuiz').addEventListener('click', async () => {
+        const topic = document.getElementById('quizTopic').value;
+        const difficulty = document.getElementById('quizDifficulty').value;
+        const count = parseInt(document.getElementById('quizCount').value);
+
+        const container = document.getElementById('quizContainer');
+        container.innerHTML = `
+          <div class="vis-box" style="text-align:center;padding:var(--space-2xl);">
+            <div style="font-size:2rem;animation:typingBounce 1.2s infinite;">🤖</div>
+            <p style="color:var(--color-primary);margin-top:12px;">AI đang tạo ${count} câu hỏi về "${topic}"...</p>
+          </div>
+        `;
+        document.getElementById('scorePanel').style.display = 'none';
+
+        const result = await BioVerseAI.generateQuiz(topic, difficulty, count);
+        
+        if (result.questions && result.questions.length > 0) {
+          questions = result.questions;
+          currentQ = 0;
+          score = 0;
+          answered = new Array(questions.length).fill(null);
+          renderQuestion();
+        } else {
+          // Fallback with local questions
+          questions = generateLocalQuestions(topic, count);
+          currentQ = 0;
+          score = 0;
+          answered = new Array(questions.length).fill(null);
+          renderQuestion();
+        }
+
+        if (window.BioVerseData) {
+          BioVerseData.Analytics.track({ type: 'quiz_start', topic, difficulty, count });
+        }
+      });
+
+      function renderQuestion() {
+        const q = questions[currentQ];
+        const container = document.getElementById('quizContainer');
+
+        container.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md);">
+            <span style="font-size:var(--fs-small);color:var(--color-text-muted);">Câu ${currentQ + 1}/${questions.length}</span>
+            <span style="font-size:var(--fs-small);color:var(--color-primary);font-weight:600;">Đúng: ${score}/${currentQ}</span>
+          </div>
+          <div class="quiz-card">
+            <div class="quiz-question">${q.question}</div>
+            <div class="quiz-options" id="quizOptions">
+              ${q.options.map((opt, i) => `
+                <div class="quiz-option" data-index="${i}" ${answered[currentQ] !== null ? 'style="pointer-events:none;"' : ''}>
+                  ${opt}
+                </div>
+              `).join('')}
+            </div>
+            ${answered[currentQ] !== null ? `
+              <div style="margin-top:var(--space-md);padding:12px;background:rgba(0,212,170,0.06);border-radius:var(--radius-md);font-size:var(--fs-small);color:var(--color-text);line-height:1.6;">
+                💡 <strong>Giải thích:</strong> ${q.explanation || 'Không có giải thích.'}
+              </div>
+            ` : ''}
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:var(--space-md);">
+            <button class="zone-btn zone-btn-ghost" id="btnPrevQ" ${currentQ <= 0 ? 'disabled' : ''}>← Trước</button>
+            ${currentQ < questions.length - 1 
+              ? `<button class="zone-btn zone-btn-primary" id="btnNextQ" ${answered[currentQ] === null ? 'disabled' : ''}>Tiếp →</button>`
+              : `<button class="zone-btn zone-btn-primary" id="btnFinish" ${answered[currentQ] === null ? 'disabled' : ''}>📊 Kết Quả</button>`
+            }
+          </div>
+        `;
+
+        // Highlight previous answer
+        if (answered[currentQ] !== null) {
+          const options = document.querySelectorAll('.quiz-option');
+          options[q.correct].classList.add('correct');
+          if (answered[currentQ] !== q.correct) {
+            options[answered[currentQ]].classList.add('wrong');
+          }
+        }
+
+        // Option click
+        document.querySelectorAll('.quiz-option').forEach(opt => {
+          opt.addEventListener('click', () => {
+            if (answered[currentQ] !== null) return;
+            const selected = parseInt(opt.dataset.index);
+            answered[currentQ] = selected;
+            
+            if (selected === q.correct) {
+              opt.classList.add('correct');
+              score++;
+            } else {
+              opt.classList.add('wrong');
+              document.querySelectorAll('.quiz-option')[q.correct].classList.add('correct');
+            }
+
+            // Show explanation
+            renderQuestion();
+          });
+        });
+
+        // Navigation
+        const btnPrev = document.getElementById('btnPrevQ');
+        const btnNext = document.getElementById('btnNextQ');
+        const btnFinish = document.getElementById('btnFinish');
+
+        if (btnPrev) btnPrev.addEventListener('click', () => { currentQ--; renderQuestion(); });
+        if (btnNext) btnNext.addEventListener('click', () => { currentQ++; renderQuestion(); });
+        if (btnFinish) btnFinish.addEventListener('click', showResults);
+      }
+
+      function showResults() {
+        const percent = Math.round(score / questions.length * 100);
+        const panel = document.getElementById('scorePanel');
+        panel.style.display = 'block';
+        document.getElementById('scoreDisplay').textContent = `${score}/${questions.length}`;
+        document.getElementById('scorePercent').textContent = `${percent}%`;
+        
+        let msg = '';
+        if (percent >= 90) msg = '🏆 Xuất sắc! Bạn nắm vững kiến thức!';
+        else if (percent >= 70) msg = '👍 Tốt! Tiếp tục cố gắng nhé!';
+        else if (percent >= 50) msg = '💪 Khá! Cần ôn thêm một số phần.';
+        else msg = '📚 Cần ôn tập lại. Đừng nản!';
+        document.getElementById('scoreMessage').textContent = msg;
+
+        if (window.BioVerseData) {
+          const xp = Math.max(10, score * 10);
+          BioVerseData.Profile.addXP(xp, `Quiz: ${score}/${questions.length}`);
+          BioVerseData.Profile.updateZoneProgress('resource', 'quiz', percent);
+          BioVerseData.Profile.updateCompetency('biologicalKnowledge', percent);
+          BioVerseData.Analytics.track({ type: 'quiz_complete', score, total: questions.length, percent });
+          if (percent === 100) {
+            const p = BioVerseData.Profile.get();
+            p._perfectQuizzes = (p._perfectQuizzes || 0) + 1;
+            BioVerseData.Profile.save(p);
+            BioVerseData.Badges.check();
+          }
+        }
+      }
+
+      // Fallback local questions
+      function generateLocalQuestions(topic, count) {
+        const bank = {
+          'Tế bào học': [
+            { question: 'Bào quan nào chịu trách nhiệm tổng hợp protein?', options: ['A. Ti thể', 'B. Ribosome', 'C. Bộ Golgi', 'D. Lysosome'], correct: 1, explanation: 'Ribosome là nơi dịch mã mRNA thành protein, có thể tự do hoặc gắn trên lưới nội chất hạt.' },
+            { question: 'Lưới nội chất trơn có chức năng gì?', options: ['A. Tổng hợp protein', 'B. Tổng hợp lipid', 'C. Quang hợp', 'D. Phân giải tế bào'], correct: 1, explanation: 'Lưới nội chất trơn tổng hợp lipid, giải độc, dự trữ Ca²⁺.' },
+            { question: 'Thành phần chính của màng sinh chất là gì?', options: ['A. Protein và carbohydrate', 'B. Phospholipid kép', 'C. Cellulose', 'D. Chitin'], correct: 1, explanation: 'Màng sinh chất cấu tạo chủ yếu từ lớp phospholipid kép với protein xuyên màng.' },
+            { question: 'Ti thể có vai trò gì?', options: ['A. Quang hợp', 'B. Hô hấp tế bào', 'C. Phân chia tế bào', 'D. Tiêu hóa nội bào'], correct: 1, explanation: 'Ti thể là "nhà máy năng lượng" của tế bào, thực hiện hô hấp hiếu khí tạo ATP.' },
+            { question: 'DNA nằm ở đâu trong tế bào nhân thực?', options: ['A. Tế bào chất', 'B. Nhân tế bào', 'C. Ribosome', 'D. Màng sinh chất'], correct: 1, explanation: 'Trong tế bào nhân thực, DNA chủ yếu nằm trong nhân, được bao bọc bởi màng nhân.' }
+          ],
+          'Di truyền học': [
+            { question: 'Quy luật phân li của Mendel phát biểu rằng:', options: ['A. Các allele hòa trộn', 'B. Mỗi giao tử chỉ chứa 1 allele', 'C. Gen liên kết hoàn toàn', 'D. Đột biến luôn xảy ra'], correct: 1, explanation: 'Quy luật phân li: mỗi cặp allele phân li đều về các giao tử, mỗi giao tử chứa 1 allele.' },
+            { question: 'Tỉ lệ kiểu hình F2 trong lai 1 tính trạng trội hoàn toàn là:', options: ['A. 1:1', 'B. 3:1', 'C. 9:3:3:1', 'D. 1:2:1'], correct: 1, explanation: 'Khi lai Aa × Aa: AA + 2Aa : aa = 3 trội : 1 lặn.' },
+            { question: 'Đột biến gen là gì?', options: ['A. Thay đổi số lượng NST', 'B. Thay đổi cấu trúc NST', 'C. Thay đổi trình tự nucleotide', 'D. Thay đổi số lượng tế bào'], correct: 2, explanation: 'Đột biến gen là sự thay đổi trong trình tự nucleotide của DNA.' }
+          ]
+        };
+        const qs = bank[topic] || bank['Tế bào học'];
+        return qs.slice(0, count);
+      }
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'quiz_generator' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Pitch Deck Generator — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Startup Lab</a></li>
+      <li><a href="pitch-deck.html" class="active">Pitch Deck</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Startup Lab</a>
+      <h2>📊 <span class="text-gradient">Pitch Deck Generator</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Tạo bài thuyết trình startup sinh học — từ vấn đề đến giải pháp, market, impact.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>🏷️ Tên Dự Án</h3>
+          <input type="text" class="zone-input" id="projectName" placeholder="VD: BioClean — Enzyme xử lý rác thải">
+        </div>
+        <div class="zone-control-group">
+          <h3>❗ Vấn Đề (Problem)</h3>
+          <textarea class="zone-textarea" id="slideProblem" placeholder="Vấn đề thực tế mà dự án giải quyết..."></textarea>
+        </div>
+        <div class="zone-control-group">
+          <h3>💡 Giải Pháp (Solution)</h3>
+          <textarea class="zone-textarea" id="slideSolution" placeholder="Giải pháp sinh học/STEM của bạn..."></textarea>
+        </div>
+        <div class="zone-control-group">
+          <h3>📈 Thị Trường (Market)</h3>
+          <textarea class="zone-textarea" id="slideMarket" placeholder="Đối tượng hưởng lợi, quy mô..."></textarea>
+        </div>
+        <div class="zone-control-group">
+          <h3>👥 Đội Ngũ (Team)</h3>
+          <textarea class="zone-textarea" id="slideTeam" placeholder="Thành viên và vai trò..."></textarea>
+        </div>
+        <div class="zone-control-group">
+          <h3>🌍 Tác Động (Impact)</h3>
+          <textarea class="zone-textarea" id="slideImpact" placeholder="Tác động xã hội, môi trường..."></textarea>
+        </div>
+        <div style="display:flex;gap:var(--space-sm);">
+          <button class="zone-btn zone-btn-primary" id="btnPreview" style="flex:1;">👁 Preview</button>
+          <button class="zone-btn zone-btn-ghost" id="btnAIMentor">🤖 AI Feedback</button>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <!-- Slide Navigation -->
+        <div class="pitch-slides" id="slideNav"></div>
+
+        <!-- Slide Preview -->
+        <div class="vis-box" style="min-height: 420px; display: flex; flex-direction: column; justify-content: center;">
+          <div id="slidePreview" style="text-align: center; padding: var(--space-xl);">
+            <div style="font-size: 3rem; margin-bottom: var(--space-md);">📊</div>
+            <h3 style="color: var(--color-light); margin-bottom: var(--space-sm);">Pitch Deck Preview</h3>
+            <p style="color: var(--color-text-muted);">Nhập nội dung và nhấn "Preview" để xem bài thuyết trình.</p>
+          </div>
+        </div>
+
+        <div class="vis-box" id="aiFeedbackBox" style="display:none;">
+          <div class="vis-box-title">🤖 AI Mentor Feedback</div>
+          <div class="report-output" id="aiFeedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = [
+        { id: 'title', icon: '🏷️', label: 'Title' },
+        { id: 'problem', icon: '❗', label: 'Problem' },
+        { id: 'solution', icon: '💡', label: 'Solution' },
+        { id: 'market', icon: '📈', label: 'Market' },
+        { id: 'team', icon: '👥', label: 'Team' },
+        { id: 'impact', icon: '🌍', label: 'Impact' }
+      ];
+
+      let activeSlide = 0;
+
+      document.getElementById('btnPreview').addEventListener('click', () => {
+        const name = document.getElementById('projectName').value || 'Dự Án Sinh Học';
+
+        // Build slide nav
+        const nav = document.getElementById('slideNav');
+        nav.innerHTML = slides.map((s, i) => `
+          <div class="pitch-slide ${i === 0 ? 'active' : ''}" data-slide="${i}">
+            <h5>${s.icon} ${s.label}</h5>
+            <p>Slide ${i + 1}/${slides.length}</p>
+          </div>
+        `).join('');
+
+        // Click handlers
+        nav.querySelectorAll('.pitch-slide').forEach(el => {
+          el.addEventListener('click', () => {
+            activeSlide = parseInt(el.dataset.slide);
+            renderSlide();
+            nav.querySelectorAll('.pitch-slide').forEach(s => s.classList.remove('active'));
+            el.classList.add('active');
+          });
+        });
+
+        activeSlide = 0;
+        renderSlide();
+
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(20, 'Tạo Pitch Deck');
+          BioVerseData.Profile.updateZoneProgress('innovate', 'pitch', 80);
+        }
+      });
+
+      function renderSlide() {
+        const preview = document.getElementById('slidePreview');
+        const name = document.getElementById('projectName').value || 'Dự Án';
+        const content = {
+          0: `<div style="font-size:4rem;margin-bottom:16px;">🧬</div>
+              <h2 style="font-size:2rem;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${name}</h2>
+              <p style="color:var(--color-text-muted);margin-top:12px;">Startup Sinh Học — BioVerse Pitch Deck</p>`,
+          1: `<div style="font-size:3rem;margin-bottom:12px;">❗</div>
+              <h3 style="color:var(--color-error);margin-bottom:12px;">VẤN ĐỀ</h3>
+              <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideProblem').value || '<em>Chưa nhập</em>'}</p>`,
+          2: `<div style="font-size:3rem;margin-bottom:12px;">💡</div>
+              <h3 style="color:var(--color-primary);margin-bottom:12px;">GIẢI PHÁP</h3>
+              <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideSolution').value || '<em>Chưa nhập</em>'}</p>`,
+          3: `<div style="font-size:3rem;margin-bottom:12px;">📈</div>
+              <h3 style="color:var(--color-accent);margin-bottom:12px;">THỊ TRƯỜNG</h3>
+              <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideMarket').value || '<em>Chưa nhập</em>'}</p>`,
+          4: `<div style="font-size:3rem;margin-bottom:12px;">👥</div>
+              <h3 style="color:var(--color-secondary);margin-bottom:12px;">ĐỘI NGŨ</h3>
+              <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideTeam').value || '<em>Chưa nhập</em>'}</p>`,
+          5: `<div style="font-size:3rem;margin-bottom:12px;">🌍</div>
+              <h3 style="color:var(--color-success);margin-bottom:12px;">TÁC ĐỘNG</h3>
+              <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideImpact').value || '<em>Chưa nhập</em>'}</p>`
+        };
+        preview.innerHTML = content[activeSlide] || '';
+      }
+
+      // AI Feedback
+      document.getElementById('btnAIMentor').addEventListener('click', async () => {
+        const idea = [
+          document.getElementById('projectName').value,
+          document.getElementById('slideProblem').value,
+          document.getElementById('slideSolution').value,
+          document.getElementById('slideMarket').value,
+          document.getElementById('slideImpact').value
+        ].filter(Boolean).join('\n\n');
+
+        if (!idea.trim()) { alert('Vui lòng nhập nội dung trước!'); return; }
+
+        document.getElementById('aiFeedbackBox').style.display = 'block';
+        document.getElementById('aiFeedback').innerHTML = '<div style="color:var(--color-primary);">🤖 AI Mentor đang phân tích...</div>';
+
+        const result = await BioVerseAI.getMentorFeedback(idea);
+        const feedback = result.error ? '⚠️ Không thể kết nối AI.' : result.feedback;
+        document.getElementById('aiFeedback').innerHTML = feedback.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(10, 'AI Mentor Feedback');
+        }
+      });
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'pitch_deck' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

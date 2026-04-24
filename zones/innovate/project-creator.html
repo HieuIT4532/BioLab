@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📋 Science Project Creator — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Startup Lab</a></li>
+      <li><a href="project-creator.html" class="active">Dự Án</a></li>
+      <li><a href="ai-mentor.html">AI Mentor</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Startup Lab</a>
+      <h2>📋 <span class="text-gradient">Science Project Creator</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Xây dựng dự án khoa học từng bước theo phương pháp nghiên cứu chuẩn.
+      </p>
+    </div>
+
+    <div class="container">
+      <div class="step-indicator" id="projectSteps">
+        <div class="step-dot active" data-step="1">1</div><div class="step-line"></div>
+        <div class="step-dot" data-step="2">2</div><div class="step-line"></div>
+        <div class="step-dot" data-step="3">3</div><div class="step-line"></div>
+        <div class="step-dot" data-step="4">4</div><div class="step-line"></div>
+        <div class="step-dot" data-step="5">5</div>
+      </div>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <!-- Step 1: Question -->
+        <div class="zone-control-group project-step" id="step1">
+          <h3>❓ Bước 1: Câu Hỏi Nghiên Cứu</h3>
+          <select class="zone-select" id="templateSelect" style="margin-bottom: var(--space-sm);">
+            <option value="">— Chọn template hoặc tự do —</option>
+            <option value="enzyme">Enzyme: Ảnh hưởng của pH lên hoạt tính enzyme</option>
+            <option value="plant">Thực vật: Ảnh hưởng của ánh sáng lên sự nảy mầm</option>
+            <option value="bacteria">Vi sinh: Tác dụng kháng khuẩn của thảo dược</option>
+            <option value="ecology">Sinh thái: Chất lượng nước và đa dạng sinh học</option>
+            <option value="genetics">Di truyền: Tần số allele trong quần thể</option>
+          </select>
+          <textarea class="zone-textarea" id="researchQuestion" placeholder="Ví dụ: pH ảnh hưởng như thế nào đến hoạt tính enzyme amylase trong nước bọt?"></textarea>
+        </div>
+
+        <!-- Step 2: Hypothesis -->
+        <div class="zone-control-group project-step" id="step2" style="display:none;">
+          <h3>💡 Bước 2: Giả Thuyết</h3>
+          <textarea class="zone-textarea" id="hypothesis" placeholder="Nếu... thì... vì..."></textarea>
+          <p style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-top:6px;">Format: Nếu [biến độc lập] thay đổi, thì [biến phụ thuộc] sẽ..., vì [lý do sinh học].</p>
+        </div>
+
+        <!-- Step 3: Method -->
+        <div class="zone-control-group project-step" id="step3" style="display:none;">
+          <h3>🔧 Bước 3: Phương Pháp</h3>
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Biến độc lập:</label>
+          <input type="text" class="zone-input" id="independentVar" placeholder="VD: Nồng độ pH" style="margin-bottom:8px;">
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Biến phụ thuộc:</label>
+          <input type="text" class="zone-input" id="dependentVar" placeholder="VD: Tốc độ phản ứng" style="margin-bottom:8px;">
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Biến kiểm soát:</label>
+          <input type="text" class="zone-input" id="controlVar" placeholder="VD: Nhiệt độ, nồng độ enzyme" style="margin-bottom:8px;">
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Quy trình (từng bước):</label>
+          <textarea class="zone-textarea" id="procedure" placeholder="1. Chuẩn bị dung dịch...&#10;2. Thêm enzyme...&#10;3. Đo kết quả..." style="min-height:120px;"></textarea>
+        </div>
+
+        <!-- Step 4: Data -->
+        <div class="zone-control-group project-step" id="step4" style="display:none;">
+          <h3>📊 Bước 4: Dữ Liệu</h3>
+          <p style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-bottom:8px;">
+            Bạn có thể lấy dữ liệu từ các thí nghiệm trong Digital Twin Lab hoặc nhập trực tiếp.
+          </p>
+          <textarea class="zone-textarea" id="dataInput" placeholder="Nhập dữ liệu hoặc mô tả kết quả quan sát được..." style="min-height:120px;"></textarea>
+        </div>
+
+        <!-- Step 5: Conclusion -->
+        <div class="zone-control-group project-step" id="step5" style="display:none;">
+          <h3>📝 Bước 5: Kết Luận</h3>
+          <textarea class="zone-textarea" id="conclusion" placeholder="Dựa trên kết quả, giả thuyết được xác nhận/bác bỏ vì..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="zone-btn zone-btn-ghost" id="btnPrev" disabled>← Trước</button>
+          <button class="zone-btn zone-btn-primary" id="btnNext" style="flex:1;">Tiếp theo →</button>
+          <button class="zone-btn zone-btn-primary" id="btnGenReport" style="display:none;flex:1;">📄 Tạo Báo Cáo</button>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">📄 Preview Báo Cáo</div>
+          <div class="report-output" id="reportPreview" style="min-height: 400px;">
+            <div style="text-align: center; color: var(--color-text-dim); padding: var(--space-2xl);">
+              Báo cáo sẽ hiển thị ở đây khi bạn hoàn thành các bước...
+            </div>
+          </div>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="zone-btn zone-btn-ghost" id="btnAIReview" disabled>🤖 AI Đánh Giá</button>
+          <button class="zone-btn zone-btn-ghost" id="btnExportReport" disabled>📁 Xuất PDF</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let currentStep = 1;
+      const totalSteps = 5;
+
+      const btnNext = document.getElementById('btnNext');
+      const btnPrev = document.getElementById('btnPrev');
+      const btnGen = document.getElementById('btnGenReport');
+
+      // Templates
+      const TEMPLATES = {
+        enzyme: {
+          question: 'pH ảnh hưởng như thế nào đến hoạt tính enzyme amylase trong nước bọt?',
+          hypothesis: 'Nếu pH thay đổi khỏi giá trị tối ưu (pH 7), thì hoạt tính enzyme amylase sẽ giảm, vì cấu trúc không gian của enzyme bị biến đổi, ảnh hưởng đến trung tâm hoạt động.',
+          independentVar: 'Giá trị pH (2, 4, 6, 7, 8, 10, 12)',
+          dependentVar: 'Thời gian phân giải tinh bột (phút)',
+          controlVar: 'Nhiệt độ (37°C), nồng độ enzyme, nồng độ tinh bột'
+        },
+        plant: {
+          question: 'Cường độ ánh sáng ảnh hưởng như thế nào đến tốc độ nảy mầm của hạt đậu xanh?',
+          hypothesis: 'Nếu cường độ ánh sáng tăng đến mức tối ưu, thì tốc độ nảy mầm sẽ tăng, vì ánh sáng kích hoạt phytochrome và thúc đẩy tổng hợp gibberellin.',
+          independentVar: 'Cường độ ánh sáng (0, 500, 1000, 2000, 4000 lux)',
+          dependentVar: 'Tỷ lệ nảy mầm (%) sau 7 ngày',
+          controlVar: 'Nhiệt độ, độ ẩm, loại hạt, lượng nước tưới'
+        }
+      };
+
+      document.getElementById('templateSelect').addEventListener('change', function() {
+        const t = TEMPLATES[this.value];
+        if (t) {
+          document.getElementById('researchQuestion').value = t.question;
+          document.getElementById('hypothesis').value = t.hypothesis;
+          document.getElementById('independentVar').value = t.independentVar;
+          document.getElementById('dependentVar').value = t.dependentVar;
+          document.getElementById('controlVar').value = t.controlVar;
+        }
+      });
+
+      function updateStepUI() {
+        // Show/hide steps
+        document.querySelectorAll('.project-step').forEach((el, i) => {
+          el.style.display = (i + 1 === currentStep) ? 'block' : 'none';
+        });
+        // Step dots
+        document.querySelectorAll('#projectSteps .step-dot').forEach(dot => {
+          const s = parseInt(dot.dataset.step);
+          dot.classList.remove('active', 'completed');
+          if (s < currentStep) dot.classList.add('completed');
+          if (s === currentStep) dot.classList.add('active');
+        });
+        document.querySelectorAll('#projectSteps .step-line').forEach((line, i) => {
+          line.classList.toggle('completed', i + 1 < currentStep);
+        });
+        btnPrev.disabled = currentStep <= 1;
+        btnNext.style.display = currentStep < totalSteps ? 'inline-flex' : 'none';
+        btnGen.style.display = currentStep === totalSteps ? 'inline-flex' : 'none';
+
+        updatePreview();
+      }
+
+      btnNext.addEventListener('click', () => {
+        if (currentStep < totalSteps) { currentStep++; updateStepUI(); }
+      });
+
+      btnPrev.addEventListener('click', () => {
+        if (currentStep > 1) { currentStep--; updateStepUI(); }
+      });
+
+      btnGen.addEventListener('click', () => {
+        generateReport();
+        document.getElementById('btnAIReview').disabled = false;
+        document.getElementById('btnExportReport').disabled = false;
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(30, 'Tạo dự án khoa học');
+          BioVerseData.Profile.updateZoneProgress('innovate', 'project', 100);
+          BioVerseData.Profile.updateCompetency('scientificThinking', 75);
+          BioVerseData.Profile.updateCompetency('problemSolving', 70);
+        }
+      });
+
+      function updatePreview() {
+        const q = document.getElementById('researchQuestion').value;
+        const h = document.getElementById('hypothesis').value;
+        if (q || h) {
+          document.getElementById('reportPreview').innerHTML = `
+            <h3 style="color:var(--color-primary);margin-bottom:12px;">📋 Dự Án Khoa Học</h3>
+            ${q ? `<p><strong>Câu hỏi:</strong> ${q}</p>` : ''}
+            ${h ? `<p><strong>Giả thuyết:</strong> ${h}</p>` : ''}
+            <p style="color:var(--color-text-dim);font-style:italic;margin-top:12px;">Hoàn thành tất cả bước để tạo báo cáo đầy đủ...</p>
+          `;
+        }
+      }
+
+      function generateReport() {
+        const data = {
+          question: document.getElementById('researchQuestion').value,
+          hypothesis: document.getElementById('hypothesis').value,
+          independentVar: document.getElementById('independentVar').value,
+          dependentVar: document.getElementById('dependentVar').value,
+          controlVar: document.getElementById('controlVar').value,
+          procedure: document.getElementById('procedure').value,
+          dataInput: document.getElementById('dataInput').value,
+          conclusion: document.getElementById('conclusion').value
+        };
+
+        document.getElementById('reportPreview').innerHTML = `
+          <h3 style="color:var(--color-primary);margin-bottom:16px;font-size:1.2rem;">📋 BÁO CÁO NGHIÊN CỨU KHOA HỌC</h3>
+          <hr style="border-color:rgba(255,255,255,0.1);margin-bottom:16px;">
+
+          <h4 style="color:var(--color-primary);">I. CÂU HỎI NGHIÊN CỨU</h4>
+          <p>${data.question || '<em>Chưa nhập</em>'}</p>
+
+          <h4 style="color:var(--color-primary);margin-top:16px;">II. GIẢ THUYẾT</h4>
+          <p>${data.hypothesis || '<em>Chưa nhập</em>'}</p>
+
+          <h4 style="color:var(--color-primary);margin-top:16px;">III. PHƯƠNG PHÁP</h4>
+          <ul style="padding-left:20px;">
+            <li><strong>Biến độc lập:</strong> ${data.independentVar || '—'}</li>
+            <li><strong>Biến phụ thuộc:</strong> ${data.dependentVar || '—'}</li>
+            <li><strong>Biến kiểm soát:</strong> ${data.controlVar || '—'}</li>
+          </ul>
+          <p><strong>Quy trình:</strong></p>
+          <pre style="white-space:pre-wrap;background:rgba(0,0,0,0.2);padding:12px;border-radius:8px;font-size:0.8rem;">${data.procedure || '—'}</pre>
+
+          <h4 style="color:var(--color-primary);margin-top:16px;">IV. DỮ LIỆU & KẾT QUẢ</h4>
+          <p>${data.dataInput || '<em>Chưa nhập</em>'}</p>
+
+          <h4 style="color:var(--color-primary);margin-top:16px;">V. KẾT LUẬN</h4>
+          <p>${data.conclusion || '<em>Chưa nhập</em>'}</p>
+
+          <hr style="border-color:rgba(255,255,255,0.1);margin:16px 0;">
+          <p style="font-size:var(--fs-xs);color:var(--color-text-dim);">Tạo bởi BioVerse Science Project Creator — ${new Date().toLocaleDateString('vi-VN')}</p>
+        `;
+      }
+
+      // AI Review
+      document.getElementById('btnAIReview').addEventListener('click', async () => {
+        const report = document.getElementById('reportPreview').innerText;
+        if (!report || report.includes('Chưa nhập')) return;
+
+        const result = await BioVerseAI.gradeReport(report);
+        if (result.grading) {
+          const g = result.grading;
+          alert(`📊 Điểm: ${g.total || 'N/A'}/100\n\n${g.feedback || 'Không có phản hồi.'}`);
+        }
+      });
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'project_creator' });
+        BioVerseData.Profile.updateZoneProgress('innovate', 'project', 10);
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

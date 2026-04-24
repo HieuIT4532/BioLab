@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📓 Observation Journal — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Citizen Science</a></li>
+      <li><a href="field-survey.html">Khảo Sát</a></li>
+      <li><a href="observation-log.html" class="active">Nhật Ký</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Citizen Science</a>
+      <h2>📓 <span class="text-gradient">Observation Journal</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">Nhật ký thực địa số — tổng hợp và phân tích dữ liệu quan sát.</p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">📊 Phân Bố Theo Nhóm Loài</div>
+          <canvas id="speciesChart" height="250"></canvas>
+        </div>
+        <div class="vis-box">
+          <div class="vis-box-title">📅 Hoạt Động Theo Thời Gian</div>
+          <canvas id="timelineChart" height="200"></canvas>
+        </div>
+        <div style="display:flex;gap:var(--space-sm);">
+          <button class="zone-btn zone-btn-ghost" id="btnExportAll" style="flex:1;">📁 Xuất CSV</button>
+          <button class="zone-btn zone-btn-ghost" id="btnAIAnalysis" style="flex:1;">🤖 AI Phân Tích</button>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">📓 Nhật Ký Quan Sát (<span id="totalCount">0</span>)</div>
+          <div id="journalEntries" style="display:flex;flex-direction:column;gap:12px;max-height:600px;overflow-y:auto;"></div>
+        </div>
+        <div class="vis-box" id="aiAnalysisBox" style="display:none;">
+          <div class="vis-box-title">🤖 AI Phân Tích Dữ Liệu Thực Địa</div>
+          <div class="report-output" id="aiAnalysisResult"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_KEY = 'bioverse_observations';
+      const typeEmoji = { plant: '🌱', animal: '🐦', fungi: '🍄', insect: '🦋', aquatic: '🐟', other: '📦' };
+      const typeNames = { plant: 'Thực vật', animal: 'Động vật', fungi: 'Nấm', insect: 'Côn trùng', aquatic: 'Thủy sinh', other: 'Khác' };
+      const typeColors = ['#00D4AA', '#FF4081', '#E040FB', '#FFD740', '#00BCD4', '#8892B0'];
+
+      const observations = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      document.getElementById('totalCount').textContent = observations.length;
+
+      // Render journal
+      const journal = document.getElementById('journalEntries');
+      if (observations.length === 0) {
+        journal.innerHTML = '<div style="text-align:center;color:var(--color-text-dim);padding:var(--space-2xl);">Chưa có dữ liệu. <a href="field-survey.html" style="color:var(--color-primary);">Bắt đầu khảo sát →</a></div>';
+      } else {
+        journal.innerHTML = observations.slice().reverse().map(obs => `
+          <div class="observation-card">
+            <div class="observation-thumb">${typeEmoji[obs.type] || '📦'}</div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <strong style="color:var(--color-light);">${obs.species}</strong>
+                <span style="font-size:var(--fs-xs);color:var(--color-text-dim);">${new Date(obs.date).toLocaleDateString('vi-VN')}</span>
+              </div>
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted);margin-top:4px;">
+                📍 ${obs.location || 'N/A'} | 🔢 x${obs.count}
+                ${obs.temperature ? ' | 🌡️ ' + obs.temperature + '°C' : ''}
+                ${obs.humidity ? ' | 💧 ' + obs.humidity + '%' : ''}
+              </div>
+              ${obs.notes ? `<div style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-top:4px;line-height:1.4;">${obs.notes}</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Species distribution chart
+      if (observations.length > 0) {
+        const typeCounts = {};
+        observations.forEach(o => { typeCounts[o.type] = (typeCounts[o.type] || 0) + 1; });
+
+        new Chart(document.getElementById('speciesChart'), {
+          type: 'doughnut',
+          data: {
+            labels: Object.keys(typeCounts).map(k => typeNames[k] || k),
+            datasets: [{
+              data: Object.values(typeCounts),
+              backgroundColor: Object.keys(typeCounts).map((_, i) => typeColors[i % typeColors.length]),
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { position: 'bottom', labels: { color: '#8892B0', font: { family: 'Inter', size: 11 } } }
+            }
+          }
+        });
+
+        // Timeline chart
+        const dateCounts = {};
+        observations.forEach(o => {
+          const day = new Date(o.date).toLocaleDateString('vi-VN');
+          dateCounts[day] = (dateCounts[day] || 0) + 1;
+        });
+
+        new Chart(document.getElementById('timelineChart'), {
+          type: 'bar',
+          data: {
+            labels: Object.keys(dateCounts),
+            datasets: [{
+              label: 'Quan sát',
+              data: Object.values(dateCounts),
+              backgroundColor: 'rgba(0,212,170,0.5)',
+              borderColor: '#00D4AA',
+              borderWidth: 1,
+              borderRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: { legend: { display: false } },
+            scales: {
+              x: { ticks: { color: '#5A6380', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+              y: { ticks: { color: '#5A6380', stepSize: 1 }, grid: { color: 'rgba(255,255,255,0.04)' } }
+            }
+          }
+        });
+      }
+
+      // Export
+      document.getElementById('btnExportAll').addEventListener('click', () => {
+        if (observations.length > 0 && window.BioVerseEngine) {
+          BioVerseEngine.DataCollector.exportCSV(observations, 'observation_journal.csv');
+        }
+      });
+
+      // AI Analysis
+      document.getElementById('btnAIAnalysis').addEventListener('click', async () => {
+        if (observations.length === 0) { alert('Chưa có dữ liệu để phân tích!'); return; }
+        document.getElementById('aiAnalysisBox').style.display = 'block';
+        document.getElementById('aiAnalysisResult').innerHTML = '<div style="color:var(--color-primary);">🤖 AI đang phân tích...</div>';
+
+        const summary = observations.map(o => `${o.species} (${o.type}) x${o.count} tại ${o.location}`).join('; ');
+        const result = await BioVerseAI.analyzeData({ observations: summary, totalSpecies: new Set(observations.map(o => o.species)).size, totalCount: observations.length }, '');
+        
+        const reply = result.error ? '⚠️ Không thể kết nối AI.' : (result.analysis || result.reply || 'Không có kết quả.');
+        document.getElementById('aiAnalysisResult').innerHTML = reply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        if (window.BioVerseData) BioVerseData.Profile.addXP(15, 'AI phân tích thực địa');
+      });
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'observation_log' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

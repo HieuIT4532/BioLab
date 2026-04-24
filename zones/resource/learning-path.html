@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🛤️ Learning Path — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Adaptive Learning</a></li>
+      <li><a href="learning-path.html" class="active">Lộ Trình</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Adaptive Learning</a>
+      <h2>🛤️ <span class="text-gradient">Learning Path</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Lộ trình học cá nhân hóa — skill tree và AI gợi ý bài học tiếp theo.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">👤 Hồ Sơ Học Sinh</div>
+          <div style="text-align:center;padding:var(--space-md);">
+            <div style="font-size:3rem;margin-bottom:8px;" id="profileAvatar">🧬</div>
+            <div style="font-size:var(--fs-h4);font-weight:700;color:var(--color-light);" id="profileName">Nhà Khoa Học</div>
+            <div style="font-size:var(--fs-small);color:var(--color-primary);margin-top:4px;" id="profileLevel">Level 1</div>
+            <div style="margin-top:12px;">
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted);margin-bottom:4px;" id="profileXP">0/100 XP</div>
+              <div class="skill-bar" style="height:8px;">
+                <div class="skill-bar-fill" id="profileXPBar" style="width:0%"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">🏆 Huy Hiệu (<span id="badgeCount">0</span>)</div>
+          <div id="badgeGrid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;"></div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">📊 Tiến Độ Khu Vực</div>
+          <div id="zoneProgress" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">🌳 Skill Tree — Lộ Trình Sinh Học</div>
+          <div class="skill-tree" id="skillTree"></div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">🤖 AI Gợi Ý Bài Học Tiếp Theo</div>
+          <div id="aiSuggestions" style="display:flex;flex-direction:column;gap:12px;"></div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">📅 Hoạt Động Gần Đây</div>
+          <div id="recentActivity" style="max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.BioVerseData) return;
+      const profile = BioVerseData.Profile.get();
+      const levelInfo = BioVerseData.Profile.getLevelTitle(profile.level);
+      const xpProgress = BioVerseData.Profile.getXPProgress();
+
+      // Profile
+      document.getElementById('profileAvatar').textContent = levelInfo.emoji;
+      document.getElementById('profileName').textContent = profile.name;
+      document.getElementById('profileLevel').textContent = `${levelInfo.emoji} ${levelInfo.title} — Level ${profile.level}`;
+      document.getElementById('profileXP').textContent = `${xpProgress.current}/${xpProgress.needed} XP`;
+      document.getElementById('profileXPBar').style.width = `${xpProgress.percent}%`;
+
+      // Badges
+      const allBadges = BioVerseData.Badges.getAll();
+      document.getElementById('badgeCount').textContent = allBadges.filter(b => b.earned).length;
+      document.getElementById('badgeGrid').innerHTML = allBadges.map(b => `
+        <div style="text-align:center;padding:8px;background:rgba(255,255,255,${b.earned ? '0.06' : '0.02'});border-radius:var(--radius-md);border:1px solid ${b.earned ? 'rgba(0,212,170,0.3)' : 'rgba(255,255,255,0.04)'};opacity:${b.earned ? '1' : '0.4'};" title="${b.name}: ${b.desc}">
+          <div style="font-size:1.5rem;">${b.emoji}</div>
+          <div style="font-size:0.55rem;color:var(--color-text-dim);margin-top:2px;">${b.name}</div>
+        </div>
+      `).join('');
+
+      // Zone Progress
+      const zoneNames = {
+        explore: { name: 'Immersive Biology', icon: '🔍' },
+        experiment: { name: 'Digital Twin Lab', icon: '🧪' },
+        biotech: { name: 'Future Lab', icon: '🧬' },
+        innovate: { name: 'Startup Lab', icon: '💡' },
+        nature: { name: 'Citizen Science', icon: '🌿' },
+        resource: { name: 'Adaptive Learning', icon: '📚' }
+      };
+
+      document.getElementById('zoneProgress').innerHTML = Object.entries(profile.zones).map(([key, zone]) => {
+        const info = zoneNames[key];
+        return `
+          <div style="display:flex;align-items:center;gap:10px;">
+            <span style="font-size:1.2rem;">${info.icon}</span>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:3px;">
+                <span style="font-size:var(--fs-xs);color:var(--color-text);">${info.name}</span>
+                <span style="font-size:var(--fs-xs);color:var(--color-primary);">${zone.progress}%</span>
+              </div>
+              <div class="skill-bar" style="height:6px;">
+                <div class="skill-bar-fill" style="width:${zone.progress}%"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Skill Tree
+      const skills = [
+        { icon: '🔬', name: 'Tế bào học', level: profile.zones.explore.progress > 0 ? 'Đã học' : 'Chưa bắt đầu', progress: profile.zones.explore.progress, unlocked: true },
+        { icon: '⚗️', name: 'Thí nghiệm cơ bản', level: profile.experimentCount > 0 ? `${profile.experimentCount} TN` : 'Chưa', progress: Math.min(100, profile.experimentCount * 10), unlocked: profile.zones.explore.visited },
+        { icon: '🧬', name: 'Di truyền & CRISPR', level: profile.zones.biotech.progress > 0 ? 'Đang học' : 'Khóa', progress: profile.zones.biotech.progress, unlocked: profile.experimentCount >= 1 },
+        { icon: '💉', name: 'Miễn dịch & Vaccine', level: profile.zones.biotech.modules?.vaccine ? 'Đã học' : 'Khóa', progress: profile.zones.biotech.modules?.vaccine || 0, unlocked: profile.zones.biotech.visited },
+        { icon: '🌿', name: 'Sinh thái thực địa', level: profile.zones.nature.visited ? 'Đang khám phá' : 'Khóa', progress: profile.zones.nature.progress, unlocked: profile.level >= 2 },
+        { icon: '💡', name: 'Dự án STEM', level: profile.zones.innovate.visited ? 'Đang làm' : 'Khóa', progress: profile.zones.innovate.progress, unlocked: profile.level >= 3 },
+        { icon: '🏆', name: 'Chuyên gia sinh học', level: profile.level >= 5 ? 'Đạt!' : 'Khóa', progress: profile.level >= 5 ? 100 : 0, unlocked: profile.level >= 5 }
+      ];
+
+      document.getElementById('skillTree').innerHTML = skills.map(s => `
+        <div class="skill-branch">
+          <div class="skill-node ${s.unlocked ? 'unlocked' : ''}">${s.icon}</div>
+          <div class="skill-bar" style="flex:1;">
+            <div class="skill-bar-fill" style="width:${s.progress}%${!s.unlocked ? ';background:rgba(255,255,255,0.1)' : ''}"></div>
+          </div>
+          <div class="skill-info">
+            <div class="skill-name">${s.name}</div>
+            <div class="skill-level">${s.level}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // AI Suggestions based on profile
+      const comp = profile.competencies;
+      const suggestions = [];
+      if (comp.biologicalKnowledge < 50) suggestions.push({ icon: '🧠', title: 'Làm Quiz Sinh học', desc: 'Năng lực nhận thức còn thấp. Hãy làm quiz để cải thiện!', link: 'quiz-generator.html' });
+      if (comp.experimentalSkills < 50) suggestions.push({ icon: '🧪', title: 'Thí nghiệm Enzyme', desc: 'Thực hành thí nghiệm để nâng kỹ năng thực hành.', link: '../experiment/enzyme-lab.html' });
+      if (!profile.zones.biotech.visited) suggestions.push({ icon: '🧬', title: 'Khám phá CRISPR', desc: 'Chưa thử Future Lab? Mô phỏng chỉnh sửa gene CRISPR!', link: '../biotech/crispr-lab.html' });
+      if (!profile.zones.nature.visited) suggestions.push({ icon: '🌿', title: 'Khảo sát thực địa', desc: 'Ghi nhận quan sát thiên nhiên — trở thành Citizen Scientist!', link: '../nature/field-survey.html' });
+      if (profile.experimentCount < 3) suggestions.push({ icon: '📊', title: 'Chạy thêm thí nghiệm', desc: `Mới ${profile.experimentCount} TN. Thử thêm quang hợp lab!`, link: '../experiment/photosynthesis-lab.html' });
+      if (suggestions.length === 0) suggestions.push({ icon: '🏆', title: 'Bạn đang làm tốt!', desc: 'Tiếp tục khám phá và nâng level!', link: '../../index.html#zones' });
+
+      document.getElementById('aiSuggestions').innerHTML = suggestions.slice(0, 4).map(s => `
+        <a href="${s.link}" class="observation-card" style="text-decoration:none;cursor:pointer;">
+          <div class="observation-thumb">${s.icon}</div>
+          <div>
+            <div style="font-weight:600;color:var(--color-light);">${s.title}</div>
+            <div style="font-size:var(--fs-xs);color:var(--color-text-muted);">${s.desc}</div>
+          </div>
+        </a>
+      `).join('');
+
+      // Recent Activity
+      const activities = profile.recentActivity.slice(0, 15);
+      document.getElementById('recentActivity').innerHTML = activities.length === 0
+        ? '<div style="text-align:center;color:var(--color-text-dim);padding:var(--space-lg);">Chưa có hoạt động nào.</div>'
+        : activities.map(a => {
+          const time = new Date(a.timestamp).toLocaleString('vi-VN', { hour: '2-digit', minute: '2-digit', day: '2-digit', month: '2-digit' });
+          let text = '';
+          if (a.type === 'xp') text = `⚡ +${a.amount} XP — ${a.source}`;
+          else text = `📌 ${JSON.stringify(a).substring(0, 60)}`;
+          return `<div style="font-size:var(--fs-xs);color:var(--color-text-muted);padding:6px 0;border-bottom:1px solid rgba(255,255,255,0.04);">
+            <span style="color:var(--color-text-dim);margin-right:8px;">${time}</span> ${text}
+          </div>`;
+        }).join('');
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'learning_path' });
+        BioVerseData.Profile.updateZoneProgress('resource', 'learning_path', 50);
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

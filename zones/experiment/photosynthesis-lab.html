@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Photosynthesis Lab — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="styles/lab.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Zone 2</a></li>
+      <li><a href="enzyme-lab.html">Enzyme Lab</a></li>
+      <li><a href="photosynthesis-lab.html" class="active">Quang Hợp</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Zone 2</a>
+      <h2 style="margin-bottom: var(--space-sm);">🌿 <span class="text-gradient">Photosynthesis Lab</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">Khảo sát tốc độ quang hợp theo ánh sáng, CO₂, nhiệt độ. So sánh cây C3, C4, CAM.</p>
+    </div>
+
+    <div class="lab-layout">
+      <div class="control-panel">
+        <div class="control-group">
+          <h3>🌱 Loại Thực Vật</h3>
+          <select class="lab-select" id="plantSelect">
+            <option value="c3">C3 (Lúa, Đậu, Khoai tây)</option>
+            <option value="c4">C4 (Ngô, Mía, Cỏ)</option>
+            <option value="cam">CAM (Xương rồng, Dứa)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <h3>🔧 Biến Số</h3>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>Cường độ ánh sáng (μmol/m²/s)</span>
+              <span class="slider-value" id="lightValue">500</span>
+            </div>
+            <input type="range" id="lightSlider" min="0" max="2000" value="500" step="10">
+          </div>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>CO₂ (ppm)</span>
+              <span class="slider-value" id="co2Value">400</span>
+            </div>
+            <input type="range" id="co2Slider" min="100" max="1500" value="400" step="10">
+          </div>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>Nhiệt độ (°C)</span>
+              <span class="slider-value" id="photoTempValue">25</span>
+            </div>
+            <input type="range" id="photoTempSlider" min="5" max="50" value="25" step="1">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>📊 Kết Quả</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);">
+            <div style="text-align: center; padding: var(--space-sm); background: rgba(76,175,80,0.08); border-radius: var(--radius-md);">
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted);">Tốc độ QH</div>
+              <div style="font-size: var(--fs-h3); font-weight: 700; color: #4CAF50;" id="photoRateDisplay">0.00</div>
+              <div style="font-size: 10px; color: var(--color-text-dim);">μmol CO₂/m²/s</div>
+            </div>
+            <div style="text-align: center; padding: var(--space-sm); background: rgba(255,152,0,0.08); border-radius: var(--radius-md);">
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted);">Điểm bù CO₂</div>
+              <div style="font-size: var(--fs-h3); font-weight: 700; color: #FF9800;" id="compPointDisplay">-</div>
+              <div style="font-size: 10px; color: var(--color-text-dim);">μmol/m²/s</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hypothesis-box">
+          <h4>📝 Ghi chú thí nghiệm</h4>
+          <textarea class="hypothesis-input" placeholder="Ví dụ: Cây C4 có hiệu suất quang hợp cao hơn C3 ở cường độ ánh sáng mạnh do cơ chế cố định CO₂ qua PEP carboxylase..."></textarea>
+        </div>
+
+        <div class="lab-actions">
+          <button class="lab-btn lab-btn-primary" id="runPhoto">▶ Chạy TN</button>
+          <button class="lab-btn lab-btn-ghost" id="exportPhotoCSV">📁 Xuất CSV</button>
+          <button class="lab-btn lab-btn-ghost" id="resetPhoto">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="result-panel">
+        <div class="chart-container">
+          <div class="chart-title">Đường cong ánh sáng: Tốc độ quang hợp theo cường độ ánh sáng</div>
+          <canvas id="photoChart"></canvas>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table" id="photoDataTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Ánh sáng</th>
+                <th>CO₂ (ppm)</th>
+                <th>T (°C)</th>
+                <th>Tốc độ QH</th>
+                <th>Loại</th>
+              </tr>
+            </thead>
+            <tbody id="photoDataBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/photosynthesis-lab.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Digital Twin Lab — Mô phỏng thí nghiệm sinh học gần như thật">
+  <title>🧪 Digital Twin Lab — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../index.html#zones">Khu Vực</a></li>
+      <li><a href="enzyme-lab.html">Enzyme Lab</a></li>
+      <li><a href="photosynthesis-lab.html">Quang Hợp Lab</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <section class="zone-hero">
+    <div class="container">
+      <a href="../../index.html#zones" class="back-btn">← Quay lại Hub</a>
+      <div class="zone-hero-badge">🧪 Zone 02 — Khu Thí Nghiệm</div>
+      <h1><span class="text-gradient">Digital Twin Lab</span></h1>
+      <p class="zone-subtitle">
+        Mô phỏng thí nghiệm gần như thật: biến số thực, sai số ngẫu nhiên, xuất dữ liệu CSV.
+        Viết báo cáo như nhà nghiên cứu thật sự.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="modules-grid">
+        <a href="enzyme-lab.html" class="module-card reveal">
+          <div class="module-icon">⚗️</div>
+          <h3>Enzyme Kinetics Lab</h3>
+          <p>
+            Động học enzyme Michaelis-Menten: khảo sát ảnh hưởng của nhiệt độ, pH,
+            nồng độ cơ chất lên vận tốc phản ứng enzyme.
+          </p>
+          <div class="module-features">
+            <span class="module-feature">Michaelis-Menten</span>
+            <span class="module-feature">Real-time chart</span>
+            <span class="module-feature">CSV Export</span>
+          </div>
+        </a>
+
+        <a href="photosynthesis-lab.html" class="module-card reveal reveal-delay-2">
+          <div class="module-icon">🌿</div>
+          <h3>Photosynthesis Lab</h3>
+          <p>
+            Quang hợp: khảo sát ảnh hưởng của cường độ ánh sáng, nồng độ CO₂,
+            nhiệt độ lên tốc độ quang hợp. So sánh C3, C4, CAM.
+          </p>
+          <div class="module-features">
+            <span class="module-feature">Light Curve</span>
+            <span class="module-feature">C3/C4/CAM</span>
+            <span class="module-feature">Data Export</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="../../scripts/animations.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

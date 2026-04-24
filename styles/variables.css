@@ -1,70 +1,133 @@
+/* ============================================================
+   BioVerse — Design Tokens
+   Hệ sinh thái phòng thí nghiệm sinh học số
+   ============================================================ */
+
 :root {
-  /* Primary - Green tones */
-  --color-primary: #2D8B4E;
-  --color-primary-light: #4CAF50;
-  --color-primary-dark: #1B5E20;
-  --color-primary-rgb: 45, 139, 78;
+  /* ── Primary: Emerald-Cyan Biology ── */
+  --color-primary: #00D4AA;
+  --color-primary-light: #33FFCC;
+  --color-primary-dark: #00A888;
+  --color-primary-rgb: 0, 212, 170;
 
-  /* Accent */
-  --color-accent: #81C784;
-  --color-accent-warm: #A5D6A7;
+  /* ── Secondary: Cyan Life ── */
+  --color-secondary: #00BCD4;
+  --color-secondary-light: #4DD0E1;
+  --color-secondary-dark: #0097A7;
 
-  /* Neutrals */
-  --color-bg: #F1F8E9;
-  --color-surface: #FFFFFF;
-  --color-text: #1A1A2E;
-  --color-text-muted: #5A6B5C;
-  --color-text-light: #8A9B8C;
+  /* ── Accent: Deep Purple-Pink Cosmos ── */
+  --color-accent: #7C4DFF;
+  --color-accent-light: #B388FF;
+  --color-accent-warm: #E040FB;
+  --color-accent-pink: #FF4081;
 
-  /* Glass */
-  --glass-bg: rgba(255, 255, 255, 0.12);
-  --glass-border: rgba(255, 255, 255, 0.25);
+  /* ── Dark Palette: Space ── */
+  --color-dark: #0A0E27;
+  --color-dark-lighter: #111638;
+  --color-dark-surface: #1A1F3A;
+  --color-dark-card: #151A35;
+  --color-dark-hover: #1E2448;
 
-  /* Gradients */
-  --gradient-primary: linear-gradient(135deg, #1B5E20, #2D8B4E, #4CAF50);
-  --gradient-hero: linear-gradient(160deg, #0a2e1a 0%, #1B5E20 30%, #2D8B4E 60%, #1a4a2e 100%);
-  --gradient-card: linear-gradient(145deg, rgba(255,255,255,0.95), rgba(241,248,233,0.85));
+  /* ── Light / Text ── */
+  --color-light: #F0F4FF;
+  --color-text: #E2E8F0;
+  --color-text-muted: #8892B0;
+  --color-text-dim: #5A6380;
 
-  /* Typography */
+  /* ── Status ── */
+  --color-success: #00E676;
+  --color-warning: #FFD740;
+  --color-error: #FF5252;
+  --color-info: #40C4FF;
+
+  /* ── Glassmorphism ── */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-blur: blur(20px);
+  --glass-blur-heavy: blur(40px);
+
+  /* ── Gradients ── */
+  --gradient-primary: linear-gradient(135deg, #00D4AA 0%, #00BCD4 50%, #7C4DFF 100%);
+  --gradient-accent: linear-gradient(135deg, #7C4DFF 0%, #E040FB 100%);
+  --gradient-hero: radial-gradient(ellipse at 20% 50%, rgba(0, 212, 170, 0.15) 0%, transparent 50%),
+                   radial-gradient(ellipse at 80% 20%, rgba(124, 77, 255, 0.12) 0%, transparent 50%),
+                   radial-gradient(ellipse at 50% 80%, rgba(0, 188, 212, 0.08) 0%, transparent 50%),
+                   linear-gradient(180deg, #0A0E27 0%, #111638 100%);
+  --gradient-card: linear-gradient(135deg, rgba(0, 212, 170, 0.05) 0%, rgba(124, 77, 255, 0.05) 100%);
+  --gradient-text: linear-gradient(135deg, #00D4AA, #00BCD4, #7C4DFF);
+  --gradient-glow: linear-gradient(135deg, rgba(0, 212, 170, 0.4), rgba(124, 77, 255, 0.4));
+  --gradient-border: linear-gradient(135deg, rgba(0, 212, 170, 0.3), rgba(124, 77, 255, 0.3));
+
+  /* ── Typography ── */
   --font-heading: 'Outfit', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --fs-hero: clamp(2.5rem, 5vw, 4.5rem);
-  --fs-h1: clamp(2rem, 4vw, 3.5rem);
-  --fs-h2: clamp(1.5rem, 3vw, 2.5rem);
-  --fs-h3: clamp(1.2rem, 2vw, 1.75rem);
-  --fs-body: clamp(0.95rem, 1.2vw, 1.1rem);
-  --fs-small: clamp(0.8rem, 1vw, 0.9rem);
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-  /* Spacing */
-  --space-xs: 0.5rem;
-  --space-sm: 1rem;
-  --space-md: 1.5rem;
-  --space-lg: 2.5rem;
-  --space-xl: 4rem;
-  --space-2xl: 6rem;
-  --space-3xl: 8rem;
+  --fs-hero: clamp(2.8rem, 6vw, 5rem);
+  --fs-h1: clamp(2rem, 4vw, 3.2rem);
+  --fs-h2: clamp(1.6rem, 3vw, 2.4rem);
+  --fs-h3: clamp(1.2rem, 2vw, 1.6rem);
+  --fs-h4: 1.1rem;
+  --fs-body: 1rem;
+  --fs-small: 0.875rem;
+  --fs-xs: 0.75rem;
 
-  /* Borders */
-  --radius-sm: 8px;
-  --radius-md: 12px;
-  --radius-lg: 20px;
-  --radius-xl: 28px;
-  --radius-full: 50%;
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-black: 900;
 
-  /* Shadows */
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 16px rgba(0,0,0,0.08);
-  --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
-  --shadow-xl: 0 16px 48px rgba(0,0,0,0.16);
-  --shadow-glow: 0 0 20px rgba(76, 175, 80, 0.3);
+  --lh-tight: 1.2;
+  --lh-normal: 1.6;
+  --lh-relaxed: 1.8;
 
-  /* Transitions */
-  --transition-fast: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-spring: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  /* ── Spacing ── */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+  --space-3xl: 4rem;
+  --space-4xl: 6rem;
+  --space-5xl: 8rem;
 
-  /* Z-index */
-  --z-nav: 1000;
-  --z-modal: 2000;
+  /* ── Border Radius ── */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+  --shadow-glow-primary: 0 0 30px rgba(0, 212, 170, 0.3);
+  --shadow-glow-accent: 0 0 30px rgba(124, 77, 255, 0.3);
+  --shadow-glow-pink: 0 0 30px rgba(224, 64, 251, 0.3);
+
+  /* ── Transitions ── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Z-Index ── */
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-toast: 500;
+
+  /* ── Layout ── */
+  --max-width: 1280px;
+  --max-width-narrow: 960px;
+  --navbar-height: 72px;
 }

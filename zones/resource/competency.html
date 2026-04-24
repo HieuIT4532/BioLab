@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📊 Competency Assessment — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Adaptive Learning</a></li>
+      <li><a href="competency.html" class="active">Năng Lực</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Adaptive Learning</a>
+      <h2>📊 <span class="text-gradient">Competency Assessment</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Đánh giá năng lực theo 4 trục chuẩn Chương trình GDPT 2018.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <!-- Radar Chart -->
+        <div class="vis-box">
+          <div class="vis-box-title">🎯 Biểu Đồ Năng Lực</div>
+          <div class="radar-container">
+            <canvas id="radarChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Competency Details -->
+        <div class="zone-control-group" id="compDetails">
+          <h3>📋 Chi Tiết Năng Lực</h3>
+          <div id="compList" style="display:flex;flex-direction:column;gap:10px;"></div>
+        </div>
+
+        <button class="zone-btn zone-btn-ghost" id="btnRefresh" style="width:100%;">↻ Cập nhật</button>
+      </div>
+
+      <div class="zone-result-panel">
+        <!-- Rubric Info -->
+        <div class="vis-box">
+          <div class="vis-box-title">📝 Rubric Đánh Giá (CT GDPT 2018)</div>
+          <div style="display:flex;flex-direction:column;gap:16px;">
+            <div>
+              <h4 style="color:var(--color-primary);font-size:var(--fs-small);margin-bottom:6px;">1. Nhận thức sinh học (0-100)</h4>
+              <p style="font-size:var(--fs-xs);color:var(--color-text-muted);line-height:1.6;">
+                Hiểu đúng khái niệm, thuật ngữ sinh học. Nhận biết các cấu trúc, chức năng, quá trình sinh học.
+                Nắm vững kiến thức lý thuyết cơ bản.
+              </p>
+              <div style="margin-top:6px;font-size:var(--fs-xs);">
+                <span style="color:#FF5252;">0-30: Yếu</span> |
+                <span style="color:#FFD740;">31-60: Trung bình</span> |
+                <span style="color:#00D4AA;">61-80: Khá</span> |
+                <span style="color:#7C4DFF;">81-100: Giỏi</span>
+              </div>
+            </div>
+            <div>
+              <h4 style="color:var(--color-accent);font-size:var(--fs-small);margin-bottom:6px;">2. Thực hành thí nghiệm (0-100)</h4>
+              <p style="font-size:var(--fs-xs);color:var(--color-text-muted);line-height:1.6;">
+                Kỹ năng thiết kế, thực hiện thí nghiệm. Sử dụng đúng dụng cụ, quy trình an toàn.
+                Thu thập, ghi chép dữ liệu chính xác.
+              </p>
+            </div>
+            <div>
+              <h4 style="color:var(--color-secondary);font-size:var(--fs-small);margin-bottom:6px;">3. Tư duy khoa học (0-100)</h4>
+              <p style="font-size:var(--fs-xs);color:var(--color-text-muted);line-height:1.6;">
+                Phân tích, suy luận, so sánh dữ liệu. Hình thành giả thuyết, kiểm chứng.
+                Đánh giá bằng chứng, rút kết luận logic.
+              </p>
+            </div>
+            <div>
+              <h4 style="color:var(--color-accent-pink);font-size:var(--fs-small);margin-bottom:6px;">4. Giải quyết vấn đề (0-100)</h4>
+              <p style="font-size:var(--fs-xs);color:var(--color-text-muted);line-height:1.6;">
+                Nhận diện vấn đề, đề xuất giải pháp sáng tạo. Vận dụng kiến thức vào thực tiễn.
+                Tư duy liên ngành, kết nối với STEM.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tips -->
+        <div class="vis-box">
+          <div class="vis-box-title">💡 Cách Cải Thiện</div>
+          <div id="improveTips" style="font-size:var(--fs-small);color:var(--color-text-muted);line-height:1.7;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      let radarChart = null;
+
+      function loadCompetencies() {
+        if (!window.BioVerseData) return;
+        const profile = BioVerseData.Profile.get();
+        const comp = profile.competencies;
+        const labels = ['Nhận thức\nsinh học', 'Thực hành\nthí nghiệm', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'];
+        const values = [comp.biologicalKnowledge, comp.experimentalSkills, comp.scientificThinking, comp.problemSolving];
+        const colors = ['#00D4AA', '#7C4DFF', '#00BCD4', '#FF4081'];
+
+        // Radar chart
+        if (radarChart) radarChart.destroy();
+        const ctx = document.getElementById('radarChart').getContext('2d');
+        radarChart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels,
+            datasets: [{
+              label: 'Năng lực',
+              data: values,
+              backgroundColor: 'rgba(0, 212, 170, 0.15)',
+              borderColor: '#00D4AA',
+              borderWidth: 2,
+              pointBackgroundColor: colors,
+              pointBorderColor: '#fff',
+              pointRadius: 5,
+              pointHoverRadius: 7
+            }]
+          },
+          options: {
+            responsive: true,
+            scales: {
+              r: {
+                beginAtZero: true, max: 100,
+                grid: { color: 'rgba(255,255,255,0.06)' },
+                angleLines: { color: 'rgba(255,255,255,0.06)' },
+                pointLabels: { color: '#8892B0', font: { family: 'Inter', size: 11 } },
+                ticks: { color: '#5A6380', backdropColor: 'transparent', stepSize: 25 }
+              }
+            },
+            plugins: { legend: { display: false } }
+          }
+        });
+
+        // Competency list
+        const compNames = ['Nhận thức sinh học', 'Thực hành thí nghiệm', 'Tư duy khoa học', 'Giải quyết vấn đề'];
+        const compKeys = Object.keys(comp);
+        document.getElementById('compList').innerHTML = compKeys.map((key, i) => {
+          const val = comp[key];
+          let level = val >= 81 ? 'Giỏi' : val >= 61 ? 'Khá' : val >= 31 ? 'TB' : 'Yếu';
+          let color = val >= 81 ? '#7C4DFF' : val >= 61 ? '#00D4AA' : val >= 31 ? '#FFD740' : '#FF5252';
+          return `
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="min-width:110px;font-size:var(--fs-xs);color:var(--color-text-muted);">${compNames[i]}</div>
+              <div class="skill-bar" style="flex:1;">
+                <div class="skill-bar-fill" style="width:${val}%;background:${color};"></div>
+              </div>
+              <div style="min-width:60px;text-align:right;">
+                <span style="font-weight:700;color:${color};">${val}</span>
+                <span style="font-size:var(--fs-xs);color:var(--color-text-dim);">/100</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Improvement tips
+        const weakest = compKeys.reduce((a, b) => comp[a] < comp[b] ? a : b);
+        const tips = {
+          biologicalKnowledge: '📘 Làm thêm Quiz trong mục AI Quiz Generator. Đọc phần giải thích sau mỗi câu trả lời. Khám phá Cell Explorer để hiểu cấu trúc tế bào.',
+          experimentalSkills: '🧪 Thực hành trong Digital Twin Lab: chạy thí nghiệm enzyme, quang hợp. Ghi chép giả thuyết trước khi bắt đầu. Xuất dữ liệu CSV và phân tích.',
+          scientificThinking: '🔬 Sử dụng AI Scientist Mode: nhập dữ liệu → phân tích → đề xuất giả thuyết. Thực hành viết báo cáo trong Science Project Creator.',
+          problemSolving: '💡 Tham gia Startup Lab: tạo dự án, pitch ý tưởng, nhận phản biện AI Mentor. Giải quyết case study trong AI Disease Diagnosis.'
+        };
+        document.getElementById('improveTips').innerHTML = `
+          <p><strong>🎯 Trọng tâm cải thiện:</strong> ${compNames[compKeys.indexOf(weakest)]}</p>
+          <p style="margin-top:8px;">${tips[weakest]}</p>
+        `;
+      }
+
+      loadCompetencies();
+      document.getElementById('btnRefresh').addEventListener('click', loadCompetencies);
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'competency' });
+        BioVerseData.Profile.updateZoneProgress('resource', 'competency', 50);
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

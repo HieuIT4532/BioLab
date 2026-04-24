@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✂️ CRISPR Gene Editor — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Future Lab</a></li>
+      <li><a href="crispr-lab.html" class="active">CRISPR</a></li>
+      <li><a href="vaccine-builder.html">Vaccine</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Future Lab</a>
+      <h2 style="margin-bottom: var(--space-sm);">✂️ <span class="text-gradient">CRISPR Gene Editor</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Mô phỏng chỉnh sửa gene CRISPR-Cas9. Tìm PAM site, thiết kế guide RNA, cắt DNA và chèn trình tự mới.
+      </p>
+    </div>
+
+    <!-- Step Indicator -->
+    <div class="container">
+      <div class="step-indicator" id="stepIndicator">
+        <div class="step-dot active" data-step="1">1</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="2">2</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="3">3</div>
+        <div class="step-line"></div>
+        <div class="step-dot" data-step="4">4</div>
+      </div>
+    </div>
+
+    <div class="zone-lab-layout">
+      <!-- Control Panel -->
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>🧬 Chọn Gene Mục Tiêu</h3>
+          <select class="zone-select" id="geneSelect">
+            <option value="sickle_cell">HBB (Bệnh hồng cầu hình liềm)</option>
+            <option value="cystic_fibrosis">CFTR (Xơ nang)</option>
+            <option value="huntington">HTT (Huntington)</option>
+            <option value="custom">Tự nhập trình tự...</option>
+          </select>
+          <div id="customDNA" style="display:none; margin-top: var(--space-sm);">
+            <input type="text" class="zone-input" id="customSeqInput"
+              placeholder="Nhập trình tự DNA (VD: ATCGATCG...)" maxlength="60">
+          </div>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>🎯 Guide RNA</h3>
+          <div id="guideRNAInfo" style="font-size: var(--fs-small); color: var(--color-text-muted);">
+            Chọn PAM site trên DNA strand bên phải để thiết kế guide RNA.
+          </div>
+          <div id="guideRNADisplay" style="margin-top: var(--space-sm); padding: 10px; background: rgba(0,212,170,0.06); border-radius: var(--radius-md); font-family: var(--font-mono); font-size: 0.8rem; color: var(--color-primary); display: none;">
+          </div>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>🔧 Trình Tự Chèn</h3>
+          <input type="text" class="zone-input" id="insertSeq"
+            placeholder="Trình tự DNA mới (VD: ATCG)" maxlength="20">
+          <p style="font-size: var(--fs-xs); color: var(--color-text-dim); margin-top: 6px;">
+            Trình tự sẽ được chèn tại vị trí cắt
+          </p>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📝 Giả Thuyết</h3>
+          <textarea class="zone-textarea" id="crisprHypothesis"
+            placeholder="Dự đoán kết quả: Khi thay đổi gene HBB, kiểu hình sẽ..."></textarea>
+        </div>
+
+        <div style="display: flex; gap: var(--space-sm);">
+          <button class="zone-btn zone-btn-primary" id="btnCut" disabled>✂️ Cắt DNA</button>
+          <button class="zone-btn zone-btn-primary" id="btnInsert" disabled>🧬 Chèn Gene</button>
+          <button class="zone-btn zone-btn-ghost" id="btnReset">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- Results Panel -->
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">🧬 DNA Strand — Click vào PAM site (NGG) để chọn vị trí cắt</div>
+          <div class="dna-strand" id="dnaStrand"></div>
+          <div style="margin-top: var(--space-sm); display: flex; gap: var(--space-md); font-size: var(--fs-xs);">
+            <span><span class="dna-base A" style="display:inline-flex;width:20px;height:20px;font-size:0.6rem;">A</span> Adenine</span>
+            <span><span class="dna-base T" style="display:inline-flex;width:20px;height:20px;font-size:0.6rem;">T</span> Thymine</span>
+            <span><span class="dna-base G" style="display:inline-flex;width:20px;height:20px;font-size:0.6rem;">G</span> Guanine</span>
+            <span><span class="dna-base C" style="display:inline-flex;width:20px;height:20px;font-size:0.6rem;">C</span> Cytosine</span>
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">🔬 Kết Quả Chỉnh Sửa</div>
+          <div id="editResult" style="font-size: var(--fs-small); color: var(--color-text-muted);">
+            Chưa có thao tác chỉnh sửa. Hãy chọn PAM site và cắt DNA.
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">🧪 Kiểu Hình Dự Kiến</div>
+          <div id="phenotypeResult" style="display: flex; gap: var(--space-lg); align-items: center;">
+            <div style="text-align: center;">
+              <div style="font-size: 3rem;" id="phenoBefore">🔴</div>
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted); margin-top: 4px;">Trước</div>
+            </div>
+            <div style="font-size: 2rem; color: var(--color-text-dim);">→</div>
+            <div style="text-align: center;">
+              <div style="font-size: 3rem;" id="phenoAfter">❓</div>
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted); margin-top: 4px;">Sau</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education Panel -->
+        <div class="vis-box">
+          <div class="vis-box-title">📚 Kiến Thức CRISPR-Cas9</div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-md);">
+            <div>
+              <h4 style="color: var(--color-primary); font-size: var(--fs-small); margin-bottom: 6px;">PAM Site là gì?</h4>
+              <p style="font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6;">
+                PAM (Protospacer Adjacent Motif) là trình tự ngắn <strong>NGG</strong> (N = bất kỳ nucleotide nào, G = Guanine).
+                Cas9 chỉ cắt khi nhận diện PAM site kề bên trình tự mục tiêu.
+              </p>
+            </div>
+            <div>
+              <h4 style="color: var(--color-accent); font-size: var(--fs-small); margin-bottom: 6px;">Cơ chế hoạt động</h4>
+              <p style="font-size: var(--fs-xs); color: var(--color-text-muted); line-height: 1.6;">
+                1. Guide RNA dẫn đường → 2. Cas9 nhận diện PAM → 3. Cắt đôi sợi DNA →
+                4. Tế bào sửa chữa (NHEJ hoặc HDR) → 5. Gene mới được chèn vào.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script src="scripts/crispr-lab.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

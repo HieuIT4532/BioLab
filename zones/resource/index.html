@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Adaptive Learning — AI Quiz, Đánh giá năng lực, Lộ trình cá nhân | BioVerse">
+  <title>📚 Adaptive Learning — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../index.html#zones">Khu Vực</a></li>
+      <li><a href="quiz-generator.html">Quiz AI</a></li>
+      <li><a href="competency.html">Năng Lực</a></li>
+      <li><a href="learning-path.html">Lộ Trình</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <section class="zone-hero">
+    <div class="container">
+      <a href="../../index.html#zones" class="back-btn">← Quay lại Hub</a>
+      <div class="zone-hero-badge">📚 Zone 06 — Khu Học Liệu Thông Minh</div>
+      <h1><span class="text-gradient">Adaptive Learning</span></h1>
+      <p class="zone-subtitle">
+        AI cá nhân hóa: tạo bài học riêng, đề kiểm tra riêng theo năng lực từng học sinh.
+        Đánh giá theo chuẩn CT GDPT 2018.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="modules-grid">
+        <a href="quiz-generator.html" class="module-card reveal">
+          <div class="module-icon">🧠</div>
+          <h3>AI Quiz Generator</h3>
+          <p>AI tạo câu hỏi trắc nghiệm sinh học cá nhân hóa theo chủ đề và độ khó. Phản hồi tức thì với giải thích.</p>
+          <div class="module-features">
+            <span class="module-feature">AI Generated</span>
+            <span class="module-feature">Adaptive</span>
+            <span class="module-feature">Feedback</span>
+          </div>
+        </a>
+
+        <a href="competency.html" class="module-card reveal reveal-delay-2">
+          <div class="module-icon">📊</div>
+          <h3>Competency Assessment</h3>
+          <p>Đánh giá năng lực theo 4 trục chuẩn GDPT 2018: Nhận thức, Thực hành, Tư duy, GQVĐ. Biểu đồ radar trực quan.</p>
+          <div class="module-features">
+            <span class="module-feature">Radar Chart</span>
+            <span class="module-feature">GDPT 2018</span>
+            <span class="module-feature">Rubric</span>
+          </div>
+        </a>
+
+        <a href="learning-path.html" class="module-card reveal reveal-delay-3">
+          <div class="module-icon">🛤️</div>
+          <h3>Learning Path</h3>
+          <p>Lộ trình học tập cá nhân hóa: skill tree, AI gợi ý bài học tiếp theo dựa trên năng lực hiện tại.</p>
+          <div class="module-features">
+            <span class="module-feature">Skill Tree</span>
+            <span class="module-feature">AI Suggest</span>
+            <span class="module-feature">Progress</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script src="../../scripts/animations.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>⚗️ Enzyme Kinetics Lab — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="styles/lab.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Zone 2</a></li>
+      <li><a href="enzyme-lab.html" class="active">Enzyme Lab</a></li>
+      <li><a href="photosynthesis-lab.html">Quang Hợp</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Zone 2</a>
+      <h2 style="margin-bottom: var(--space-sm);">⚗️ <span class="text-gradient">Enzyme Kinetics Lab</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">Khảo sát động học enzyme theo mô hình Michaelis-Menten. Điều chỉnh biến số và quan sát kết quả.</p>
+    </div>
+
+    <div class="lab-layout">
+      <!-- Control Panel -->
+      <div class="control-panel">
+        <div class="control-group">
+          <h3>🧪 Chọn Enzyme</h3>
+          <select class="lab-select" id="enzymeSelect">
+            <option value="amylase">Amylase (tinh bột → maltose)</option>
+            <option value="pepsin">Pepsin (protein → peptide)</option>
+            <option value="catalase">Catalase (H₂O₂ → H₂O + O₂)</option>
+          </select>
+        </div>
+
+        <div class="control-group">
+          <h3>🔧 Biến Số</h3>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>Nhiệt độ (°C)</span>
+              <span class="slider-value" id="tempValue">37</span>
+            </div>
+            <input type="range" id="tempSlider" min="10" max="80" value="37" step="1">
+          </div>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>pH</span>
+              <span class="slider-value" id="phValue">7.0</span>
+            </div>
+            <input type="range" id="phSlider" min="1" max="14" value="7" step="0.5">
+          </div>
+          <div class="slider-control">
+            <div class="slider-label">
+              <span>Nồng độ cơ chất [S] (mM)</span>
+              <span class="slider-value" id="substrateValue">5.0</span>
+            </div>
+            <input type="range" id="substrateSlider" min="0.1" max="20" value="5" step="0.1">
+          </div>
+        </div>
+
+        <div class="control-group">
+          <h3>📊 Kết Quả Tức Thì</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-sm);">
+            <div style="text-align: center; padding: var(--space-sm); background: rgba(0,212,170,0.06); border-radius: var(--radius-md);">
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted);">V₀ (mM/s)</div>
+              <div style="font-size: var(--fs-h3); font-weight: 700; color: var(--color-primary);" id="v0Display">0.00</div>
+            </div>
+            <div style="text-align: center; padding: var(--space-sm); background: rgba(124,77,255,0.06); border-radius: var(--radius-md);">
+              <div style="font-size: var(--fs-xs); color: var(--color-text-muted);">V_max</div>
+              <div style="font-size: var(--fs-h3); font-weight: 700; color: var(--color-accent);" id="vmaxDisplay">0.00</div>
+            </div>
+          </div>
+          <div style="text-align: center; padding: var(--space-sm); background: rgba(0,188,212,0.06); border-radius: var(--radius-md); margin-top: var(--space-sm);">
+            <div style="font-size: var(--fs-xs); color: var(--color-text-muted);">Km (mM)</div>
+            <div style="font-size: var(--fs-h3); font-weight: 700; color: var(--color-secondary);" id="kmDisplay">0.00</div>
+          </div>
+        </div>
+
+        <div class="hypothesis-box">
+          <h4>📝 Giả thuyết của bạn</h4>
+          <textarea class="hypothesis-input" placeholder="Ví dụ: Khi tăng nhiệt độ quá 45°C, vận tốc enzyme sẽ giảm do biến tính protein..."></textarea>
+        </div>
+
+        <div class="lab-actions">
+          <button class="lab-btn lab-btn-primary" id="runExperiment">▶ Chạy TN</button>
+          <button class="lab-btn lab-btn-ghost" id="exportCSV">📁 Xuất CSV</button>
+          <button class="lab-btn lab-btn-ghost" id="resetLab">↺ Reset</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="result-panel">
+        <div class="chart-container">
+          <div class="chart-title">Biểu đồ Michaelis-Menten: V₀ theo [S]</div>
+          <canvas id="enzymeChart"></canvas>
+        </div>
+
+        <div class="data-table-wrapper">
+          <table class="data-table" id="dataTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>[S] (mM)</th>
+                <th>V₀ (mM/s)</th>
+                <th>T (°C)</th>
+                <th>pH</th>
+                <th>Enzyme</th>
+              </tr>
+            </thead>
+            <tbody id="dataBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/enzyme-lab.js"></script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

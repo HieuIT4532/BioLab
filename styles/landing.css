@@ -1,0 +1,511 @@
+/* ============================================================
+   BioVerse — Landing Page Styles
+   Hero, Philosophy, Architecture, Stats, Footer
+   ============================================================ */
+
+/* ── Hero Section ── */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: var(--gradient-hero);
+  overflow: hidden;
+  padding-top: var(--navbar-height);
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.hero-three {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  max-width: 900px;
+  padding: var(--space-2xl);
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 8px 20px;
+  border-radius: var(--radius-full);
+  background: rgba(0, 212, 170, 0.1);
+  border: 1px solid rgba(0, 212, 170, 0.2);
+  color: var(--color-primary);
+  font-family: var(--font-heading);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-xl);
+  animation: fadeInUp 0.8s ease-out;
+}
+
+.hero-badge-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse-glow 2s infinite;
+}
+
+.hero-title {
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-black);
+  line-height: 1.1;
+  margin-bottom: var(--space-lg);
+  animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.hero-title .highlight {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  position: relative;
+}
+
+.hero-subtitle {
+  font-size: 1.15rem;
+  color: var(--color-text-muted);
+  line-height: var(--lh-relaxed);
+  max-width: 650px;
+  margin: 0 auto var(--space-lg);
+  animation: fadeInUp 0.8s ease-out 0.4s both;
+}
+
+.hero-tagline {
+  font-family: var(--font-mono);
+  font-size: var(--fs-small);
+  color: var(--color-primary);
+  margin-bottom: var(--space-2xl);
+  animation: fadeInUp 0.8s ease-out 0.5s both;
+  letter-spacing: 0.05em;
+}
+
+.hero-tagline .cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--color-primary);
+  margin-left: 2px;
+  animation: blink 1s infinite;
+  vertical-align: text-bottom;
+}
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-lg);
+  animation: fadeInUp 0.8s ease-out 0.6s both;
+  flex-wrap: wrap;
+}
+
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: float 3s ease-in-out infinite;
+}
+
+.hero-scroll-indicator span {
+  font-size: var(--fs-xs);
+  color: var(--color-text-dim);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: var(--font-heading);
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--color-primary), transparent);
+}
+
+/* ── Orb Decorations for Hero ── */
+.hero .orb-1 {
+  width: 500px;
+  height: 500px;
+  top: -100px;
+  left: -100px;
+  animation: orb-float 15s ease-in-out infinite;
+}
+
+.hero .orb-2 {
+  width: 400px;
+  height: 400px;
+  bottom: -50px;
+  right: -80px;
+  animation: orb-float 20s ease-in-out infinite reverse;
+}
+
+.hero .orb-3 {
+  width: 300px;
+  height: 300px;
+  top: 30%;
+  right: 10%;
+  animation: orb-float 18s ease-in-out infinite 3s;
+}
+
+/* ── Formula Banner ── */
+.formula-section {
+  background: linear-gradient(180deg, var(--color-dark) 0%, var(--color-dark-lighter) 100%);
+  padding: var(--space-3xl) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.formula-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xl);
+  flex-wrap: wrap;
+  padding: var(--space-xl) var(--space-2xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-2xl);
+  backdrop-filter: var(--glass-blur);
+}
+
+.formula-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-family: var(--font-heading);
+  font-size: var(--fs-h3);
+  font-weight: var(--fw-bold);
+  color: var(--color-light);
+}
+
+.formula-item .emoji {
+  font-size: 1.8rem;
+}
+
+.formula-operator {
+  font-size: 1.8rem;
+  color: var(--color-primary);
+  font-weight: var(--fw-black);
+}
+
+.formula-equals {
+  font-size: 2rem;
+  font-weight: var(--fw-black);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Philosophy Section ── */
+.philosophy-section {
+  background: var(--color-dark-lighter);
+  position: relative;
+}
+
+.philosophy-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+.philosophy-card {
+  position: relative;
+  padding: var(--space-2xl) var(--space-xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: var(--glass-blur);
+  text-align: center;
+  transition: all var(--transition-base);
+  overflow: hidden;
+}
+
+.philosophy-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--gradient-primary);
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.philosophy-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+}
+
+.philosophy-card:hover::before {
+  opacity: 1;
+}
+
+.philosophy-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin: 0 auto var(--space-lg);
+  position: relative;
+}
+
+.philosophy-card:nth-child(1) .philosophy-icon {
+  background: rgba(0, 212, 170, 0.12);
+  box-shadow: 0 0 30px rgba(0, 212, 170, 0.15);
+}
+
+.philosophy-card:nth-child(2) .philosophy-icon {
+  background: rgba(124, 77, 255, 0.12);
+  box-shadow: 0 0 30px rgba(124, 77, 255, 0.15);
+}
+
+.philosophy-card:nth-child(3) .philosophy-icon {
+  background: rgba(224, 64, 251, 0.12);
+  box-shadow: 0 0 30px rgba(224, 64, 251, 0.15);
+}
+
+.philosophy-card h3 {
+  font-size: var(--fs-h3);
+  margin-bottom: var(--space-sm);
+}
+
+.philosophy-card .card-abbr {
+  font-size: var(--fs-xs);
+  color: var(--color-primary);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-md);
+}
+
+.philosophy-card p {
+  font-size: var(--fs-small);
+  line-height: var(--lh-relaxed);
+}
+
+/* ── Architecture Section ── */
+.architecture-section {
+  background: var(--color-dark);
+  position: relative;
+}
+
+.arch-layers {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.arch-layer {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xl);
+  padding: var(--space-xl) var(--space-2xl);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  transition: all var(--transition-base);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.arch-layer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+.arch-layer:nth-child(1)::before { background: var(--color-primary); }
+.arch-layer:nth-child(2)::before { background: var(--color-secondary); }
+.arch-layer:nth-child(3)::before { background: var(--color-accent); }
+.arch-layer:nth-child(4)::before { background: var(--color-accent-warm); }
+
+.arch-layer:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  transform: translateX(8px);
+}
+
+.arch-layer-number {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: var(--fw-black);
+  min-width: 50px;
+  text-align: center;
+}
+
+.arch-layer:nth-child(1) .arch-layer-number { color: var(--color-primary); }
+.arch-layer:nth-child(2) .arch-layer-number { color: var(--color-secondary); }
+.arch-layer:nth-child(3) .arch-layer-number { color: var(--color-accent); }
+.arch-layer:nth-child(4) .arch-layer-number { color: var(--color-accent-warm); }
+
+.arch-layer-info h4 {
+  font-size: var(--fs-h4);
+  margin-bottom: 4px;
+}
+
+.arch-layer-info p {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.arch-layer-tech {
+  display: flex;
+  gap: var(--space-sm);
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.tech-tag {
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--fs-xs);
+  font-family: var(--font-mono);
+  background: rgba(255,255,255,0.05);
+  color: var(--color-text-muted);
+  border: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+/* ── Stats Section ── */
+.stats-section {
+  background: var(--color-dark-lighter);
+  padding: var(--space-4xl) 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-xl);
+}
+
+.stat-item {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 3rem;
+  font-weight: var(--fw-black);
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+  margin-bottom: var(--space-sm);
+}
+
+.stat-label {
+  font-size: var(--fs-small);
+  color: var(--color-text-muted);
+  font-weight: var(--fw-medium);
+}
+
+/* ── Footer ── */
+.footer {
+  background: var(--color-dark);
+  border-top: 1px solid var(--glass-border);
+  padding: var(--space-3xl) 0 var(--space-xl);
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-2xl);
+  margin-bottom: var(--space-3xl);
+}
+
+.footer-brand {
+  max-width: 300px;
+}
+
+.footer-brand-name {
+  font-family: var(--font-heading);
+  font-weight: var(--fw-black);
+  font-size: 1.5rem;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: var(--space-md);
+}
+
+.footer-brand p {
+  font-size: var(--fs-small);
+  line-height: var(--lh-relaxed);
+}
+
+.footer-col h4 {
+  font-size: var(--fs-small);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: var(--space-lg);
+}
+
+.footer-col a {
+  display: block;
+  color: var(--color-text-muted);
+  font-size: var(--fs-small);
+  padding: 4px 0;
+  transition: all var(--transition-fast);
+}
+
+.footer-col a:hover {
+  color: var(--color-primary);
+  transform: translateX(4px);
+}
+
+.footer-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: var(--space-xl);
+  border-top: 1px solid var(--glass-border);
+}
+
+.footer-bottom p {
+  font-size: var(--fs-xs);
+  color: var(--color-text-dim);
+  margin: 0;
+}
+
+.footer-tech {
+  display: flex;
+  gap: var(--space-sm);
+}

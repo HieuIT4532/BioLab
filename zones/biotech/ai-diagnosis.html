@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏥 AI Disease Diagnosis — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Future Lab</a></li>
+      <li><a href="ai-diagnosis.html" class="active">AI Diagnosis</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Future Lab</a>
+      <h2>🏥 <span class="text-gradient">AI Disease Diagnosis</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Chọn triệu chứng bệnh nhân, AI sẽ phân tích và đưa ra chẩn đoán phân biệt kèm kiến thức sinh học.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>🤒 Triệu Chứng Chính</h3>
+          <div class="symptom-grid" id="symptomGrid">
+            <div class="symptom-item" data-symptom="fever"><div class="symptom-checkbox"></div>Sốt cao</div>
+            <div class="symptom-item" data-symptom="cough"><div class="symptom-checkbox"></div>Ho</div>
+            <div class="symptom-item" data-symptom="headache"><div class="symptom-checkbox"></div>Đau đầu</div>
+            <div class="symptom-item" data-symptom="fatigue"><div class="symptom-checkbox"></div>Mệt mỏi</div>
+            <div class="symptom-item" data-symptom="nausea"><div class="symptom-checkbox"></div>Buồn nôn</div>
+            <div class="symptom-item" data-symptom="rash"><div class="symptom-checkbox"></div>Phát ban</div>
+            <div class="symptom-item" data-symptom="sore_throat"><div class="symptom-checkbox"></div>Đau họng</div>
+            <div class="symptom-item" data-symptom="breathing"><div class="symptom-checkbox"></div>Khó thở</div>
+            <div class="symptom-item" data-symptom="diarrhea"><div class="symptom-checkbox"></div>Tiêu chảy</div>
+            <div class="symptom-item" data-symptom="muscle_pain"><div class="symptom-checkbox"></div>Đau cơ</div>
+            <div class="symptom-item" data-symptom="swollen_lymph"><div class="symptom-checkbox"></div>Sưng hạch</div>
+            <div class="symptom-item" data-symptom="joint_pain"><div class="symptom-checkbox"></div>Đau khớp</div>
+          </div>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📋 Thông Tin Bổ Sung</h3>
+          <textarea class="zone-textarea" id="additionalInfo"
+            placeholder="Mô tả thêm: thời gian xuất hiện, mức độ, tiền sử bệnh..."></textarea>
+        </div>
+
+        <button class="zone-btn zone-btn-primary" id="btnDiagnose" style="width:100%;">🤖 AI Chẩn Đoán</button>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box" id="diagnosisResult">
+          <div class="vis-box-title">🔍 Kết Quả Chẩn Đoán</div>
+          <div style="color: var(--color-text-muted); font-size: var(--fs-small); text-align: center; padding: var(--space-2xl);">
+            Chọn triệu chứng và nhấn "AI Chẩn Đoán" để bắt đầu.
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">📚 Kiến Thức Y Sinh</div>
+          <div id="bioKnowledge" style="font-size: var(--fs-small); color: var(--color-text-muted); line-height: 1.7;">
+            <p>💡 <strong>Chẩn đoán phân biệt</strong> là quá trình loại trừ các bệnh có triệu chứng tương tự để đưa ra chẩn đoán chính xác nhất.</p>
+            <p style="margin-top:8px;">Các bước: Thu thập triệu chứng → Đánh giá xác suất → Loại trừ → Xác nhận bằng xét nghiệm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Symptom toggle
+      document.querySelectorAll('.symptom-item').forEach(item => {
+        item.addEventListener('click', () => item.classList.toggle('checked'));
+      });
+
+      // AI Diagnosis
+      document.getElementById('btnDiagnose').addEventListener('click', async () => {
+        const symptoms = Array.from(document.querySelectorAll('.symptom-item.checked'))
+          .map(s => s.dataset.symptom);
+        if (symptoms.length === 0) {
+          alert('Vui lòng chọn ít nhất 1 triệu chứng!');
+          return;
+        }
+
+        const additional = document.getElementById('additionalInfo').value;
+        const resultBox = document.getElementById('diagnosisResult');
+        resultBox.innerHTML = `
+          <div class="vis-box-title">🔍 Kết Quả Chẩn Đoán</div>
+          <div style="text-align:center;padding:var(--space-xl);color:var(--color-primary);">
+            <div class="bv-typing-dot" style="display:inline-block;width:10px;height:10px;background:var(--color-primary);border-radius:50%;animation:typingBounce 1.2s infinite;"></div>
+            <div class="bv-typing-dot" style="display:inline-block;width:10px;height:10px;background:var(--color-primary);border-radius:50%;animation:typingBounce 1.2s infinite 0.2s;margin-left:4px;"></div>
+            <div class="bv-typing-dot" style="display:inline-block;width:10px;height:10px;background:var(--color-primary);border-radius:50%;animation:typingBounce 1.2s infinite 0.4s;margin-left:4px;"></div>
+            <div style="margin-top:8px;font-size:var(--fs-small);">AI đang phân tích triệu chứng...</div>
+          </div>
+        `;
+
+        const symptomNames = {
+          fever: 'Sốt cao', cough: 'Ho', headache: 'Đau đầu', fatigue: 'Mệt mỏi',
+          nausea: 'Buồn nôn', rash: 'Phát ban', sore_throat: 'Đau họng',
+          breathing: 'Khó thở', diarrhea: 'Tiêu chảy', muscle_pain: 'Đau cơ',
+          swollen_lymph: 'Sưng hạch', joint_pain: 'Đau khớp'
+        };
+
+        const symptomText = symptoms.map(s => symptomNames[s] || s).join(', ');
+        const query = `Bệnh nhân có triệu chứng: ${symptomText}. ${additional ? 'Thông tin thêm: ' + additional : ''} Hãy đưa ra 3 chẩn đoán phân biệt có khả năng nhất, kèm giải thích cơ chế sinh học.`;
+
+        const result = await BioVerseAI.askTutor(query, 'AI Disease Diagnosis - Future Lab');
+
+        const reply = result.error
+          ? '⚠️ Không thể kết nối AI. Vui lòng khởi động server backend.'
+          : result.reply;
+
+        resultBox.innerHTML = `
+          <div class="vis-box-title">🔍 Kết Quả Chẩn Đoán</div>
+          <div class="report-output">${reply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</div>
+          <div style="margin-top:var(--space-sm);font-size:var(--fs-xs);color:var(--color-text-dim);">
+            ⚠️ Đây là mô phỏng giáo dục, không phải chẩn đoán y tế thực tế.
+          </div>
+        `;
+
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(15, 'AI Diagnosis');
+          BioVerseData.Profile.updateZoneProgress('biotech', 'ai_diagnosis', 80);
+          BioVerseData.Profile.updateCompetency('problemSolving', 60);
+        }
+      });
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'ai_diagnosis' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

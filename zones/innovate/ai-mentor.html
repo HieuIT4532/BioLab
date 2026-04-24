@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🤖 AI Mentor — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Startup Lab</a></li>
+      <li><a href="ai-mentor.html" class="active">AI Mentor</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Startup Lab</a>
+      <h2>🤖 <span class="text-gradient">AI Mentor</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Gửi ý tưởng dự án khoa học/startup sinh học. AI Mentor sẽ phản biện Socratic, đánh giá khả thi, và gợi ý cải tiến.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>💡 Ý Tưởng Dự Án</h3>
+          <input type="text" class="zone-input" id="ideaTitle" placeholder="Tên dự án..." style="margin-bottom:8px;">
+          <textarea class="zone-textarea" id="ideaDescription" style="min-height:200px;"
+            placeholder="Mô tả ý tưởng chi tiết:&#10;- Vấn đề giải quyết&#10;- Giải pháp đề xuất&#10;- Công nghệ sử dụng&#10;- Đối tượng hưởng lợi"></textarea>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📂 Lĩnh Vực</h3>
+          <select class="zone-select" id="ideaField">
+            <option value="biotech">Công nghệ sinh học</option>
+            <option value="environment">Môi trường & Sinh thái</option>
+            <option value="health">Sức khỏe & Y tế</option>
+            <option value="agriculture">Nông nghiệp</option>
+            <option value="food">Thực phẩm & Dinh dưỡng</option>
+          </select>
+        </div>
+
+        <button class="zone-btn zone-btn-primary" id="btnSubmitIdea" style="width:100%;">
+          🤖 Gửi cho AI Mentor
+        </button>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box" style="min-height: 500px;">
+          <div class="vis-box-title">💬 Phản Hồi AI Mentor</div>
+          <div class="report-output" id="mentorFeedback" style="min-height: 400px;">
+            <div style="text-align:center;padding:var(--space-2xl);color:var(--color-text-dim);">
+              <div style="font-size:4rem;margin-bottom:16px;">🤖</div>
+              <p>AI Mentor đang chờ ý tưởng của bạn.</p>
+              <p style="font-size:var(--fs-xs);margin-top:8px;">Mentor sẽ đánh giá khả thi, đặt câu hỏi phản biện, và gợi ý cải tiến.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="vis-box">
+          <div class="vis-box-title">💡 Gợi Ý Ý Tưởng</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div class="arch-detail-card" style="cursor:pointer;" onclick="document.getElementById('ideaTitle').value='BioFilter';document.getElementById('ideaDescription').value='Hệ thống lọc nước bằng vi sinh vật tự nhiên cho vùng nông thôn. Sử dụng biofilm vi khuẩn có lợi để phân hủy chất ô nhiễm hữu cơ.';">
+              <h5>🌊 BioFilter</h5>
+              <p>Lọc nước bằng vi sinh vật</p>
+            </div>
+            <div class="arch-detail-card" style="cursor:pointer;" onclick="document.getElementById('ideaTitle').value='PlantGuard AI';document.getElementById('ideaDescription').value='Ứng dụng AI nhận diện bệnh cây trồng từ ảnh chụp lá. Đề xuất phương pháp phòng trị sinh học, giảm sử dụng thuốc trừ sâu hóa học.';">
+              <h5>🌱 PlantGuard AI</h5>
+              <p>AI nhận diện bệnh cây trồng</p>
+            </div>
+            <div class="arch-detail-card" style="cursor:pointer;" onclick="document.getElementById('ideaTitle').value='MycoPack';document.getElementById('ideaDescription').value='Vật liệu đóng gói sinh học từ sợi nấm (mycelium). Thay thế xốp EPS, phân hủy hoàn toàn trong 30 ngày.';">
+              <h5>🍄 MycoPack</h5>
+              <p>Bao bì từ sợi nấm</p>
+            </div>
+            <div class="arch-detail-card" style="cursor:pointer;" onclick="document.getElementById('ideaTitle').value='Algae Energy';document.getElementById('ideaDescription').value='Nuôi cấy tảo siêu nhỏ (microalgae) để sản xuất biodiesel. Tận dụng CO₂ từ khí thải nhà máy, vừa giảm ô nhiễm vừa tạo năng lượng sạch.';">
+              <h5>🦠 Algae Energy</h5>
+              <p>Nhiên liệu sinh học từ tảo</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('btnSubmitIdea').addEventListener('click', async () => {
+        const title = document.getElementById('ideaTitle').value;
+        const desc = document.getElementById('ideaDescription').value;
+        const field = document.getElementById('ideaField').selectedOptions[0].text;
+
+        if (!title || !desc) { alert('Vui lòng nhập tên và mô tả dự án!'); return; }
+
+        const feedback = document.getElementById('mentorFeedback');
+        feedback.innerHTML = `
+          <div style="text-align:center;padding:var(--space-xl);">
+            <div style="font-size:2rem;animation:typingBounce 1.2s infinite;">🤖</div>
+            <p style="color:var(--color-primary);margin-top:8px;">AI Mentor đang phân tích ý tưởng...</p>
+          </div>
+        `;
+
+        const idea = `Tên: ${title}\nLĩnh vực: ${field}\n\n${desc}`;
+        const result = await BioVerseAI.getMentorFeedback(idea);
+        const reply = result.error
+          ? '⚠️ Không thể kết nối AI Mentor. Vui lòng khởi động server backend.'
+          : result.feedback;
+
+        feedback.innerHTML = reply
+          .replace(/\n/g, '<br>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(20, 'AI Mentor phản biện');
+          BioVerseData.Profile.updateZoneProgress('innovate', 'ai_mentor', 80);
+          BioVerseData.Profile.updateCompetency('problemSolving', 65);
+        }
+      });
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'ai_mentor' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📋 Field Survey Tool — BioVerse</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/gamification.css">
+  <link rel="stylesheet" href="../../styles/ai-tutor.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="index.html">Citizen Science</a></li>
+      <li><a href="field-survey.html" class="active">Khảo Sát</a></li>
+      <li><a href="bio-map.html">Bản Đồ</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <a href="index.html" class="back-btn">← Quay lại Citizen Science</a>
+      <h2>📋 <span class="text-gradient">Field Survey Tool</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">
+        Ghi nhận quan sát thực địa: loài, vị trí, thông số môi trường.
+      </p>
+    </div>
+
+    <div class="zone-lab-layout">
+      <div class="zone-control-panel">
+        <div class="zone-control-group">
+          <h3>🌿 Thông Tin Quan Sát</h3>
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Tên loài / Đối tượng:</label>
+          <input type="text" class="zone-input" id="speciesName" placeholder="VD: Cây bàng, Chim sẻ..." style="margin-bottom:8px;">
+
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Phân loại:</label>
+          <select class="zone-select" id="speciesType" style="margin-bottom:8px;">
+            <option value="plant">🌱 Thực vật</option>
+            <option value="animal">🐦 Động vật</option>
+            <option value="fungi">🍄 Nấm</option>
+            <option value="insect">🦋 Côn trùng</option>
+            <option value="aquatic">🐟 Thủy sinh</option>
+            <option value="other">📦 Khác</option>
+          </select>
+
+          <label style="font-size:var(--fs-small);color:var(--color-text-muted);">Số lượng quan sát:</label>
+          <input type="number" class="zone-input" id="speciesCount" value="1" min="1" style="margin-bottom:8px;">
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📍 Vị Trí</h3>
+          <input type="text" class="zone-input" id="locationName" placeholder="VD: Công viên Thống Nhất, Hà Nội" style="margin-bottom:8px;">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label style="font-size:var(--fs-xs);color:var(--color-text-dim);">Vĩ độ:</label>
+              <input type="number" class="zone-input" id="latitude" placeholder="21.0285" step="0.0001">
+            </div>
+            <div>
+              <label style="font-size:var(--fs-xs);color:var(--color-text-dim);">Kinh độ:</label>
+              <input type="number" class="zone-input" id="longitude" placeholder="105.8542" step="0.0001">
+            </div>
+          </div>
+          <button class="zone-btn zone-btn-ghost" style="width:100%;margin-top:8px;" id="btnGetLocation">📍 Lấy vị trí GPS</button>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>🌡️ Thông Số Môi Trường</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <div>
+              <label style="font-size:var(--fs-xs);color:var(--color-text-dim);">Nhiệt độ (°C):</label>
+              <input type="number" class="zone-input" id="envTemp" placeholder="28">
+            </div>
+            <div>
+              <label style="font-size:var(--fs-xs);color:var(--color-text-dim);">Độ ẩm (%):</label>
+              <input type="number" class="zone-input" id="envHumidity" placeholder="75">
+            </div>
+          </div>
+          <label style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-top:6px;display:block;">Ghi chú:</label>
+          <textarea class="zone-textarea" id="envNotes" placeholder="Mô tả môi trường: thời tiết, địa hình, sinh cảnh..." style="min-height:80px;"></textarea>
+        </div>
+
+        <div class="zone-control-group">
+          <h3>📷 Upload Ảnh</h3>
+          <div class="upload-area" id="uploadArea">
+            <div class="upload-icon">📷</div>
+            <div class="upload-text">Click hoặc kéo thả ảnh vào đây</div>
+            <input type="file" id="photoUpload" accept="image/*" style="display:none;">
+          </div>
+          <div id="photoPreview" style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;"></div>
+        </div>
+
+        <button class="zone-btn zone-btn-primary" id="btnSaveObservation" style="width:100%;">💾 Lưu Quan Sát</button>
+      </div>
+
+      <div class="zone-result-panel">
+        <div class="vis-box">
+          <div class="vis-box-title">📊 Quan Sát Đã Lưu (<span id="obsCount">0</span>)</div>
+          <div id="observationList" style="display:flex;flex-direction:column;gap:12px;max-height:500px;overflow-y:auto;">
+            <div style="text-align:center;color:var(--color-text-dim);padding:var(--space-2xl);">
+              Chưa có quan sát nào. Hãy bắt đầu ghi nhận!
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:var(--space-sm);">
+          <button class="zone-btn zone-btn-ghost" id="btnExportObs">📁 Xuất CSV</button>
+          <button class="zone-btn zone-btn-ghost" id="btnViewMap">🗺️ Xem Bản Đồ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/simulation-engine.js"></script>
+  <script src="../../scripts/data-layer.js"></script>
+  <script src="../../scripts/gamification.js"></script>
+  <script src="../../scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const STORAGE_KEY = 'bioverse_observations';
+      let observations = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+
+      // GPS
+      document.getElementById('btnGetLocation').addEventListener('click', () => {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(pos => {
+            document.getElementById('latitude').value = pos.coords.latitude.toFixed(4);
+            document.getElementById('longitude').value = pos.coords.longitude.toFixed(4);
+          }, () => alert('Không thể lấy vị trí GPS.'));
+        }
+      });
+
+      // Photo upload
+      const uploadArea = document.getElementById('uploadArea');
+      const photoInput = document.getElementById('photoUpload');
+      let uploadedPhotos = [];
+
+      uploadArea.addEventListener('click', () => photoInput.click());
+      photoInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            uploadedPhotos.push(ev.target.result);
+            document.getElementById('photoPreview').innerHTML += `
+              <div style="width:80px;height:80px;border-radius:8px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);">
+                <img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover;">
+              </div>
+            `;
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Save observation
+      document.getElementById('btnSaveObservation').addEventListener('click', () => {
+        const species = document.getElementById('speciesName').value;
+        if (!species) { alert('Vui lòng nhập tên loài!'); return; }
+
+        const obs = {
+          id: Date.now(),
+          species,
+          type: document.getElementById('speciesType').value,
+          count: parseInt(document.getElementById('speciesCount').value) || 1,
+          location: document.getElementById('locationName').value,
+          lat: parseFloat(document.getElementById('latitude').value) || 0,
+          lng: parseFloat(document.getElementById('longitude').value) || 0,
+          temperature: document.getElementById('envTemp').value,
+          humidity: document.getElementById('envHumidity').value,
+          notes: document.getElementById('envNotes').value,
+          photos: uploadedPhotos.length,
+          date: new Date().toISOString()
+        };
+
+        observations.push(obs);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(observations));
+        renderObservations();
+
+        // Reset form
+        document.getElementById('speciesName').value = '';
+        document.getElementById('speciesCount').value = '1';
+        document.getElementById('envNotes').value = '';
+        uploadedPhotos = [];
+        document.getElementById('photoPreview').innerHTML = '';
+
+        // Gamification
+        if (window.BioVerseData) {
+          BioVerseData.Profile.addXP(15, `Quan sát: ${species}`);
+          const profile = BioVerseData.Profile.get();
+          profile._observations = (profile._observations || 0) + 1;
+          BioVerseData.Profile.save(profile);
+          BioVerseData.Profile.updateZoneProgress('nature', 'field_survey', Math.min(100, observations.length * 10));
+          BioVerseData.Profile.updateCompetency('experimentalSkills', 55);
+          BioVerseData.Badges.check();
+        }
+      });
+
+      function renderObservations() {
+        const list = document.getElementById('observationList');
+        document.getElementById('obsCount').textContent = observations.length;
+
+        if (observations.length === 0) {
+          list.innerHTML = '<div style="text-align:center;color:var(--color-text-dim);padding:var(--space-2xl);">Chưa có quan sát nào.</div>';
+          return;
+        }
+
+        const typeEmoji = { plant: '🌱', animal: '🐦', fungi: '🍄', insect: '🦋', aquatic: '🐟', other: '📦' };
+
+        list.innerHTML = observations.slice().reverse().map(obs => `
+          <div class="observation-card">
+            <div class="observation-thumb">${typeEmoji[obs.type] || '📦'}</div>
+            <div style="flex:1;">
+              <div style="font-weight:600;color:var(--color-light);">${obs.species}</div>
+              <div style="font-size:var(--fs-xs);color:var(--color-text-muted);">
+                📍 ${obs.location || 'Không rõ'} | 🔢 x${obs.count} | 📅 ${new Date(obs.date).toLocaleDateString('vi-VN')}
+              </div>
+              ${obs.notes ? `<div style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-top:4px;">${obs.notes.substring(0, 80)}...</div>` : ''}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Export CSV
+      document.getElementById('btnExportObs').addEventListener('click', () => {
+        if (observations.length > 0 && window.BioVerseEngine) {
+          BioVerseEngine.DataCollector.exportCSV(observations, 'citizen_science_observations.csv');
+        }
+      });
+
+      // View map
+      document.getElementById('btnViewMap').addEventListener('click', () => {
+        window.location.href = 'bio-map.html';
+      });
+
+      renderObservations();
+
+      if (window.BioVerseData) {
+        BioVerseData.Analytics.track({ type: 'module_visit', module: 'field_survey' });
+      }
+    });
+  </script>
+  <script src="../../scripts/main.js"></script>
+</body>
+</html>

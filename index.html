@@ -1,127 +1,592 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioLab v2 | Trung Tâm Nghiên Cứu Ảo</title>
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BioVerse — Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông. Khám phá, trải nghiệm, sáng tạo với AI.">
+  <meta name="keywords" content="BioVerse, STEM, sinh học, phòng thí nghiệm ảo, giáo dục, AI, mô phỏng">
+  <meta name="author" content="BioVerse Team">
+  <meta name="theme-color" content="#0A0E27">
+  <title>BioVerse — Hệ Sinh Thái Phòng Thí Nghiệm Sinh Học Số</title>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/landing.css">
+  <link rel="stylesheet" href="styles/zones-hub.css">
+  <link rel="stylesheet" href="styles/architecture.css">
+  <link rel="stylesheet" href="styles/gamification.css">
+  <link rel="stylesheet" href="styles/ai-tutor.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+
+  <!-- Three.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Navigation Bar -->
-        <nav class="glass-nav">
-            <div class="nav-brand">
-                <i class="fas fa-dna"></i>
-                <span>BIOLAB <small>v2.0</small></span>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">Trang Chủ</a></li>
-                <li><a href="library.html">Thư Viện Tin Sinh</a></li>
-                <li><a href="zone6_resources.html">Học Liệu</a></li>
-            </ul>
-        </nav>
 
-        <!-- Main Content -->
-        <main class="main-hall">
-            <header class="hall-header">
-                <h1 class="animate-up">Chào mừng tới <span>Trung Tâm Nghiên Cứu Ảo</span></h1>
-                <p class="animate-up delay-1">Khám phá các phân khu thí nghiệm và nghiên cứu sinh học hiện đại.</p>
-            </header>
-
-            <!-- Zone Grid -->
-            <div class="zone-grid">
-                <!-- Zone 1 -->
-                <a href="zone1_exploration.html" class="zone-card animate-up delay-2">
-                    <div class="zone-img" style="background-image: url('assets/images/zone1.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">01</span>
-                        <h3>Khu Khám Phá</h3>
-                        <p>Quan sát tế bào, vi sinh vật qua kính hiển vi ảo độ phân giải cao.</p>
-                        <div class="zone-tags">
-                            <span>Kính hiển vi</span>
-                            <span>Mẫu vật</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Zone 2 -->
-                <a href="zone2_experiment.html" class="zone-card animate-up delay-3">
-                    <div class="zone-img" style="background-image: url('assets/images/zone2.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">02</span>
-                        <h3>Khu Thí Nghiệm</h3>
-                        <p>Thực hành enzyme, quang hợp và di truyền học với các bộ simulator.</p>
-                        <div class="zone-tags">
-                            <span>Enzyme</span>
-                            <span>Mendel</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Zone 3 -->
-                <a href="zone3_biotech.html" class="zone-card animate-up delay-4">
-                    <div class="zone-img" style="background-image: url('assets/images/zone3.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">03</span>
-                        <h3>Khu Công Nghệ Sinh Học</h3>
-                        <p>Ứng dụng kỹ thuật PCR, điện di và chỉnh sửa gen CRISPR-Cas.</p>
-                        <div class="zone-tags">
-                            <span>PCR</span>
-                            <span>CRISPR</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Zone 4 -->
-                <a href="zone4_creative.html" class="zone-card animate-up delay-5">
-                    <div class="zone-img" style="background-image: url('assets/images/zone4.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">04</span>
-                        <h3>Khu Dự Án & Sáng Tạo</h3>
-                        <p>Thiết kế poster khoa học và mô phỏng cấu trúc protein 3D.</p>
-                        <div class="zone-tags">
-                            <span>Poster</span>
-                            <span>Protein 3D</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Zone 5 -->
-                <a href="zone5_ecology.html" class="zone-card animate-up delay-6">
-                    <div class="zone-img" style="background-image: url('assets/images/zone5.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">05</span>
-                        <h3>Khu Xanh & Sinh Thái</h3>
-                        <p>Mô phỏng hệ sinh thái tác tử, GIS và động lực học quần thể.</p>
-                        <div class="zone-tags">
-                            <span>Ecology</span>
-                            <span>GIS</span>
-                        </div>
-                    </div>
-                </a>
-
-                <!-- Zone 6 -->
-                <a href="zone6_resources.html" class="zone-card animate-up delay-7">
-                    <div class="zone-img" style="background-image: url('assets/images/zone6.png')"></div>
-                    <div class="zone-info">
-                        <span class="zone-num">06</span>
-                        <h3>Khu Lưu Trữ & Tin Sinh</h3>
-                        <p>Khai thác dữ liệu GenBank, BLAST và tài nguyên tin sinh học.</p>
-                        <div class="zone-tags">
-                            <span>Big Data</span>
-                            <span>BLAST</span>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="main-footer">
-            <p>&copy; 2026 BioLab v2.0 - Hệ thống thí nghiệm ảo chuẩn SGK Sinh 11.</p>
-        </footer>
+  <!-- ═══════════════ NAVBAR ═══════════════ -->
+  <nav class="navbar" id="navbar">
+    <a href="#" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="#hero" class="active">Trang Chủ</a></li>
+      <li><a href="#zones">Khu Vực</a></li>
+      <li><a href="#philosophy">Triết Lý</a></li>
+      <li><a href="#architecture">Kiến Trúc</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="#" class="btn btn-sm btn-primary" onclick="if(window.BioVerseAI)BioVerseAI.toggleChat();">🤖 AI Tutor</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="hero" id="hero">
+    <!-- Particle Background Canvas -->
+    <canvas class="hero-canvas" id="particleCanvas"></canvas>
+    <!-- Three.js 3D DNA -->
+    <div class="hero-three" id="threeContainer"></div>
+    <!-- Orb Decorations -->
+    <div class="orb orb-primary orb-1"></div>
+    <div class="orb orb-accent orb-2"></div>
+    <div class="orb orb-pink orb-3"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        Hệ Sinh Thái Giáo Dục Số
+      </div>
+      <h1 class="hero-title">
+        Chào mừng đến<br>
+        <span class="highlight">BioVerse</span>
+      </h1>
+      <p class="hero-subtitle">
+        Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông.
+        Nơi khoa học sự sống được <strong>sống</strong>, không chỉ được học.
+      </p>
+      <div class="hero-tagline">
+        <span id="typewriter"></span><span class="cursor"></span>
+      </div>
+      <div class="hero-actions">
+        <a href="#zones" class="btn btn-primary btn-lg">
+          🚀 Khám Phá Ngay
+        </a>
+        <a href="#philosophy" class="btn btn-ghost btn-lg">
+          📖 Tìm Hiểu Thêm
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-indicator">
+      <span>Cuộn xuống</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FORMULA BANNER ═══════════════ -->
+  <section class="formula-section">
+    <div class="container">
+      <div class="formula-banner reveal">
+        <span class="formula-equals">HỌC</span>
+        <span class="formula-operator">=</span>
+        <span class="formula-item"><span class="emoji">🧪</span> Trải nghiệm</span>
+        <span class="formula-operator">+</span>
+        <span class="formula-item"><span class="emoji">📊</span> Dữ liệu</span>
+        <span class="formula-operator">+</span>
+        <span class="formula-item"><span class="emoji">🤖</span> Phản hồi thông minh</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ZONES HUB ═══════════════ -->
+  <section class="zones-section section" id="zones">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">🔬 6 Khu Vực Chức Năng</div>
+        <h2 class="section-title">Khám Phá <span class="text-gradient">Hệ Sinh Thái</span></h2>
+        <p class="section-subtitle">
+          Mỗi khu vực là một phòng thí nghiệm ảo chuyên biệt, thiết kế theo triết lý
+          học qua trải nghiệm và phản hồi thông minh từ AI.
+        </p>
+      </div>
+
+      <div class="zones-grid" id="zonesGrid">
+        <!-- Zone 1: Explore -->
+        <a href="zones/explore/index.html" class="zone-card reveal reveal-delay-1" data-zone="explore">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">01</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">🔍</div>
+              <h3 class="zone-card-title">Immersive Biology</h3>
+              <div class="zone-card-subtitle">Khu Khám Phá</div>
+              <p class="zone-card-desc">
+                Trải nghiệm nhập vai: du hành bên trong tế bào, xoay 360° mô hình sinh học,
+                story-based learning "Bạn là tế bào miễn dịch chống virus".
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">VR-lite</span>
+                <span class="zone-tag">3D</span>
+                <span class="zone-tag">Story</span>
+              </div>
+              <span class="badge badge-active">● Active</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+
+        <!-- Zone 2: Experiment -->
+        <a href="zones/experiment/index.html" class="zone-card reveal reveal-delay-2" data-zone="experiment">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">02</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">🧪</div>
+              <h3 class="zone-card-title">Digital Twin Lab</h3>
+              <div class="zone-card-subtitle">Khu Thí Nghiệm</div>
+              <p class="zone-card-desc">
+                Mô phỏng thí nghiệm gần như thật: biến số thực (nhiệt độ, pH, thời gian),
+                sai số ngẫu nhiên, xuất CSV và biểu đồ.
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">Enzyme</span>
+                <span class="zone-tag">Quang hợp</span>
+                <span class="zone-tag">CSV</span>
+              </div>
+              <span class="badge badge-active">● Active</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+
+        <!-- Zone 3: BioTech -->
+        <a href="zones/biotech/index.html" class="zone-card reveal reveal-delay-3" data-zone="biotech">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">03</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">🧬</div>
+              <h3 class="zone-card-title">Future Lab</h3>
+              <div class="zone-card-subtitle">Khu Công Nghệ Sinh Học</div>
+              <p class="zone-card-desc">
+                Đi trước chương trình: CRISPR mô phỏng cắt gene, Vaccine Builder,
+                AI chẩn đoán bệnh cơ bản.
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">CRISPR</span>
+                <span class="zone-tag">Vaccine</span>
+                <span class="zone-tag">AI</span>
+              </div>
+              <span class="badge badge-new">✦ New</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+
+        <!-- Zone 4: Innovate -->
+        <a href="zones/innovate/index.html" class="zone-card reveal reveal-delay-4" data-zone="innovate">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">04</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">💡</div>
+              <h3 class="zone-card-title">Startup Lab</h3>
+              <div class="zone-card-subtitle">Khu Sáng Tạo & Đổi Mới</div>
+              <p class="zone-card-desc">
+                HS tạo dự án khoa học, ý tưởng startup sinh học.
+                Pitch deck generator, AI mentor phản biện.
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">Startup</span>
+                <span class="zone-tag">Pitch</span>
+                <span class="zone-tag">AI Mentor</span>
+              </div>
+              <span class="badge badge-new">✦ New</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+
+        <!-- Zone 5: Nature -->
+        <a href="zones/nature/index.html" class="zone-card reveal reveal-delay-5" data-zone="nature">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">05</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">🌿</div>
+              <h3 class="zone-card-title">Citizen Science</h3>
+              <div class="zone-card-subtitle">Khu Thiên Nhiên & Thực Tế</div>
+              <p class="zone-card-desc">
+                Gắn với đời thật: upload dữ liệu thực (ảnh cây, môi trường),
+                tạo bản đồ sinh học địa phương.
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">Upload</span>
+                <span class="zone-tag">Bản đồ</span>
+                <span class="zone-tag">Thực tế</span>
+              </div>
+              <span class="badge badge-new">✦ New</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+
+        <!-- Zone 6: Resource -->
+        <a href="zones/resource/index.html" class="zone-card reveal reveal-delay-6" data-zone="resource">
+          <div class="zone-card-glow"></div>
+          <div class="zone-card-inner">
+            <span class="zone-number">06</span>
+            <div class="zone-card-header">
+              <div class="zone-icon">📚</div>
+              <h3 class="zone-card-title">Adaptive Learning</h3>
+              <div class="zone-card-subtitle">Khu Học Liệu Thông Minh</div>
+              <p class="zone-card-desc">
+                AI cá nhân hóa: tạo bài học riêng, đề kiểm tra riêng
+                theo năng lực từng học sinh.
+              </p>
+            </div>
+            <div class="zone-card-footer">
+              <div class="zone-tags">
+                <span class="zone-tag">AI</span>
+                <span class="zone-tag">Cá nhân hóa</span>
+                <span class="zone-tag">Quiz</span>
+              </div>
+              <span class="badge badge-new">✦ New</span>
+            </div>
+            <div class="zone-card-arrow">→</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PHILOSOPHY ═══════════════ -->
+  <section class="philosophy-section section" id="philosophy">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">🧠 Triết Lý Giáo Dục</div>
+        <h2 class="section-title">Không Chỉ STEM — Mà Là <span class="text-gradient">Tư Duy Khoa Học</span></h2>
+        <p class="section-subtitle">
+          BioVerse được xây dựng trên 3 trụ cột giáo dục tiên tiến,
+          biến học sinh thành nhà khoa học thật sự.
+        </p>
+      </div>
+
+      <div class="philosophy-grid">
+        <div class="philosophy-card reveal reveal-delay-1">
+          <div class="philosophy-icon">🔬</div>
+          <div class="card-abbr">IBL — INQUIRY-BASED LEARNING</div>
+          <h3>Học Qua Khám Phá</h3>
+          <p>
+            Học sinh đặt câu hỏi, hình thành giả thuyết, thiết kế thí nghiệm
+            và tự rút ra kết luận. Giáo viên là người hướng dẫn, không phải người truyền đạt.
+          </p>
+        </div>
+
+        <div class="philosophy-card reveal reveal-delay-2">
+          <div class="philosophy-icon">🏗️</div>
+          <div class="card-abbr">PBL — PROJECT-BASED LEARNING</div>
+          <h3>Học Qua Dự Án</h3>
+          <p>
+            Học sinh giải quyết vấn đề thực tế thông qua dự án dài hạn:
+            nghiên cứu, sáng tạo, trình bày — như nhà khoa học chuyên nghiệp.
+          </p>
+        </div>
+
+        <div class="philosophy-card reveal reveal-delay-3">
+          <div class="philosophy-icon">🤖</div>
+          <div class="card-abbr">AAL — AI-AUGMENTED LEARNING</div>
+          <h3>Học Cùng AI</h3>
+          <p>
+            AI không thay giáo viên — mà tăng cường: gợi ý, hỏi ngược,
+            phát hiện sai lầm, cá nhân hóa lộ trình học cho từng học sinh.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ ARCHITECTURE (Interactive) ═══════════════ -->
+  <section class="architecture-section section" id="architecture">
+    <div class="container">
+      <div class="section-header reveal">
+        <div class="section-label">🏗️ Kiến Trúc Hệ Thống</div>
+        <h2 class="section-title">4 Lớp <span class="text-gradient">Công Nghệ</span></h2>
+        <p class="section-subtitle">
+          Kiến trúc phân lớp rõ ràng đảm bảo khả năng mở rộng,
+          bảo trì và tích hợp công nghệ mới. Click vào từng lớp để xem chi tiết.
+        </p>
+      </div>
+
+      <div class="arch-diagram">
+        <!-- Layer 1: Presentation -->
+        <div class="arch-layer-interactive reveal reveal-delay-1">
+          <div class="arch-layer-head">
+            <div class="arch-layer-num">01</div>
+            <div class="arch-layer-meta">
+              <h4>🖥️ Presentation Layer</h4>
+              <p>Giao diện 3D, mô phỏng trực quan, trải nghiệm nhập vai</p>
+            </div>
+            <div class="arch-layer-tags">
+              <span class="tech-tag">HTML/CSS</span>
+              <span class="tech-tag">Three.js</span>
+              <span class="tech-tag">Canvas</span>
+            </div>
+            <span class="arch-layer-status" data-layer-status="presentation">● Active</span>
+            <span class="arch-expand-icon">▼</span>
+          </div>
+          <div class="arch-layer-details">
+            <div class="arch-detail-grid">
+              <div class="arch-detail-card">
+                <h5>🧬 3D Models</h5>
+                <p>Three.js render DNA, tế bào, phân tử — xoay 360° tương tác real-time</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>🎨 Glassmorphism UI</h5>
+                <p>Design system premium: gradient, blur, micro-animations, responsive</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>📊 Chart.js</h5>
+                <p>Biểu đồ real-time cho dữ liệu thí nghiệm, radar chart năng lực</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector"><div class="arch-connector-line"><div class="arch-connector-dot"></div></div></div>
+
+        <!-- Layer 2: Simulation -->
+        <div class="arch-layer-interactive reveal reveal-delay-2">
+          <div class="arch-layer-head">
+            <div class="arch-layer-num">02</div>
+            <div class="arch-layer-meta">
+              <h4>⚙️ Simulation Engine</h4>
+              <p>Physics engine, Biology rules, mô hình toán học chính xác</p>
+            </div>
+            <div class="arch-layer-tags">
+              <span class="tech-tag">Physics</span>
+              <span class="tech-tag">BioRules</span>
+              <span class="tech-tag">Noise</span>
+            </div>
+            <span class="arch-layer-status" data-layer-status="simulation">● Active</span>
+            <span class="arch-expand-icon">▼</span>
+          </div>
+          <div class="arch-layer-details">
+            <div class="arch-detail-grid">
+              <div class="arch-detail-card">
+                <h5>🧪 Michaelis-Menten</h5>
+                <p>Mô hình enzyme kinetics: V = Vmax·[S]/(Km+[S]) với hiệu ứng nhiệt, pH</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>🌿 Quang hợp C3/C4/CAM</h5>
+                <p>Light response curve, CO₂ compensation point, temperature optima</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>🧬 CRISPR Engine</h5>
+                <p>PAM site finder, DNA cutting simulation, gene insertion</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>📈 Noise Generator</h5>
+                <p>Sai số Gaussian thực tế, systematic bias — dữ liệu như lab thật</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector"><div class="arch-connector-line"><div class="arch-connector-dot" style="animation-delay:0.5s"></div></div></div>
+
+        <!-- Layer 3: AI -->
+        <div class="arch-layer-interactive reveal reveal-delay-3">
+          <div class="arch-layer-head">
+            <div class="arch-layer-num">03</div>
+            <div class="arch-layer-meta">
+              <h4>🤖 AI Layer</h4>
+              <p>Chat tutor Socratic, chấm bài tự động, phân tích giả thuyết</p>
+            </div>
+            <div class="arch-layer-tags">
+              <span class="tech-tag">Gemini API</span>
+              <span class="tech-tag">NLP</span>
+              <span class="tech-tag">Socratic</span>
+            </div>
+            <span class="arch-layer-status" data-layer-status="ai">● Active</span>
+            <span class="arch-expand-icon">▼</span>
+          </div>
+          <div class="arch-layer-details">
+            <div class="arch-detail-grid">
+              <div class="arch-detail-card">
+                <h5>💬 AI Tutor</h5>
+                <p>Phương pháp Socratic: hỏi ngược, gợi ý, phát hiện sai lầm — không đưa đáp án</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>🔬 AI Scientist</h5>
+                <p>Phân tích dữ liệu TN → đề xuất giả thuyết → gợi ý thí nghiệm tiếp</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>📝 Auto-Grading</h5>
+                <p>Chấm báo cáo theo rubric GDPT 2018: nhận thức, thực hành, tư duy, GQVĐ</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-connector"><div class="arch-connector-line"><div class="arch-connector-dot" style="animation-delay:1s"></div></div></div>
+
+        <!-- Layer 4: Data -->
+        <div class="arch-layer-interactive reveal reveal-delay-4">
+          <div class="arch-layer-head">
+            <div class="arch-layer-num">04</div>
+            <div class="arch-layer-meta">
+              <h4>📊 Data Layer</h4>
+              <p>Hồ sơ học sinh, learning analytics, đánh giá năng lực</p>
+            </div>
+            <div class="arch-layer-tags">
+              <span class="tech-tag">LocalStorage</span>
+              <span class="tech-tag">Analytics</span>
+              <span class="tech-tag">CSV/JSON</span>
+            </div>
+            <span class="arch-layer-status" data-layer-status="data">● Active</span>
+            <span class="arch-expand-icon">▼</span>
+          </div>
+          <div class="arch-layer-details">
+            <div class="arch-detail-grid">
+              <div class="arch-detail-card">
+                <h5>👤 Student Profile</h5>
+                <p>Level, XP, badges, competency scores — persist qua localStorage</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>📈 Learning Analytics</h5>
+                <p>Track tiến độ, thời gian, kết quả TN — radar chart năng lực</p>
+              </div>
+              <div class="arch-detail-card">
+                <h5>🏆 Gamification</h5>
+                <p>12 badges, 8 levels, XP system — "Nhà KH Tập Sự" → "Viện Sĩ"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Status Panel -->
+      <div class="arch-live-panel reveal">
+        <div class="arch-live-header">
+          <div class="arch-live-dot"></div>
+          <h4>Trạng Thái Hệ Thống Real-time</h4>
+        </div>
+        <div class="arch-live-grid">
+          <div class="arch-live-stat">
+            <div class="stat-value" id="archApiStatus">Checking...</div>
+            <div class="stat-desc">API Server</div>
+          </div>
+          <div class="arch-live-stat">
+            <div class="stat-value" id="archExpCount">0</div>
+            <div class="stat-desc">Thí Nghiệm Đã Chạy</div>
+          </div>
+          <div class="arch-live-stat">
+            <div class="stat-value" id="archModuleCount">0</div>
+            <div class="stat-desc">Module Đã Truy Cập</div>
+          </div>
+          <div class="arch-live-stat">
+            <div class="stat-value" id="archAICount">0</div>
+            <div class="stat-desc">Tương Tác AI</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ STATS ═══════════════ -->
+  <section class="stats-section" id="stats">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item reveal reveal-delay-1">
+          <div class="stat-number" data-target="6">0</div>
+          <div class="stat-label">Phòng Lab Ảo</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-2">
+          <div class="stat-number" data-target="50">0</div>
+          <div class="stat-label">Thí Nghiệm Mô Phỏng</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-3">
+          <div class="stat-number" data-target="1">0</div>
+          <div class="stat-label">AI Tutor Thông Minh</div>
+        </div>
+        <div class="stat-item reveal reveal-delay-4">
+          <div class="stat-number" data-target="4">0</div>
+          <div class="stat-label">Lớp Kiến Trúc</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer" id="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="footer-brand-name">🧬 BioVerse</div>
+          <p>
+            Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông.
+            Được xây dựng với tình yêu khoa học và công nghệ.
+          </p>
+        </div>
+        <div class="footer-col">
+          <h4>Khu Vực</h4>
+          <a href="zones/explore/index.html">🔍 Immersive Biology</a>
+          <a href="zones/experiment/index.html">🧪 Digital Twin Lab</a>
+          <a href="zones/biotech/index.html">🧬 Future Lab</a>
+        </div>
+        <div class="footer-col">
+          <h4>Khu Vực</h4>
+          <a href="zones/innovate/index.html">💡 Startup Lab</a>
+          <a href="zones/nature/index.html">🌿 Citizen Science</a>
+          <a href="zones/resource/index.html">📚 Adaptive Learning</a>
+        </div>
+        <div class="footer-col">
+          <h4>Hệ Thống</h4>
+          <a href="dashboard.html">📊 Analytics Dashboard</a>
+          <a href="zones/resource/competency.html">🤖 AI Tutor</a>
+          <a href="zones/resource/learning-path.html">🏆 Gamification</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 BioVerse. Dự án STEM Sinh học số.</p>
+        <div class="footer-tech">
+          <span class="tech-tag">HTML/CSS/JS</span>
+          <span class="tech-tag">Three.js</span>
+          <span class="tech-tag">Express</span>
+          <span class="tech-tag">AI</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="scripts/particles.js"></script>
+  <script src="scripts/three-scene.js"></script>
+  <script src="scripts/animations.js"></script>
+  <script src="scripts/zone-cards.js"></script>
+  <script src="scripts/simulation-engine.js"></script>
+  <script src="scripts/data-layer.js"></script>
+  <script src="scripts/gamification.js"></script>
+  <script src="scripts/ai-service.js"></script>
+  <script src="scripts/architecture.js"></script>
+  <script src="scripts/ai-scientist.js"></script>
+  <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="BioVerse Dashboard — Learning Analytics, Competency Radar, Activity Timeline">
+  <title>📊 Dashboard — BioVerse</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="zones/explore/styles/zone-explore.css">
+  <link rel="stylesheet" href="styles/zone-shared.css">
+  <link rel="stylesheet" href="styles/gamification.css">
+  <link rel="stylesheet" href="styles/ai-tutor.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <style>
+    .dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-lg); }
+    .dash-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: var(--space-xl); backdrop-filter: var(--glass-blur); }
+    .dash-card-full { grid-column: 1 / -1; }
+    .dash-stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
+    .dash-stat { text-align: center; padding: var(--space-lg); background: rgba(255,255,255,0.02); border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,0.04); }
+    .dash-stat-val { font-size: var(--fs-h2); font-weight: 800; background: var(--gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .dash-stat-label { font-size: var(--fs-xs); color: var(--color-text-muted); margin-top: 4px; }
+    .dash-title { font-size: var(--fs-h4); font-weight: 700; color: var(--color-light); margin-bottom: var(--space-md); display: flex; align-items: center; gap: 8px; }
+    @media (max-width: 768px) { .dash-grid { grid-template-columns: 1fr; } .dash-stat-row { grid-template-columns: repeat(2, 1fr); } }
+  </style>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="index.html">Trang Chủ</a></li>
+      <li><a href="index.html#zones">Khu Vực</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+    </ul>
+    <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div style="padding-top: var(--navbar-height);">
+    <div class="container" style="padding-top: var(--space-lg);">
+      <h2>📊 <span class="text-gradient">Learning Analytics Dashboard</span></h2>
+      <p style="color: var(--color-text-muted); margin-bottom: var(--space-xl);">Tổng quan tiến độ học tập, năng lực và thành tựu của bạn.</p>
+    </div>
+
+    <div class="container">
+      <!-- Stats Row -->
+      <div class="dash-stat-row" style="margin-bottom: var(--space-lg);">
+        <div class="dash-stat"><div class="dash-stat-val" id="dLevel">1</div><div class="dash-stat-label">Level</div></div>
+        <div class="dash-stat"><div class="dash-stat-val" id="dTotalXP">0</div><div class="dash-stat-label">Tổng XP</div></div>
+        <div class="dash-stat"><div class="dash-stat-val" id="dExperiments">0</div><div class="dash-stat-label">Thí Nghiệm</div></div>
+        <div class="dash-stat"><div class="dash-stat-val" id="dBadges">0</div><div class="dash-stat-label">Huy Hiệu</div></div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="dash-grid">
+        <!-- Competency Radar -->
+        <div class="dash-card">
+          <div class="dash-title">🎯 Năng Lực (GDPT 2018)</div>
+          <div style="max-width:350px;margin:0 auto;"><canvas id="dashRadar"></canvas></div>
+        </div>
+
+        <!-- Zone Progress -->
+        <div class="dash-card">
+          <div class="dash-title">🗺️ Tiến Độ Khu Vực</div>
+          <canvas id="dashZones" height="250"></canvas>
+        </div>
+
+        <!-- Badges -->
+        <div class="dash-card">
+          <div class="dash-title">🏆 Bộ Sưu Tập Huy Hiệu</div>
+          <div id="dashBadges" style="display:grid;grid-template-columns:repeat(6,1fr);gap:8px;"></div>
+        </div>
+
+        <!-- Activity -->
+        <div class="dash-card">
+          <div class="dash-title">📅 Hoạt Động Gần Đây</div>
+          <div id="dashActivity" style="max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:6px;font-size:var(--fs-xs);"></div>
+        </div>
+
+        <!-- Profile Card -->
+        <div class="dash-card dash-card-full">
+          <div class="dash-title">👤 Hồ Sơ Nhà Khoa Học</div>
+          <div style="display:flex;align-items:center;gap:var(--space-xl);flex-wrap:wrap;">
+            <div style="text-align:center;">
+              <div style="font-size:4rem;" id="dAvatar">🧬</div>
+              <div style="font-weight:700;color:var(--color-light);margin-top:8px;" id="dName">Nhà Khoa Học</div>
+              <div style="font-size:var(--fs-small);color:var(--color-primary);" id="dTitle">Nhà Khoa Học Tập Sự</div>
+            </div>
+            <div style="flex:1;min-width:300px;">
+              <div style="margin-bottom:12px;">
+                <div style="display:flex;justify-content:space-between;font-size:var(--fs-xs);color:var(--color-text-muted);margin-bottom:4px;">
+                  <span>XP Progress</span><span id="dXPText">0/100</span>
+                </div>
+                <div class="skill-bar" style="height:10px;">
+                  <div class="skill-bar-fill" id="dXPBar" style="width:0%"></div>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:var(--fs-xs);">
+                <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;">
+                  <span style="color:var(--color-text-dim);">Tổng thời gian:</span>
+                  <strong style="color:var(--color-primary);float:right;" id="dTime">0 phút</strong>
+                </div>
+                <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;">
+                  <span style="color:var(--color-text-dim);">AI Interactions:</span>
+                  <strong style="color:var(--color-accent);float:right;" id="dAI">0</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height:var(--space-3xl);"></div>
+  </div>
+
+  <script src="scripts/simulation-engine.js"></script>
+  <script src="scripts/data-layer.js"></script>
+  <script src="scripts/gamification.js"></script>
+  <script src="scripts/ai-service.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.BioVerseData) return;
+      const profile = BioVerseData.Profile.get();
+      const stats = BioVerseData.Analytics.getStats();
+      const levelInfo = BioVerseData.Profile.getLevelTitle(profile.level);
+      const xpProg = BioVerseData.Profile.getXPProgress();
+
+      // Stats
+      document.getElementById('dLevel').textContent = profile.level;
+      document.getElementById('dTotalXP').textContent = profile.totalXP;
+      document.getElementById('dExperiments').textContent = profile.experimentCount;
+      document.getElementById('dBadges').textContent = profile.badges.length;
+
+      // Profile
+      document.getElementById('dAvatar').textContent = levelInfo.emoji;
+      document.getElementById('dName').textContent = profile.name;
+      document.getElementById('dTitle').textContent = `${levelInfo.title} — Level ${profile.level}`;
+      document.getElementById('dXPText').textContent = `${xpProg.current}/${xpProg.needed}`;
+      document.getElementById('dXPBar').style.width = `${xpProg.percent}%`;
+      document.getElementById('dTime').textContent = `${stats.timeSpent || 0} phút`;
+      document.getElementById('dAI').textContent = profile._aiInteractions || 0;
+
+      // Radar Chart
+      const comp = profile.competencies;
+      new Chart(document.getElementById('dashRadar'), {
+        type: 'radar',
+        data: {
+          labels: ['Nhận thức\nsinh học', 'Thực hành\nTN', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'],
+          datasets: [{
+            data: [comp.biologicalKnowledge, comp.experimentalSkills, comp.scientificThinking, comp.problemSolving],
+            backgroundColor: 'rgba(0,212,170,0.15)',
+            borderColor: '#00D4AA',
+            borderWidth: 2,
+            pointBackgroundColor: ['#00D4AA','#7C4DFF','#00BCD4','#FF4081'],
+            pointRadius: 5
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: { r: { beginAtZero: true, max: 100, grid: { color: 'rgba(255,255,255,0.06)' }, angleLines: { color: 'rgba(255,255,255,0.06)' }, pointLabels: { color: '#8892B0', font: { size: 10 } }, ticks: { color: '#5A6380', backdropColor: 'transparent', stepSize: 25 } } },
+          plugins: { legend: { display: false } }
+        }
+      });
+
+      // Zone Progress
+      const zoneNames = ['Explore', 'Experiment', 'BioTech', 'Innovate', 'Nature', 'Resource'];
+      const zoneKeys = ['explore', 'experiment', 'biotech', 'innovate', 'nature', 'resource'];
+      new Chart(document.getElementById('dashZones'), {
+        type: 'bar',
+        data: {
+          labels: zoneNames,
+          datasets: [{
+            data: zoneKeys.map(k => profile.zones[k]?.progress || 0),
+            backgroundColor: ['#00D4AA','#7C4DFF','#E040FB','#FFD740','#00BCD4','#FF4081'],
+            borderRadius: 8, borderSkipped: false
+          }]
+        },
+        options: {
+          responsive: true, indexAxis: 'y',
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { max: 100, grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#5A6380' } },
+            y: { grid: { display: false }, ticks: { color: '#8892B0', font: { size: 11 } } }
+          }
+        }
+      });
+
+      // Badges
+      const allBadges = BioVerseData.Badges.getAll();
+      document.getElementById('dashBadges').innerHTML = allBadges.map(b => `
+        <div style="text-align:center;padding:10px 4px;background:rgba(255,255,255,${b.earned?'0.06':'0.02'});border-radius:10px;border:1px solid ${b.earned?'rgba(0,212,170,0.3)':'rgba(255,255,255,0.04)'};opacity:${b.earned?'1':'0.35'};" title="${b.name}: ${b.desc}">
+          <div style="font-size:1.6rem;">${b.emoji}</div>
+          <div style="font-size:0.55rem;color:var(--color-text-dim);margin-top:3px;line-height:1.2;">${b.name}</div>
+        </div>
+      `).join('');
+
+      // Activity
+      const acts = profile.recentActivity.slice(0, 20);
+      document.getElementById('dashActivity').innerHTML = acts.length === 0
+        ? '<div style="text-align:center;color:var(--color-text-dim);padding:var(--space-lg);">Chưa có hoạt động.</div>'
+        : acts.map(a => {
+          const t = new Date(a.timestamp).toLocaleString('vi-VN',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'2-digit'});
+          let txt = a.type === 'xp' ? `⚡ +${a.amount} XP — ${a.source}` : `📌 ${a.type}`;
+          return `<div style="padding:5px 0;border-bottom:1px solid rgba(255,255,255,0.03);color:var(--color-text-muted);">
+            <span style="color:var(--color-text-dim);margin-right:6px;">${t}</span>${txt}
+          </div>`;
+        }).join('');
+    });
+  </script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>
