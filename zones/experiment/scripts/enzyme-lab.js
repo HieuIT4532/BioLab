@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Enzyme Kinetics Simulator
+﻿/* ============================================================
+   BioLab — Enzyme Kinetics Simulator
    Michaelis-Menten model with temperature/pH effects
    ============================================================ */
 
@@ -202,7 +202,7 @@
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `BioVerse_Enzyme_Experiment_${Date.now()}.csv`;
+      a.download = `BioLab_Enzyme_Experiment_${Date.now()}.csv`;
       a.click();
       URL.revokeObjectURL(url);
     });

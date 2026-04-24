@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🤖 AI Mentor — BioVerse</title>
+  <title>🤖 AI Mentor — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -119,7 +119,7 @@
         `;
 
         const idea = `Tên: ${title}\nLĩnh vực: ${field}\n\n${desc}`;
-        const result = await BioVerseAI.getMentorFeedback(idea);
+        const result = await BioLabAI.getMentorFeedback(idea);
         const reply = result.error
           ? '⚠️ Không thể kết nối AI Mentor. Vui lòng khởi động server backend.'
           : result.feedback;
@@ -128,15 +128,15 @@
           .replace(/\n/g, '<br>')
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(20, 'AI Mentor phản biện');
-          BioVerseData.Profile.updateZoneProgress('innovate', 'ai_mentor', 80);
-          BioVerseData.Profile.updateCompetency('problemSolving', 65);
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(20, 'AI Mentor phản biện');
+          BioLabData.Profile.updateZoneProgress('innovate', 'ai_mentor', 80);
+          BioLabData.Profile.updateCompetency('problemSolving', 65);
         }
       });
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'ai_mentor' });
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'ai_mentor' });
       }
     });
   </script>

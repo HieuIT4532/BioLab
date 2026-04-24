@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🏫 Teacher Mode — BioLab X</title>
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="styles/base.css">
+  <link rel="stylesheet" href="styles/components.css">
+  <link rel="stylesheet" href="styles/platform.css">
+  <link rel="stylesheet" href="styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
+    </a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="index.html">Trang Chủ</a></li>
+      <li><a href="index.html#zones">Khu Vực</a></li>
+      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="teacher.html" class="active">Giáo Viên</a></li>
+    </ul>
+  </nav>
+
+  <div style="padding-top:var(--navbar-height);">
+    <div class="teacher-layout">
+      <!-- Sidebar -->
+      <aside class="teacher-sidebar" id="teacherSidebar">
+        <div class="teacher-sidebar-title">🏫 Teacher Mode</div>
+        <button class="teacher-nav-item active" data-tab="overview"><span class="nav-icon">📊</span>Tổng Quan</button>
+        <button class="teacher-nav-item" data-tab="classes"><span class="nav-icon">🏫</span>Lớp Học<span class="nav-badge" id="classCount">0</span></button>
+        <button class="teacher-nav-item" data-tab="students"><span class="nav-icon">👨‍🎓</span>Học Sinh</button>
+        <button class="teacher-nav-item" data-tab="assignments"><span class="nav-icon">📝</span>Bài Tập</button>
+        <button class="teacher-nav-item" data-tab="reports"><span class="nav-icon">📈</span>Báo Cáo</button>
+        <button class="teacher-nav-item" data-tab="curriculum"><span class="nav-icon">🤖</span>AI Curriculum</button>
+        <div style="flex:1;"></div>
+        <button class="teacher-nav-item" onclick="location.href='index.html'" style="color:var(--color-text-dim);"><span class="nav-icon">←</span>Quay Lại</button>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="teacher-content" id="teacherContent">
+        <!-- Tab: Overview -->
+        <div class="teacher-tab" id="tab-overview">
+          <div class="teacher-header">
+            <div>
+              <h2>📊 <span class="text-gradient">Tổng Quan Lớp Học</span></h2>
+              <p style="color:var(--color-text-muted);font-size:var(--fs-small);">Quản lý và theo dõi tiến độ học sinh trên nền tảng BioLab X</p>
+            </div>
+            <button class="btn-teacher" onclick="showCreateClassModal()">+ Tạo Lớp Mới</button>
+          </div>
+          <!-- Stats -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-md);margin-bottom:var(--space-xl);" id="overviewStats">
+          </div>
+          <!-- Charts -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);">
+            <div class="twin-card"><div class="twin-card-title">🎯 Năng Lực Trung Bình</div><canvas id="overviewRadar" height="260"></canvas></div>
+            <div class="twin-card"><div class="twin-card-title">📊 Phân Bổ Level</div><canvas id="overviewLevels" height="260"></canvas></div>
+          </div>
+        </div>
+
+        <!-- Tab: Classes -->
+        <div class="teacher-tab" id="tab-classes" style="display:none;">
+          <div class="teacher-header">
+            <h2>🏫 <span class="text-gradient">Quản Lý Lớp Học</span></h2>
+            <button class="btn-teacher" onclick="showCreateClassModal()">+ Tạo Lớp Mới</button>
+          </div>
+          <div id="classesGrid" class="student-grid"></div>
+        </div>
+
+        <!-- Tab: Students -->
+        <div class="teacher-tab" id="tab-students" style="display:none;">
+          <div class="teacher-header">
+            <h2>👨‍🎓 <span class="text-gradient">Danh Sách Học Sinh</span></h2>
+            <select id="studentClassFilter" class="assign-form-group" style="background:rgba(0,0,0,0.3);border:1px solid var(--glass-border);color:var(--color-light);padding:8px 12px;border-radius:var(--radius-md);font-size:var(--fs-xs);"></select>
+          </div>
+          <div id="studentsGrid" class="student-grid"></div>
+        </div>
+
+        <!-- Tab: Assignments -->
+        <div class="teacher-tab" id="tab-assignments" style="display:none;">
+          <div class="teacher-header">
+            <h2>📝 <span class="text-gradient">Bài Tập & Thí Nghiệm</span></h2>
+            <button class="btn-teacher" onclick="showCreateAssignmentModal()">+ Giao Bài Mới</button>
+          </div>
+          <div id="assignmentsList"></div>
+        </div>
+
+        <!-- Tab: Reports -->
+        <div class="teacher-tab" id="tab-reports" style="display:none;">
+          <div class="teacher-header">
+            <h2>📈 <span class="text-gradient">Báo Cáo & Phân Tích</span></h2>
+            <button class="btn-outline-teacher" onclick="exportReport()">📥 Xuất Báo Cáo</button>
+          </div>
+          <div id="reportContent"></div>
+        </div>
+
+        <!-- Tab: AI Curriculum -->
+        <div class="teacher-tab" id="tab-curriculum" style="display:none;">
+          <div class="teacher-header">
+            <h2>🤖 <span class="text-gradient">AI Auto Curriculum</span></h2>
+          </div>
+          <div class="assign-builder">
+            <div class="assign-form-group">
+              <label>Chủ đề bài học</label>
+              <input type="text" id="currTopic" placeholder="VD: Quang hợp ở thực vật C3, C4, CAM">
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
+              <div class="assign-form-group">
+                <label>Khối lớp</label>
+                <select id="currGrade"><option>10</option><option>11</option><option>12</option></select>
+              </div>
+              <div class="assign-form-group">
+                <label>Mức độ</label>
+                <select id="currLevel"><option value="basic">Cơ bản</option><option value="normal" selected>Chuẩn</option><option value="advanced">Nâng cao</option></select>
+              </div>
+            </div>
+            <button class="btn-teacher" style="width:100%;" onclick="generateCurriculum()">🤖 AI Sinh Bài Học</button>
+            <div id="currResult" style="margin-top:var(--space-lg);display:none;">
+              <div style="font-weight:700;color:var(--color-teacher);margin-bottom:8px;">📋 Kế Hoạch Bài Học</div>
+              <div id="currContent" style="background:rgba(0,0,0,0.3);border-radius:var(--radius-md);padding:var(--space-lg);font-size:var(--fs-small);color:var(--color-text);line-height:1.7;max-height:500px;overflow-y:auto;"></div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- Create Class Modal -->
+  <div class="platform-modal-overlay" id="createClassModal">
+    <div class="platform-modal">
+      <h3 style="color:var(--color-light);margin-bottom:var(--space-lg);">🏫 Tạo Lớp Học Mới</h3>
+      <div class="assign-form-group"><label>Tên lớp</label><input type="text" id="newClassName" placeholder="VD: 10A1"></div>
+      <div class="assign-form-group"><label>Khối</label><select id="newClassGrade"><option>10</option><option>11</option><option>12</option></select></div>
+      <div class="assign-form-group"><label>Trường</label><input type="text" id="newClassSchool" placeholder="VD: THPT Nguyễn Huệ"></div>
+      <div style="display:flex;gap:var(--space-md);justify-content:flex-end;margin-top:var(--space-lg);">
+        <button class="btn-outline-teacher" onclick="closeModal('createClassModal')">Hủy</button>
+        <button class="btn-teacher" onclick="doCreateClass()">Tạo Lớp</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Assignment Modal -->
+  <div class="platform-modal-overlay" id="createAssignModal">
+    <div class="platform-modal">
+      <h3 style="color:var(--color-light);margin-bottom:var(--space-lg);">📝 Giao Bài Tập Mới</h3>
+      <div class="assign-form-group"><label>Tiêu đề</label><input type="text" id="newAssignTitle" placeholder="VD: Thí nghiệm Enzyme Amylase"></div>
+      <div class="assign-form-group"><label>Mô tả</label><textarea id="newAssignDesc" rows="3" placeholder="Hướng dẫn cho học sinh..."></textarea></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
+        <div class="assign-form-group"><label>Loại</label><select id="newAssignType"><option value="experiment">Thí nghiệm</option><option value="quiz">Quiz</option><option value="project">Dự án</option><option value="report">Báo cáo</option></select></div>
+        <div class="assign-form-group"><label>Khu vực</label><select id="newAssignZone"><option value="experiment">Digital Twin Lab</option><option value="explore">Immersive Biology</option><option value="biotech">Future Lab</option><option value="nature">Citizen Science</option></select></div>
+      </div>
+      <div class="assign-form-group"><label>Lớp</label><select id="newAssignClass"></select></div>
+      <div class="assign-form-group"><label>Deadline</label><input type="date" id="newAssignDeadline"></div>
+      <div style="display:flex;gap:var(--space-md);justify-content:flex-end;margin-top:var(--space-lg);">
+        <button class="btn-outline-teacher" onclick="closeModal('createAssignModal')">Hủy</button>
+        <button class="btn-teacher" onclick="doCreateAssignment()">Giao Bài</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/teacher-mode.js"></script>
+  <script src="scripts/ai-service.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // Ensure at least 1 demo class exists
+    if (BioLabTeacher.getClasses().length === 0) {
+      BioLabTeacher.createClass('10A1', '10', 'THPT Nguyễn Huệ');
+      BioLabTeacher.createClass('11B3', '11', 'THPT Lê Quý Đôn');
+      // Add demo assignments
+      const classes = BioLabTeacher.getClasses();
+      BioLabTeacher.createAssignment(classes[0].id, { title:'TN Enzyme Amylase', type:'experiment', zone:'experiment' });
+      BioLabTeacher.createAssignment(classes[0].id, { title:'Quiz Quang Hợp', type:'quiz', zone:'experiment' });
+      BioLabTeacher.createAssignment(classes[1].id, { title:'Dự Án CRISPR', type:'project', zone:'biotech' });
+    }
+
+    // Tab Navigation
+    document.querySelectorAll('.teacher-nav-item[data-tab]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.teacher-nav-item').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.teacher-tab').forEach(t => t.style.display = 'none');
+        const tab = document.getElementById('tab-' + btn.dataset.tab);
+        if (tab) tab.style.display = 'block';
+        loadTab(btn.dataset.tab);
+      });
+    });
+
+    loadTab('overview');
+  });
+
+  function loadTab(tab) {
+    const classes = BioLabTeacher.getClasses();
+    document.getElementById('classCount').textContent = classes.length;
+
+    if (tab === 'overview') loadOverview(classes);
+    else if (tab === 'classes') loadClasses(classes);
+    else if (tab === 'students') loadStudents(classes);
+    else if (tab === 'assignments') loadAssignments(classes);
+    else if (tab === 'reports') loadReports(classes);
+  }
+
+  function loadOverview(classes) {
+    let totalStudents = 0, totalAssignments = 0, avgScore = 0;
+    const allComp = { biologicalKnowledge:0, experimentalSkills:0, scientificThinking:0, problemSolving:0 };
+    const levelDist = Array(10).fill(0);
+
+    classes.forEach(c => {
+      totalStudents += c.students.length;
+      totalAssignments += c.assignments.length;
+      c.students.forEach(s => {
+        levelDist[Math.min(s.level, 9)]++;
+        Object.keys(allComp).forEach(k => allComp[k] += s.competencies[k]);
+      });
+    });
+
+    if (totalStudents > 0) Object.keys(allComp).forEach(k => allComp[k] = Math.round(allComp[k] / totalStudents));
+
+    document.getElementById('overviewStats').innerHTML = [
+      { val: classes.length, label: 'Lớp Học', icon: '🏫' },
+      { val: totalStudents, label: 'Học Sinh', icon: '👨‍🎓' },
+      { val: totalAssignments, label: 'Bài Tập', icon: '📝' },
+      { val: Math.round(Object.values(allComp).reduce((a,b)=>a+b,0)/4), label: 'Điểm TB', icon: '⭐' }
+    ].map(s => `<div class="twin-card" style="text-align:center;padding:var(--space-lg);">
+      <div style="font-size:1.5rem;">${s.icon}</div>
+      <div style="font-size:var(--fs-h2);font-weight:800;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${s.val}</div>
+      <div style="font-size:var(--fs-xs);color:var(--color-text-dim);">${s.label}</div>
+    </div>`).join('');
+
+    // Radar chart
+    const radarCtx = document.getElementById('overviewRadar');
+    if (radarCtx._chart) radarCtx._chart.destroy();
+    radarCtx._chart = new Chart(radarCtx, {
+      type: 'radar',
+      data: {
+        labels: ['Nhận thức\nsinh học', 'Thực hành\nTN', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'],
+        datasets: [{ data: Object.values(allComp), backgroundColor:'rgba(255,215,64,0.15)', borderColor:'#FFD740', borderWidth:2, pointBackgroundColor:['#00D4AA','#7C4DFF','#00BCD4','#FF4081'], pointRadius:5 }]
+      },
+      options: { responsive:true, scales:{ r:{ beginAtZero:true, max:100, grid:{color:'rgba(255,255,255,0.06)'}, angleLines:{color:'rgba(255,255,255,0.06)'}, pointLabels:{color:'#8892B0',font:{size:10}}, ticks:{color:'#5A6380',backdropColor:'transparent',stepSize:25} } }, plugins:{legend:{display:false}} }
+    });
+
+    // Level distribution
+    const lvlCtx = document.getElementById('overviewLevels');
+    if (lvlCtx._chart) lvlCtx._chart.destroy();
+    lvlCtx._chart = new Chart(lvlCtx, {
+      type: 'bar',
+      data: { labels: levelDist.map((_,i)=>`Lv.${i}`), datasets:[{ data:levelDist, backgroundColor:'rgba(0,212,170,0.4)', borderColor:'#00D4AA', borderWidth:1, borderRadius:6 }] },
+      options: { responsive:true, plugins:{legend:{display:false}}, scales:{ x:{grid:{display:false},ticks:{color:'#5A6380'}}, y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5A6380'}} } }
+    });
+  }
+
+  function loadClasses(classes) {
+    document.getElementById('classesGrid').innerHTML = classes.map(c => `
+      <div class="student-card" onclick="selectClass('${c.id}')">
+        <div class="student-card-head">
+          <div class="student-avatar">🏫</div>
+          <div><div class="student-name">${c.name}</div><div class="student-level">${c.school} — Khối ${c.grade}</div></div>
+        </div>
+        <div class="student-stats">
+          <div class="student-stat"><span class="student-stat-label">Học sinh</span><span class="student-stat-val">${c.students.length}</span></div>
+          <div class="student-stat"><span class="student-stat-label">Bài tập</span><span class="student-stat-val">${c.assignments.length}</span></div>
+        </div>
+      </div>
+    `).join('') || '<p style="color:var(--color-text-dim);">Chưa có lớp nào. Tạo lớp mới để bắt đầu!</p>';
+  }
+
+  function loadStudents(classes) {
+    const sel = document.getElementById('studentClassFilter');
+    sel.innerHTML = classes.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    sel.onchange = () => renderStudents(sel.value);
+    if (classes.length > 0) renderStudents(classes[0].id);
+  }
+
+  function renderStudents(classId) {
+    const students = BioLabTeacher.getStudentProgress(classId);
+    document.getElementById('studentsGrid').innerHTML = students.map(s => `
+      <div class="student-card">
+        <div class="student-card-head">
+          <div class="student-avatar">${s.avatar}</div>
+          <div>
+            <div class="student-name"><span class="student-status ${s.status}"></span>${s.name}</div>
+            <div class="student-level">Lv.${s.level} · ${s.totalXP} XP</div>
+          </div>
+        </div>
+        <div class="student-stats">
+          <div class="student-stat"><span class="student-stat-label">TN</span><span class="student-stat-val">${s.experimentCount}</span></div>
+          <div class="student-stat"><span class="student-stat-label">Điểm TB</span><span class="student-stat-val">${s.avgScore}</span></div>
+          <div class="student-stat"><span class="student-stat-label">Nhận thức</span><span class="student-stat-val">${s.competencies.biologicalKnowledge}</span></div>
+          <div class="student-stat"><span class="student-stat-label">Tư duy</span><span class="student-stat-val">${s.competencies.scientificThinking}</span></div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function loadAssignments(classes) {
+    let html = '';
+    classes.forEach(c => {
+      if (c.assignments.length === 0) return;
+      html += `<div style="margin-bottom:var(--space-xl);"><h4 style="color:var(--color-teacher);margin-bottom:var(--space-md);">🏫 ${c.name}</h4>`;
+      html += '<table class="platform-table"><thead><tr><th>Bài tập</th><th>Loại</th><th>Nộp</th><th>Điểm TB</th><th>Trạng thái</th></tr></thead><tbody>';
+      c.assignments.forEach(a => {
+        const submitted = a.submissions.length;
+        const total = c.students.length;
+        const avg = submitted > 0 ? Math.round(a.submissions.reduce((s,x)=>s+(x.score||0),0)/submitted) : 0;
+        html += `<tr><td style="color:var(--color-light);font-weight:600;">${a.title}</td><td>${a.type}</td><td>${submitted}/${total}</td><td>${avg}</td><td><span class="assess-comp-level ${a.status==='active'?'vd':'nb'}">${a.status}</span></td></tr>`;
+      });
+      html += '</tbody></table></div>';
+    });
+    document.getElementById('assignmentsList').innerHTML = html || '<p style="color:var(--color-text-dim);">Chưa có bài tập nào.</p>';
+  }
+
+  function loadReports(classes) {
+    if (classes.length === 0) { document.getElementById('reportContent').innerHTML = '<p style="color:var(--color-text-dim);">Tạo lớp để xem báo cáo.</p>'; return; }
+    const report = BioLabTeacher.generateReport(classes[0].id);
+    document.getElementById('reportContent').innerHTML = `
+      <div class="twin-card" style="margin-bottom:var(--space-lg);">
+        <div class="twin-card-title">📊 Báo cáo: ${report.className} — ${report.school}</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-md);margin-bottom:var(--space-lg);">
+          ${[{v:report.totalStudents,l:'Học sinh'},{v:report.avgLevel,l:'Level TB'},{v:report.avgXP,l:'XP TB'},{v:report.avgScore,l:'Điểm TB'}].map(s=>`<div style="text-align:center;padding:var(--space-md);background:rgba(255,255,255,0.02);border-radius:var(--radius-md);"><div style="font-size:var(--fs-h3);font-weight:800;color:var(--color-teacher);">${s.v}</div><div style="font-size:var(--fs-xs);color:var(--color-text-dim);">${s.l}</div></div>`).join('')}
+        </div>
+        <h4 style="color:var(--color-light);margin-bottom:var(--space-sm);">⭐ Top 5 Học Sinh</h4>
+        <table class="platform-table"><thead><tr><th>Tên</th><th>Level</th><th>XP</th><th>Điểm</th></tr></thead><tbody>
+        ${report.topStudents.map(s=>`<tr><td style="color:var(--color-light);">${s.avatar} ${s.name}</td><td>${s.level}</td><td>${s.totalXP}</td><td>${s.avgScore}</td></tr>`).join('')}
+        </tbody></table>
+        ${report.needHelp.length>0?`<h4 style="color:var(--color-error);margin:var(--space-lg) 0 var(--space-sm);">⚠️ Cần Hỗ Trợ (${report.needHelp.length} HS)</h4><div style="font-size:var(--fs-xs);color:var(--color-text-muted);">${report.needHelp.map(s=>s.name).join(', ')}</div>`:''}
+      </div>`;
+  }
+
+  function selectClass(id) {
+    document.querySelector('[data-tab="students"]').click();
+    document.getElementById('studentClassFilter').value = id;
+    renderStudents(id);
+  }
+
+  // Modals
+  function showCreateClassModal() { document.getElementById('createClassModal').classList.add('active'); }
+  function showCreateAssignmentModal() {
+    const sel = document.getElementById('newAssignClass');
+    sel.innerHTML = BioLabTeacher.getClasses().map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+    document.getElementById('createAssignModal').classList.add('active');
+  }
+  function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+  function doCreateClass() {
+    const name = document.getElementById('newClassName').value.trim();
+    if (!name) return alert('Nhập tên lớp!');
+    BioLabTeacher.createClass(name, document.getElementById('newClassGrade').value, document.getElementById('newClassSchool').value.trim());
+    closeModal('createClassModal');
+    loadTab('classes');
+    document.querySelector('[data-tab="classes"]').click();
+  }
+
+  function doCreateAssignment() {
+    const title = document.getElementById('newAssignTitle').value.trim();
+    if (!title) return alert('Nhập tiêu đề!');
+    BioLabTeacher.createAssignment(document.getElementById('newAssignClass').value, {
+      title, description: document.getElementById('newAssignDesc').value,
+      type: document.getElementById('newAssignType').value,
+      zone: document.getElementById('newAssignZone').value,
+      deadline: document.getElementById('newAssignDeadline').value
+    });
+    closeModal('createAssignModal');
+    document.querySelector('[data-tab="assignments"]').click();
+  }
+
+  async function generateCurriculum() {
+    const topic = document.getElementById('currTopic').value.trim();
+    if (!topic) return alert('Nhập chủ đề!');
+    const grade = document.getElementById('currGrade').value;
+    const level = document.getElementById('currLevel').value;
+    const resultDiv = document.getElementById('currResult');
+    const contentDiv = document.getElementById('currContent');
+    resultDiv.style.display = 'block';
+    contentDiv.innerHTML = '<div style="text-align:center;color:var(--color-teacher);">🤖 AI đang thiết kế bài học...</div>';
+    try {
+      const res = await fetch('/api/ai/curriculum', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ topic, grade, level })
+      });
+      const data = await res.json();
+      contentDiv.innerHTML = (data.lesson || data.reply || 'Không có kết quả.').replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    } catch (e) {
+      contentDiv.innerHTML = '⚠️ Không thể kết nối AI. Hãy khởi động backend server.';
+    }
+  }
+
+  function exportReport() {
+    const content = document.getElementById('reportContent')?.innerText || '';
+    const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'biolab_report_' + new Date().toISOString().split('T')[0] + '.txt';
+    a.click();
+  }
+  </script>
+</body>
+</html>

@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BioVerse — Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông. Khám phá, trải nghiệm, sáng tạo với AI.">
-  <meta name="keywords" content="BioVerse, STEM, sinh học, phòng thí nghiệm ảo, giáo dục, AI, mô phỏng">
-  <meta name="author" content="BioVerse Team">
+  <meta name="description" content="BioLab — Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông. Khám phá, trải nghiệm, sáng tạo với AI.">
+  <meta name="keywords" content="BioLab, STEM, sinh học, phòng thí nghiệm ảo, giáo dục, AI, mô phỏng">
+  <meta name="author" content="BioLab Team">
   <meta name="theme-color" content="#0A0E27">
-  <title>BioVerse — Hệ Sinh Thái Phòng Thí Nghiệm Sinh Học Số</title>
+  <title>BioLab — Hệ Sinh Thái Phòng Thí Nghiệm Sinh Học Số</title>
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles/variables.css">
@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="styles/gamification.css">
   <link rel="stylesheet" href="styles/ai-tutor.css">
   <link rel="stylesheet" href="styles/responsive.css">
+  <link rel="stylesheet" href="styles/platform.css">
 
   <!-- Three.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
@@ -29,7 +30,7 @@
   <nav class="navbar" id="navbar">
     <a href="#" class="navbar-brand">
       <div class="navbar-logo-icon">🧬</div>
-      <span class="navbar-logo">BioVerse</span>
+      <span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="#hero" class="active">Trang Chủ</a></li>
@@ -37,7 +38,9 @@
       <li><a href="#philosophy">Triết Lý</a></li>
       <li><a href="#architecture">Kiến Trúc</a></li>
       <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="#" class="btn btn-sm btn-primary" onclick="if(window.BioVerseAI)BioVerseAI.toggleChat();">🤖 AI Tutor</a></li>
+      <li><a href="zones/profile/digital-twin.html">🧠 Digital Twin</a></li>
+      <li><a href="teacher.html">🏫 Giáo Viên</a></li>
+      <li><a href="#" class="btn btn-sm btn-primary" onclick="if(window.BioLabAI)BioLabAI.toggleChat();">🤖 AI Tutor</a></li>
     </ul>
     <div class="nav-toggle" id="navToggle">
       <span></span>
@@ -60,15 +63,15 @@
     <div class="hero-content">
       <div class="hero-badge">
         <span class="hero-badge-dot"></span>
-        Hệ Sinh Thái Giáo Dục Số
+        🚀 Platform Quốc Gia — STEM Sinh Học
       </div>
       <h1 class="hero-title">
         Chào mừng đến<br>
-        <span class="highlight">BioVerse</span>
+        <span class="highlight">BioLab X</span>
       </h1>
       <p class="hero-subtitle">
-        Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông.
-        Nơi khoa học sự sống được <strong>sống</strong>, không chỉ được học.
+        Nền tảng giáo dục STEM Sinh học cấp quốc gia.<br>
+        Nơi học sinh <strong>TẠO DỮ LIỆU — PHÂN TÍCH — ĐÓNG GÓP KHOA HỌC THẬT</strong>.
       </p>
       <div class="hero-tagline">
         <span id="typewriter"></span><span class="cursor"></span>
@@ -283,7 +286,7 @@
         <div class="section-label">🧠 Triết Lý Giáo Dục</div>
         <h2 class="section-title">Không Chỉ STEM — Mà Là <span class="text-gradient">Tư Duy Khoa Học</span></h2>
         <p class="section-subtitle">
-          BioVerse được xây dựng trên 3 trụ cột giáo dục tiên tiến,
+          BioLab được xây dựng trên 3 trụ cột giáo dục tiên tiến,
           biến học sinh thành nhà khoa học thật sự.
         </p>
       </div>
@@ -539,7 +542,7 @@
     <div class="container">
       <div class="footer-top">
         <div class="footer-brand">
-          <div class="footer-brand-name">🧬 BioVerse</div>
+          <div class="footer-brand-name">🧬 BioLab</div>
           <p>
             Hệ sinh thái phòng thí nghiệm sinh học số cho giáo dục phổ thông.
             Được xây dựng với tình yêu khoa học và công nghệ.
@@ -558,19 +561,20 @@
           <a href="zones/resource/index.html">📚 Adaptive Learning</a>
         </div>
         <div class="footer-col">
-          <h4>Hệ Thống</h4>
+          <h4>Platform X</h4>
           <a href="dashboard.html">📊 Analytics Dashboard</a>
-          <a href="zones/resource/competency.html">🤖 AI Tutor</a>
-          <a href="zones/resource/learning-path.html">🏆 Gamification</a>
+          <a href="zones/profile/digital-twin.html">🧠 Digital Twin</a>
+          <a href="teacher.html">🏫 Teacher Mode</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 BioVerse. Dự án STEM Sinh học số.</p>
+        <p>© 2026 BioLab X — Platform Quốc Gia STEM Sinh Học</p>
         <div class="footer-tech">
           <span class="tech-tag">HTML/CSS/JS</span>
           <span class="tech-tag">Three.js</span>
           <span class="tech-tag">Express</span>
-          <span class="tech-tag">AI</span>
+          <span class="tech-tag">Gemini AI</span>
+          <span class="tech-tag">Firebase</span>
         </div>
       </div>
     </div>
@@ -587,6 +591,9 @@
   <script src="scripts/ai-service.js"></script>
   <script src="scripts/architecture.js"></script>
   <script src="scripts/ai-scientist.js"></script>
+  <script src="scripts/firebase-config.js"></script>
+  <script src="scripts/digital-twin.js"></script>
+  <script src="scripts/gdpt2018-standards.js"></script>
   <script src="scripts/main.js"></script>
 </body>
 </html>

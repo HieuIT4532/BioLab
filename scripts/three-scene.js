@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Three.js 3D DNA Helix
+﻿/* ============================================================
+   BioLab — Three.js 3D DNA Helix
    Rotating phosphor-glow double helix with mouse parallax
    ============================================================ */
 

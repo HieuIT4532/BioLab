@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🧠 AI Quiz Generator — BioVerse</title>
+  <title>🧠 AI Quiz Generator — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -118,7 +118,7 @@
         `;
         document.getElementById('scorePanel').style.display = 'none';
 
-        const result = await BioVerseAI.generateQuiz(topic, difficulty, count);
+        const result = await BioLabAI.generateQuiz(topic, difficulty, count);
         
         if (result.questions && result.questions.length > 0) {
           questions = result.questions;
@@ -135,8 +135,8 @@
           renderQuestion();
         }
 
-        if (window.BioVerseData) {
-          BioVerseData.Analytics.track({ type: 'quiz_start', topic, difficulty, count });
+        if (window.BioLabData) {
+          BioLabData.Analytics.track({ type: 'quiz_start', topic, difficulty, count });
         }
       });
 
@@ -226,17 +226,17 @@
         else msg = '📚 Cần ôn tập lại. Đừng nản!';
         document.getElementById('scoreMessage').textContent = msg;
 
-        if (window.BioVerseData) {
+        if (window.BioLabData) {
           const xp = Math.max(10, score * 10);
-          BioVerseData.Profile.addXP(xp, `Quiz: ${score}/${questions.length}`);
-          BioVerseData.Profile.updateZoneProgress('resource', 'quiz', percent);
-          BioVerseData.Profile.updateCompetency('biologicalKnowledge', percent);
-          BioVerseData.Analytics.track({ type: 'quiz_complete', score, total: questions.length, percent });
+          BioLabData.Profile.addXP(xp, `Quiz: ${score}/${questions.length}`);
+          BioLabData.Profile.updateZoneProgress('resource', 'quiz', percent);
+          BioLabData.Profile.updateCompetency('biologicalKnowledge', percent);
+          BioLabData.Analytics.track({ type: 'quiz_complete', score, total: questions.length, percent });
           if (percent === 100) {
-            const p = BioVerseData.Profile.get();
+            const p = BioLabData.Profile.get();
             p._perfectQuizzes = (p._perfectQuizzes || 0) + 1;
-            BioVerseData.Profile.save(p);
-            BioVerseData.Badges.check();
+            BioLabData.Profile.save(p);
+            BioLabData.Badges.check();
           }
         }
       }
@@ -261,8 +261,8 @@
         return qs.slice(0, count);
       }
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'quiz_generator' });
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'quiz_generator' });
       }
     });
   </script>

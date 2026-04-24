@@ -1,10 +1,10 @@
-/* ============================================================
-   BioVerse — Data Layer
+﻿/* ============================================================
+   BioLab — Data Layer
    Student profiles, learning analytics, progress tracking
    Persisted in localStorage for demo (Firebase-ready structure)
    ============================================================ */
 
-const BioVerseData = (() => {
+const BioLabData = (() => {
 
   const STORAGE_KEY = 'bioverse_profile';
   const ANALYTICS_KEY = 'bioverse_analytics';
@@ -64,7 +64,7 @@ const BioVerseData = (() => {
     save(profile) {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-      } catch (e) { console.warn('BioVerse: Could not save profile', e); }
+      } catch (e) { console.warn('BioLab: Could not save profile', e); }
     },
 
     update(updates) {
@@ -305,5 +305,5 @@ const BioVerseData = (() => {
 })();
 
 if (typeof window !== 'undefined') {
-  window.BioVerseData = BioVerseData;
+  window.BioLabData = BioLabData;
 }

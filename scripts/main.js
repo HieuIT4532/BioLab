@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Main Script
+﻿/* ============================================================
+   BioLab — Main Script
    Navigation, mobile menu, smooth scroll, page orchestration
    ============================================================ */
 
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Console Branding ──
   console.log(
-    '%c 🧬 BioVerse %c Hệ Sinh Thái Phòng Thí Nghiệm Sinh Học Số ',
+    '%c 🧬 BioLab %c Hệ Sinh Thái Phòng Thí Nghiệm Sinh Học Số ',
     'background: linear-gradient(135deg, #00D4AA, #7C4DFF); color: #0A0E27; font-weight: bold; padding: 8px 12px; border-radius: 6px 0 0 6px; font-size: 14px;',
     'background: #1A1F3A; color: #00D4AA; padding: 8px 12px; border-radius: 0 6px 6px 0; font-size: 14px;'
   );

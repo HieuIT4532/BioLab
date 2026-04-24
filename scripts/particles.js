@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — DNA Particle Background Engine
+﻿/* ============================================================
+   BioLab — DNA Particle Background Engine
    Canvas-based floating nucleotide particles with helix connections
    ============================================================ */
 

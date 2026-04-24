@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔗 Interdisciplinary Lab — BioLab X</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <style>
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--space-xl);
+      margin-top: var(--space-2xl);
+    }
+    .inter-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      transition: var(--transition-base);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .inter-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-primary);
+    }
+    .inter-icon {
+      font-size: 3rem;
+      margin-bottom: var(--space-md);
+      display: inline-block;
+    }
+    .inter-title {
+      font-size: var(--fs-h3);
+      color: var(--color-light);
+      margin-bottom: var(--space-sm);
+    }
+    .inter-desc {
+      color: var(--color-text-muted);
+      font-size: var(--fs-small);
+      line-height: 1.6;
+    }
+    .inter-badge {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(255,215,64,0.1);
+      color: var(--color-teacher);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+  </style>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div>
+      <span class="navbar-logo">BioLab</span>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../dashboard.html">Dashboard</a></li>
+      <li><a href="#" class="active">Interdisciplinary</a></li>
+    </ul>
+  </nav>
+
+  <div class="zone-header" style="padding-top: 150px; text-align: center;">
+    <div class="container">
+      <div class="zone-badge">🔗 Liên Môn (Interdisciplinary)</div>
+      <h1 class="zone-title">Khám Phá Điểm Giao Thoa Khoa Học</h1>
+      <p class="zone-desc" style="max-width: 600px; margin: 0 auto;">
+        Kết hợp Sinh học với Toán học, Tin học (AI), và Địa lý để giải quyết các vấn đề thực tiễn.
+      </p>
+    </div>
+  </div>
+
+  <main class="container">
+    <div class="grid-3">
+      <!-- Sinh + Tin -->
+      <div class="inter-card" onclick="openTool('vision')">
+        <div class="inter-badge">Sinh + Tin Học</div>
+        <div class="inter-icon">👁️</div>
+        <h3 class="inter-title">AI Vision Lab</h3>
+        <p class="inter-desc">Ứng dụng Computer Vision để nhận diện tế bào, phân loại lá cây và chẩn đoán bệnh ở thực vật tự động.</p>
+      </div>
+
+      <!-- Sinh + Toán -->
+      <div class="inter-card" onclick="openTool('math')">
+        <div class="inter-badge">Sinh + Toán</div>
+        <div class="inter-icon">📈</div>
+        <h3 class="inter-title">Thống Kê Sinh Học</h3>
+        <p class="inter-desc">Sử dụng công cụ Toán Thống kê (Hồi quy tuyến tính, T-Test) để phân tích tập dữ liệu thí nghiệm lớn.</p>
+      </div>
+
+      <!-- Sinh + Địa -->
+      <div class="inter-card" onclick="openTool('geo')">
+        <div class="inter-badge">Sinh + Địa Lý</div>
+        <div class="inter-icon">🌍</div>
+        <h3 class="inter-title">Bản Đồ Sinh Thái</h3>
+        <p class="inter-desc">Lập bản đồ phân bố sinh vật, tính toán chỉ số đa dạng sinh học (Shannon) theo không gian địa lý.</p>
+      </div>
+    </div>
+
+    <!-- Tool Display Area -->
+    <div id="toolArea" style="margin-top: var(--space-2xl); display: none; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: var(--space-xl);">
+      <!-- Content injected via JS -->
+    </div>
+  </main>
+
+  <script src="../../scripts/interdisciplinary.js"></script>
+  <script>
+    function openTool(type) {
+      const area = document.getElementById('toolArea');
+      area.style.display = 'block';
+      area.scrollIntoView({ behavior: 'smooth' });
+
+      if (type === 'vision') {
+        area.innerHTML = `
+          <h2 style="color:var(--color-light);margin-bottom:var(--space-md);">👁️ AI Vision: Nhận Diện Tế Bào</h2>
+          <div style="display:flex;gap:var(--space-lg);">
+            <div style="flex:1;background:#1a1a2e;border-radius:var(--radius-md);height:300px;display:flex;align-items:center;justify-content:center;border:2px dashed rgba(255,255,255,0.2);">
+              <span style="color:var(--color-text-dim);">[Khu vực upload ảnh mô phỏng]</span>
+            </div>
+            <div style="flex:1;">
+              <button class="zone-btn zone-btn-primary" onclick="runVision()">🔍 Phân Tích Bằng AI</button>
+              <div id="visionResult" style="margin-top:var(--space-md);background:rgba(255,255,255,0.05);padding:16px;border-radius:var(--radius-md);font-size:0.9rem;display:none;"></div>
+            </div>
+          </div>
+        `;
+      } else if (type === 'math') {
+        area.innerHTML = `
+          <h2 style="color:var(--color-light);margin-bottom:var(--space-md);">📈 Thống Kê: Hồi Quy Tuyến Tính (Nhiệt độ vs Tốc độ Enzyme)</h2>
+          <div style="display:flex;gap:var(--space-lg);">
+            <div style="flex:1;">
+              <p style="color:var(--color-text-muted);font-size:0.9rem;margin-bottom:12px;">Dữ liệu: Tốc độ phản ứng theo nhiệt độ (từ 20°C đến 40°C)</p>
+              <button class="zone-btn zone-btn-primary" onclick="runMath()">📊 Chạy Linear Regression</button>
+            </div>
+            <div style="flex:1;">
+              <div id="mathResult" style="background:rgba(255,255,255,0.05);padding:16px;border-radius:var(--radius-md);font-size:0.9rem;display:none;"></div>
+            </div>
+          </div>
+        `;
+      } else if (type === 'geo') {
+        area.innerHTML = `
+          <h2 style="color:var(--color-light);margin-bottom:var(--space-md);">🌍 Địa Lý Sinh Học: Chỉ số Shannon</h2>
+          <div style="display:flex;gap:var(--space-lg);">
+            <div style="flex:1;">
+              <p style="color:var(--color-text-muted);font-size:0.9rem;margin-bottom:12px;">Mô phỏng đếm số lượng loài tại Rừng Bạch Mã.</p>
+              <button class="zone-btn zone-btn-primary" onclick="runGeo()">🌍 Tính Đa Dạng Sinh Học</button>
+            </div>
+            <div style="flex:1;">
+              <div id="geoResult" style="background:rgba(255,255,255,0.05);padding:16px;border-radius:var(--radius-md);font-size:0.9rem;display:none;"></div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    async function runVision() {
+      const resDiv = document.getElementById('visionResult');
+      resDiv.style.display = 'block';
+      resDiv.innerHTML = '<span style="color:var(--color-warning);">Đang xử lý hình ảnh qua mô hình CNN...</span>';
+      
+      const result = await BioLabInterdisciplinary.AIVision.analyzeImage('mock.jpg', 'cell');
+      
+      resDiv.innerHTML = `
+        <div style="color:var(--color-primary);font-weight:700;font-size:1.1rem;margin-bottom:8px;">${result.classification} (${(result.confidence*100).toFixed(1)}%)</div>
+        <div style="margin-bottom:8px;color:var(--color-light);"><strong>Cấu trúc phát hiện:</strong></div>
+        <ul style="color:var(--color-text-dim);margin-left:20px;margin-bottom:12px;">
+          ${result.features.map(f => `<li>${f.name} - ${(f.conf*100).toFixed(1)}%</li>`).join('')}
+        </ul>
+        <div style="color:var(--color-teacher);font-style:italic;">💡 AI Gợi ý: ${result.suggestion}</div>
+      `;
+    }
+
+    function runMath() {
+      const resDiv = document.getElementById('mathResult');
+      resDiv.style.display = 'block';
+      
+      const temps = [20, 25, 30, 35, 40];
+      const speeds = [1.2, 2.5, 4.1, 5.8, 7.5]; // mock data
+      
+      const regression = BioLabInterdisciplinary.MathTools.linearRegression(temps, speeds);
+      
+      resDiv.innerHTML = `
+        <div style="color:var(--color-primary);font-weight:700;margin-bottom:8px;">Kết Quả Phân Tích Hồi Quy</div>
+        <div style="color:var(--color-light);">
+          <div><strong>Phương trình:</strong> y = ${regression.slope.toFixed(3)}x + ${regression.intercept.toFixed(3)}</div>
+          <div><strong>Độ kít (R²):</strong> ${regression.rSquared.toFixed(4)}</div>
+          <br>
+          <div style="color:var(--color-text-dim);">Dữ liệu cho thấy tương quan tuyến tính rất mạnh giữa nhiệt độ và tốc độ phản ứng trong khoảng 20-40°C.</div>
+        </div>
+      `;
+    }
+
+    function runGeo() {
+      const resDiv = document.getElementById('geoResult');
+      resDiv.style.display = 'block';
+      
+      // Mock species count
+      const counts = [150, 45, 12, 5, 2, 1, 1, 1]; // highly skewed distribution
+      const h = BioLabInterdisciplinary.EcoGeography.calculateBiodiversityIndex(counts);
+      
+      resDiv.innerHTML = `
+        <div style="color:var(--color-primary);font-weight:700;margin-bottom:8px;">Chỉ số Shannon-Wiener (H')</div>
+        <div style="font-size:2rem;color:var(--color-light);font-weight:800;margin-bottom:8px;">${h.toFixed(3)}</div>
+        <div style="color:var(--color-text-dim);">
+          Số lượng cá thể: ${counts.reduce((a,b)=>a+b,0)}<br>
+          Số lượng loài: ${counts.length}<br>
+          <br>
+          <em>Đánh giá: Mức độ đa dạng sinh học tương đối thấp do có một vài loài chiếm ưu thế tuyệt đối.</em>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>

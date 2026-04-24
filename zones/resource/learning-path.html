@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🛤️ Learning Path — BioVerse</title>
+  <title>🛤️ Learning Path — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -88,10 +88,10 @@
   <script src="../../scripts/ai-service.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      if (!window.BioVerseData) return;
-      const profile = BioVerseData.Profile.get();
-      const levelInfo = BioVerseData.Profile.getLevelTitle(profile.level);
-      const xpProgress = BioVerseData.Profile.getXPProgress();
+      if (!window.BioLabData) return;
+      const profile = BioLabData.Profile.get();
+      const levelInfo = BioLabData.Profile.getLevelTitle(profile.level);
+      const xpProgress = BioLabData.Profile.getXPProgress();
 
       // Profile
       document.getElementById('profileAvatar').textContent = levelInfo.emoji;
@@ -101,7 +101,7 @@
       document.getElementById('profileXPBar').style.width = `${xpProgress.percent}%`;
 
       // Badges
-      const allBadges = BioVerseData.Badges.getAll();
+      const allBadges = BioLabData.Badges.getAll();
       document.getElementById('badgeCount').textContent = allBadges.filter(b => b.earned).length;
       document.getElementById('badgeGrid').innerHTML = allBadges.map(b => `
         <div style="text-align:center;padding:8px;background:rgba(255,255,255,${b.earned ? '0.06' : '0.02'});border-radius:var(--radius-md);border:1px solid ${b.earned ? 'rgba(0,212,170,0.3)' : 'rgba(255,255,255,0.04)'};opacity:${b.earned ? '1' : '0.4'};" title="${b.name}: ${b.desc}">
@@ -196,9 +196,9 @@
           </div>`;
         }).join('');
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'learning_path' });
-        BioVerseData.Profile.updateZoneProgress('resource', 'learning_path', 50);
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'learning_path' });
+        BioLabData.Profile.updateZoneProgress('resource', 'learning_path', 50);
       }
     });
   </script>

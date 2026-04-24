@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📋 Field Survey Tool — BioVerse</title>
+  <title>📋 Field Survey Tool — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -193,14 +193,14 @@
         document.getElementById('photoPreview').innerHTML = '';
 
         // Gamification
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(15, `Quan sát: ${species}`);
-          const profile = BioVerseData.Profile.get();
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(15, `Quan sát: ${species}`);
+          const profile = BioLabData.Profile.get();
           profile._observations = (profile._observations || 0) + 1;
-          BioVerseData.Profile.save(profile);
-          BioVerseData.Profile.updateZoneProgress('nature', 'field_survey', Math.min(100, observations.length * 10));
-          BioVerseData.Profile.updateCompetency('experimentalSkills', 55);
-          BioVerseData.Badges.check();
+          BioLabData.Profile.save(profile);
+          BioLabData.Profile.updateZoneProgress('nature', 'field_survey', Math.min(100, observations.length * 10));
+          BioLabData.Profile.updateCompetency('experimentalSkills', 55);
+          BioLabData.Badges.check();
         }
       });
 
@@ -231,8 +231,8 @@
 
       // Export CSV
       document.getElementById('btnExportObs').addEventListener('click', () => {
-        if (observations.length > 0 && window.BioVerseEngine) {
-          BioVerseEngine.DataCollector.exportCSV(observations, 'citizen_science_observations.csv');
+        if (observations.length > 0 && window.BioLabEngine) {
+          BioLabEngine.DataCollector.exportCSV(observations, 'citizen_science_observations.csv');
         }
       });
 
@@ -243,8 +243,8 @@
 
       renderObservations();
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'field_survey' });
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'field_survey' });
       }
     });
   </script>

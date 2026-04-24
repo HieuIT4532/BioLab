@@ -1,10 +1,10 @@
-/* ============================================================
-   BioVerse — Simulation Engine Core
+﻿/* ============================================================
+   BioLab — Simulation Engine Core
    Central brain for all zone simulations
    Modules: BiologyRules, PhysicsEngine, NoiseGenerator, DataCollector
    ============================================================ */
 
-const BioVerseEngine = (() => {
+const BioLabEngine = (() => {
 
   // ══════════════════════════════════════════════
   // 1. PHYSICS ENGINE
@@ -289,5 +289,5 @@ const BioVerseEngine = (() => {
 
 // Make globally available
 if (typeof window !== 'undefined') {
-  window.BioVerseEngine = BioVerseEngine;
+  window.BioLabEngine = BioLabEngine;
 }

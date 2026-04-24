@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 Digital Twin — BioLab X</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <link rel="stylesheet" href="../../styles/platform.css">
+  <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand"><div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span></a>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../dashboard.html">Dashboard</a></li>
+      <li><a href="digital-twin.html" class="active">Digital Twin</a></li>
+    </ul>
+  </nav>
+
+  <div style="padding-top:var(--navbar-height);">
+    <div class="container" style="max-width:1000px;padding:var(--space-xl) var(--space-lg);">
+      
+      <!-- Hero -->
+      <div class="twin-hero">
+        <div class="twin-hero-badge"><span style="animation:pulse 2s infinite;">●</span> Bản Sao Trí Tuệ Sinh Học</div>
+        <div class="twin-style-card" id="styleCard">
+          <div class="twin-style-emoji" id="twinEmoji">🔍</div>
+          <div class="twin-style-name" id="twinStyleName">Đang Khám Phá</div>
+          <div class="twin-style-desc" id="twinStyleDesc">Hãy làm thêm thí nghiệm để hệ thống nhận diện phong cách tư duy của bạn!</div>
+          <div style="margin-top:var(--space-lg);display:flex;gap:var(--space-md);justify-content:center;flex-wrap:wrap;" id="twinTags"></div>
+        </div>
+      </div>
+
+      <!-- Avg Score -->
+      <div style="text-align:center;margin-bottom:var(--space-xl);">
+        <div style="font-size:var(--fs-xs);color:var(--color-text-dim);text-transform:uppercase;letter-spacing:1px;">Chỉ số năng lực khoa học tổng hợp</div>
+        <div style="font-size:3rem;font-weight:900;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;" id="avgScoreVal">0</div>
+      </div>
+
+      <!-- Main Grid -->
+      <div class="twin-grid">
+        
+        <!-- Scientific Radar -->
+        <div class="twin-card">
+          <div class="twin-card-title">🎯 Năng Lực Khoa Học (6 Chiều)</div>
+          <canvas id="sciRadar" height="280"></canvas>
+        </div>
+
+        <!-- Thinking Metrics -->
+        <div class="twin-card">
+          <div class="twin-card-title">⏱️ Tốc Độ Tư Duy</div>
+          <div style="text-align:center;padding:var(--space-lg) 0;">
+            <div style="font-size:2.5rem;font-weight:800;color:var(--color-primary);" id="avgThinkTime">0s</div>
+            <div style="font-size:var(--fs-xs);color:var(--color-text-dim);">Thời gian suy nghĩ trung bình</div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;" id="thinkStats">
+            <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;">
+              <div style="font-size:var(--fs-h4);font-weight:700;color:var(--color-warning);" id="fastCount">0</div>
+              <div style="font-size:0.6rem;color:var(--color-text-dim);">Nhanh (&lt;3s)</div>
+            </div>
+            <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;">
+              <div style="font-size:var(--fs-h4);font-weight:700;color:var(--color-primary);" id="totalDecisions">0</div>
+              <div style="font-size:0.6rem;color:var(--color-text-dim);">Tổng QĐ</div>
+            </div>
+            <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:8px;">
+              <div style="font-size:var(--fs-h4);font-weight:700;color:var(--color-accent);" id="thoughtfulCount">0</div>
+              <div style="font-size:0.6rem;color:var(--color-text-dim);">Kỹ lưỡng (&gt;10s)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Experiment Behavior -->
+        <div class="twin-card">
+          <div class="twin-card-title">🧪 Hành Vi Thí Nghiệm</div>
+          <canvas id="expBehaviorChart" height="200"></canvas>
+        </div>
+
+        <!-- Cognitive Style Distribution -->
+        <div class="twin-card">
+          <div class="twin-card-title">🧠 Phân Bổ Phong Cách Tư Duy</div>
+          <canvas id="cogStyleChart" height="200"></canvas>
+        </div>
+
+        <!-- Mistake Patterns -->
+        <div class="twin-card twin-card-full">
+          <div class="twin-card-title">⚠️ Sai Lầm Lặp Lại & Tiến Bộ</div>
+          <div id="mistakeList" style="max-height:300px;overflow-y:auto;"></div>
+        </div>
+
+        <!-- AI Recommendations -->
+        <div class="twin-card twin-card-full">
+          <div class="twin-card-title">💡 AI Gợi Ý Cá Nhân</div>
+          <div id="recList" style="display:flex;flex-wrap:wrap;gap:var(--space-sm);"></div>
+        </div>
+
+        <!-- Activity Heatmap -->
+        <div class="twin-card twin-card-full">
+          <div class="twin-card-title">📅 Heatmap Hoạt Động (90 ngày)</div>
+          <div id="heatmapContainer" style="overflow-x:auto;"></div>
+        </div>
+      </div>
+
+      <!-- Demo buttons -->
+      <div style="text-align:center;margin-top:var(--space-2xl);padding:var(--space-xl) 0;">
+        <div style="font-size:var(--fs-xs);color:var(--color-text-dim);margin-bottom:var(--space-md);">🔬 Demo: Mô phỏng dữ liệu Digital Twin</div>
+        <button class="btn-teacher" onclick="simulateData()">⚡ Sinh Dữ Liệu Demo</button>
+        <button class="btn-outline-teacher" style="margin-left:8px;" onclick="resetTwin()">🗑️ Reset</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../scripts/digital-twin.js"></script>
+  <script>
+  document.addEventListener('DOMContentLoaded', () => renderTwin());
+
+  function renderTwin() {
+    const s = BioLabTwin.getSummary();
+    // Style card
+    document.getElementById('twinEmoji').textContent = s.cognitiveStyle.emoji;
+    document.getElementById('twinStyleName').textContent = s.cognitiveStyle.name;
+    document.getElementById('twinStyleDesc').textContent = s.cognitiveStyle.desc;
+    document.getElementById('avgScoreVal').textContent = s.averageScore;
+
+    // Tags
+    const tags = [...s.strengths.map(t=>`<span style="padding:4px 12px;background:rgba(0,212,170,0.15);border-radius:20px;font-size:var(--fs-xs);color:var(--color-primary);">💪 ${t}</span>`),
+      ...s.weaknesses.map(t=>`<span style="padding:4px 12px;background:rgba(255,82,82,0.15);border-radius:20px;font-size:var(--fs-xs);color:var(--color-error);">📌 ${t}</span>`)];
+    document.getElementById('twinTags').innerHTML = tags.join('');
+
+    // Thinking metrics
+    document.getElementById('avgThinkTime').textContent = s.thinkingMetrics.avgDecisionTime.toFixed(1) + 's';
+    document.getElementById('fastCount').textContent = s.thinkingMetrics.fastDecisions;
+    document.getElementById('totalDecisions').textContent = s.thinkingMetrics.totalDecisions;
+    document.getElementById('thoughtfulCount').textContent = s.thinkingMetrics.thoughtfulDecisions;
+
+    // Scientific Radar
+    const rCtx = document.getElementById('sciRadar');
+    if (rCtx._c) rCtx._c.destroy();
+    rCtx._c = new Chart(rCtx, {
+      type:'radar',
+      data:{ labels:['Quan sát','Giả thuyết','Thiết kế TN','Phân tích DL','Kết luận','Trình bày'],
+        datasets:[{data:Object.values(s.scientificProfile), backgroundColor:'rgba(0,212,170,0.15)', borderColor:'#00D4AA', borderWidth:2, pointRadius:5,
+          pointBackgroundColor:['#00D4AA','#7C4DFF','#00BCD4','#FF4081','#FFD740','#E040FB']}]},
+      options:{responsive:true, scales:{r:{beginAtZero:true,max:100,grid:{color:'rgba(255,255,255,0.06)'},angleLines:{color:'rgba(255,255,255,0.06)'},pointLabels:{color:'#8892B0',font:{size:10}},ticks:{color:'#5A6380',backdropColor:'transparent',stepSize:25}}}, plugins:{legend:{display:false}}}
+    });
+
+    // Experiment behavior
+    const eb = s.experimentBehavior;
+    const eCtx = document.getElementById('expBehaviorChart');
+    if(eCtx._c) eCtx._c.destroy();
+    const total = Math.max(eb.totalExperiments, 1);
+    eCtx._c = new Chart(eCtx, {
+      type:'bar',
+      data:{labels:['Biến KS','Giả thuyết','Xuất data','Lặp TN'],
+        datasets:[{data:[
+          Math.round(eb.controlVariableUsage/total*100),
+          Math.round(eb.hypothesisBeforeExperiment/total*100),
+          Math.round(eb.dataExportCount/total*100),
+          Math.round(eb.repeatExperiments/total*100)
+        ], backgroundColor:['#00D4AA','#7C4DFF','#FFD740','#FF4081'], borderRadius:8}]},
+      options:{responsive:true,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{max:100,grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#5A6380'}},y:{grid:{display:false},ticks:{color:'#8892B0',font:{size:10}}}}}
+    });
+
+    // Cognitive style distribution
+    const cCtx = document.getElementById('cogStyleChart');
+    if(cCtx._c) cCtx._c.destroy();
+    const cs = s.cognitiveStyle.scores || {visual:0,analytical:0,experimental:0,systematic:0};
+    cCtx._c = new Chart(cCtx, {
+      type:'doughnut',
+      data:{labels:['Quan sát','Phân tích','Thực nghiệm','Hệ thống'],
+        datasets:[{data:[cs.visual,cs.analytical,cs.experimental,cs.systematic], backgroundColor:['#00D4AA','#7C4DFF','#FF4081','#FFD740'], borderWidth:0}]},
+      options:{responsive:true,plugins:{legend:{position:'bottom',labels:{color:'#8892B0',font:{size:10},padding:12}}}}
+    });
+
+    // Mistakes
+    const mistakes = s.mistakePatterns;
+    document.getElementById('mistakeList').innerHTML = mistakes.length === 0
+      ? '<div style="text-align:center;color:var(--color-text-dim);padding:var(--space-xl);">Chưa có dữ liệu sai lầm.</div>'
+      : mistakes.map(m => `<div class="mistake-item">
+          <div class="mistake-count ${m.count>=5?'high':m.count>=3?'medium':'low'}">${m.count}×</div>
+          <div style="flex:1;"><div style="color:var(--color-light);font-size:var(--fs-small);font-weight:600;">${m.pattern}</div><div style="font-size:var(--fs-xs);color:var(--color-text-dim);">${m.category}</div></div>
+          ${m.improving?'<span class="mistake-improving">📈 Đang tiến bộ</span>':'<span style="font-size:var(--fs-xs);color:var(--color-warning);">⚡ Cần luyện tập</span>'}
+        </div>`).join('');
+
+    // Recommendations
+    document.getElementById('recList').innerHTML = s.recommendations.length === 0
+      ? '<div style="color:var(--color-text-dim);font-size:var(--fs-small);">Hãy làm thêm thí nghiệm để nhận gợi ý!</div>'
+      : s.recommendations.map(r => `<div style="padding:10px 16px;background:rgba(124,77,255,0.1);border:1px solid rgba(124,77,255,0.2);border-radius:var(--radius-md);font-size:var(--fs-xs);color:var(--color-accent-light);">💡 ${r}</div>`).join('');
+
+    // Heatmap
+    renderHeatmap(s.activityHeatmap);
+  }
+
+  function renderHeatmap(data) {
+    const container = document.getElementById('heatmapContainer');
+    const today = new Date();
+    let html = '<div style="display:grid;grid-template-columns:repeat(13,1fr);gap:3px;">';
+    for (let w = 12; w >= 0; w--) {
+      for (let d = 0; d < 7; d++) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - (w*7+d));
+        const key = date.toISOString().split('T')[0];
+        const dayData = data[key];
+        const count = dayData ? Object.values(dayData.hours).reduce((a,b)=>a+b,0) : 0;
+        const level = count===0?'':count<3?'level-1':count<6?'level-2':count<10?'level-3':'level-4';
+        html += `<div class="heatmap-cell ${level}" title="${key}: ${count} actions"></div>`;
+      }
+    }
+    html += '</div>';
+    container.innerHTML = html;
+  }
+
+  function simulateData() {
+    // Generate realistic demo data
+    for(let i=0;i<20;i++){
+      BioLabTwin.trackAction(['run_experiment','view_result','export_data','write_hypothesis'][i%4], ['experiment','explore','biotech','nature'][i%4]);
+      BioLabTwin.startThinking();
+      setTimeout(()=> BioLabTwin.endThinking('decision_'+i, Math.random()>0.3), 0);
+    }
+    BioLabTwin.updateScientificScore('observation', 55+Math.floor(Math.random()*30));
+    BioLabTwin.updateScientificScore('hypothesis', 40+Math.floor(Math.random()*40));
+    BioLabTwin.updateScientificScore('experimentDesign', 50+Math.floor(Math.random()*35));
+    BioLabTwin.updateScientificScore('dataAnalysis', 35+Math.floor(Math.random()*45));
+    BioLabTwin.updateScientificScore('conclusion', 30+Math.floor(Math.random()*40));
+    BioLabTwin.updateScientificScore('communication', 25+Math.floor(Math.random()*35));
+    BioLabTwin.recordMistake('Enzyme','Quên kiểm soát biến nhiệt độ','experiment');
+    BioLabTwin.recordMistake('Quang hợp','Nhầm C3 và C4','experiment');
+    BioLabTwin.recordMistake('Enzyme','Quên kiểm soát biến nhiệt độ','experiment');
+    BioLabTwin.recordExperimentBehavior({usedControlVariable:true,madeHypothesisFirst:Math.random()>0.4,exportedData:true,steps:6,analyzedData:true,wroteConclusion:Math.random()>0.5});
+    const twin = BioLabTwin.get();
+    twin.cognitiveStyle.scores.analytical += 5+Math.floor(Math.random()*10);
+    twin.cognitiveStyle.scores.experimental += 3+Math.floor(Math.random()*8);
+    twin.cognitiveStyle.scores.systematic += 2+Math.floor(Math.random()*6);
+    twin.cognitiveStyle.scores.visual += 1+Math.floor(Math.random()*5);
+    BioLabTwin.save(twin);
+    renderTwin();
+  }
+
+  function resetTwin() {
+    localStorage.removeItem('biolab_digital_twin');
+    renderTwin();
+  }
+  </script>
+</body>
+</html>

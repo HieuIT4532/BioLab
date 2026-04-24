@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Architecture Section Interactive JS
+﻿/* ============================================================
+   BioLab — Architecture Section Interactive JS
    Expandable layers, live status, data flow animation
    ============================================================ */
 
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── Update live stats ──
   function updateLiveStats() {
-    if (!window.BioVerseData) return;
-    const stats = BioVerseData.Analytics.getStats();
+    if (!window.BioLabData) return;
+    const stats = BioLabData.Analytics.getStats();
     const profile = stats.profile;
 
     const experimentCount = document.getElementById('archExpCount');

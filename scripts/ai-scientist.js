@@ -1,11 +1,11 @@
 /* ============================================================
-   BioVerse — AI Scientist Mode
+   BioLab — AI Scientist Mode
    🔥 "Chốt giải nhất" feature
    Student inputs experiment data → AI analyzes → suggests hypotheses
    → recommends next experiments
    ============================================================ */
 
-const BioVerseScientist = (() => {
+const BioLabScientist = (() => {
   let panelOpen = false;
   let initialized = false;
 
@@ -45,9 +45,14 @@ const BioVerseScientist = (() => {
               placeholder="Giả thuyết của bạn...">
           </div>
 
-          <button class="zone-btn zone-btn-primary" id="bvsAnalyze" style="width:100%;">
-            🤖 AI Phân Tích
-          </button>
+          <div style="display:flex;gap:10px;width:100%;">
+            <button class="zone-btn zone-btn-primary" id="bvsAnalyze" style="flex:1;">
+              🤖 Phân Tích
+            </button>
+            <button class="zone-btn" id="bvsReport" style="flex:1;background:linear-gradient(135deg, #448AFF, #7C4DFF);color:#fff;border:none;">
+              📄 Báo Cáo IMRaD
+            </button>
+          </div>
 
           <div id="bvsResult" style="display:none;">
             <div class="bvs-step-label" style="margin-top:16px;">🔬 Kết Quả Phân Tích</div>
@@ -194,6 +199,7 @@ const BioVerseScientist = (() => {
     document.getElementById('bvsToggle').addEventListener('click', () => togglePanel());
     document.getElementById('bvsClose').addEventListener('click', () => togglePanel(false));
     document.getElementById('bvsAnalyze').addEventListener('click', () => analyze());
+    document.getElementById('bvsReport').addEventListener('click', () => generateReport());
   }
 
   function togglePanel(force) {
@@ -218,7 +224,7 @@ const BioVerseScientist = (() => {
     await delay(500);
     setPipelineStep(2);
 
-    const result = await BioVerseAI.analyzeData({ rawData: data }, hypothesis);
+    const result = await BioLabAI.analyzeData({ rawData: data }, hypothesis);
     setPipelineStep(3);
     await delay(300);
     setPipelineStep(4);
@@ -231,10 +237,45 @@ const BioVerseScientist = (() => {
       .replace(/\n/g, '<br>')
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-    if (window.BioVerseData) {
-      BioVerseData.Profile.addXP(25, 'AI Scientist Mode');
-      BioVerseData.Profile.updateCompetency('scientificThinking', 70);
-      BioVerseData.Analytics.track({ type: 'ai_scientist', dataLength: data.length });
+    if (window.BioLabData) {
+      BioLabData.Profile.addXP(25, 'AI Scientist Mode');
+      BioLabData.Profile.updateCompetency('scientificThinking', 70);
+      BioLabData.Analytics.track({ type: 'ai_scientist', dataLength: data.length });
+    }
+    if (window.BioLabTwin) {
+      BioLabTwin.trackAction('ai_analyze', 'scientist_mode');
+    }
+  }
+
+  async function generateReport() {
+    const data = document.getElementById('bvsData').value.trim();
+    if (!data) { alert('Vui lòng nhập dữ liệu thí nghiệm!'); return; }
+    const hypothesis = document.getElementById('bvsHypothesis').value.trim();
+    const resultDiv = document.getElementById('bvsResult');
+    const resultContent = document.getElementById('bvsResultContent');
+
+    resultDiv.style.display = 'block';
+    resultContent.innerHTML = '<div style="text-align:center;color:var(--color-network);">🤖 AI đang viết Báo Cáo Khoa Học (IMRaD)...</div>';
+
+    setPipelineStep(1); await delay(500); setPipelineStep(2);
+
+    try {
+      const res = await fetch('/api/ai/report', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data, hypothesis, title: 'Báo cáo AI' })
+      });
+      const result = await res.json();
+      
+      setPipelineStep(3); await delay(300); setPipelineStep(4);
+      
+      const reply = result.report || 'Lỗi tạo báo cáo.';
+      resultContent.innerHTML = reply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+      
+      if (window.BioLabTwin) BioLabTwin.trackAction('write_report', 'scientist_mode');
+      if (window.BioLabStandards) BioLabStandards.recordActivity('report_written', 80);
+    } catch(err) {
+      resultContent.innerHTML = '⚠️ Lỗi kết nối API.';
     }
   }
 
@@ -255,5 +296,5 @@ const BioVerseScientist = (() => {
 })();
 
 if (typeof window !== 'undefined') {
-  window.BioVerseScientist = BioVerseScientist;
+  window.BioLabScientist = BioLabScientist;
 }

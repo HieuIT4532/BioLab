@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Photosynthesis Simulator
+﻿/* ============================================================
+   BioLab — Photosynthesis Simulator
    Light response curves for C3, C4, CAM plants
    ============================================================ */
 
@@ -189,7 +189,7 @@
       const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = `BioVerse_Photosynthesis_${Date.now()}.csv`;
+      a.download = `BioLab_Photosynthesis_${Date.now()}.csv`;
       a.click();
     });
 

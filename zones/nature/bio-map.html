@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🗺️ Interactive Bio Map — BioVerse</title>
+  <title>🗺️ Interactive Bio Map — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -18,7 +18,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -172,16 +172,16 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify([...existing, ...sampleData]));
         loadObservations();
 
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(10, 'Thêm dữ liệu mẫu');
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(10, 'Thêm dữ liệu mẫu');
         }
       });
 
       loadObservations();
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'bio_map' });
-        BioVerseData.Profile.updateZoneProgress('nature', 'bio_map', 50);
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'bio_map' });
+        BioLabData.Profile.updateZoneProgress('nature', 'bio_map', 50);
       }
     });
   </script>

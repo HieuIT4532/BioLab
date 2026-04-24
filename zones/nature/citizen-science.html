@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌿 Citizen Science — BioLab X</title>
+  <link rel="stylesheet" href="../../styles/variables.css">
+  <link rel="stylesheet" href="../../styles/base.css">
+  <link rel="stylesheet" href="../../styles/components.css">
+  <link rel="stylesheet" href="../../styles/zone-shared.css">
+  <style>
+    .upload-box {
+      background: rgba(0,0,0,0.3);
+      border: 2px dashed rgba(105,240,174,0.3);
+      border-radius: var(--radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+    .upload-box:hover {
+      border-color: var(--color-citizen);
+      background: rgba(105,240,174,0.05);
+    }
+    .map-container {
+      background: #1a1a2e;
+      border-radius: var(--radius-lg);
+      height: 400px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .obs-card {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 12px;
+      margin-bottom: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+    .obs-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+<body class="zone-page">
+  <nav class="navbar scrolled" id="navbar">
+    <a href="../../index.html" class="navbar-brand">
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
+    </a>
+    <ul class="navbar-links">
+      <li><a href="../../index.html">Trang Chủ</a></li>
+      <li><a href="../../dashboard.html">Dashboard</a></li>
+      <li><a href="#" class="active">Citizen Science</a></li>
+    </ul>
+  </nav>
+
+  <div class="zone-header" style="padding-top: 150px; text-align: center;">
+    <div class="container">
+      <div class="zone-badge" style="background:rgba(105,240,174,0.1);color:var(--color-citizen);border-color:rgba(105,240,174,0.3);">🌿 Dataset Quốc Gia</div>
+      <h1 class="zone-title">Đóng Góp Khoa Học Cùng Cộng Đồng</h1>
+      <p class="zone-desc" style="max-width: 600px; margin: 0 auto;">
+        Upload dữ liệu sinh thái địa phương để xây dựng bản đồ đa dạng sinh học toàn quốc.
+      </p>
+    </div>
+  </div>
+
+  <main class="container" style="margin-top: var(--space-2xl);">
+    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: var(--space-xl);">
+      
+      <!-- Upload Panel -->
+      <div>
+        <h3 style="color:var(--color-light);margin-bottom:var(--space-md);">📤 Đóng Góp Dữ Liệu</h3>
+        
+        <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+          <div style="font-size:2rem;margin-bottom:8px;">📸</div>
+          <div style="color:var(--color-light);font-weight:600;">Tải ảnh sinh vật lên</div>
+          <div style="font-size:0.75rem;color:var(--color-text-dim);">Chấp nhận JPG, PNG (Max 5MB)</div>
+          <input type="file" id="fileInput" style="display:none" accept="image/*" onchange="previewImage(this)">
+        </div>
+
+        <div id="uploadForm" style="display:none;margin-top:var(--space-md);">
+          <div style="margin-bottom:12px;">
+            <label style="font-size:0.75rem;color:var(--color-text-muted);">Tên loài (nếu biết)</label>
+            <input type="text" id="obsSpecies" class="zone-input" placeholder="VD: Phượng Vĩ" style="width:100%;margin-top:4px;">
+          </div>
+          <div style="margin-bottom:12px;">
+            <label style="font-size:0.75rem;color:var(--color-text-muted);">Vị trí</label>
+            <div style="display:flex;gap:8px;margin-top:4px;">
+              <input type="text" id="obsLocation" class="zone-input" placeholder="VD: Công viên Tao Đàn" style="flex:1;">
+              <button class="zone-btn" style="padding:0 12px;" onclick="getLocation()" title="Lấy vị trí hiện tại">📍</button>
+            </div>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="font-size:0.75rem;color:var(--color-text-muted);">Mô tả đặc điểm</label>
+            <textarea id="obsNotes" class="zone-textarea" rows="2" placeholder="Hoa màu đỏ tươi, lá kép lông chim..." style="width:100%;margin-top:4px;"></textarea>
+          </div>
+          <button class="zone-btn zone-btn-primary" style="width:100%;background:linear-gradient(135deg, #69F0AE, #00BCD4);border:none;color:#000;" onclick="submitObservation()">🚀 Upload & Đóng Góp</button>
+        </div>
+
+        <div style="margin-top:var(--space-xl);">
+          <h4 style="color:var(--color-light);margin-bottom:var(--space-sm);">📊 Thống Kê Chung</h4>
+          <div style="display:flex;gap:var(--space-md);text-align:center;">
+            <div style="flex:1;background:rgba(255,255,255,0.03);padding:12px;border-radius:var(--radius-md);">
+              <div id="statObs" style="font-size:1.5rem;font-weight:800;color:var(--color-citizen);">0</div>
+              <div style="font-size:0.7rem;color:var(--color-text-dim);">Lượt đóng góp</div>
+            </div>
+            <div style="flex:1;background:rgba(255,255,255,0.03);padding:12px;border-radius:var(--radius-md);">
+              <div id="statSpecies" style="font-size:1.5rem;font-weight:800;color:var(--color-network);">0</div>
+              <div style="font-size:0.7rem;color:var(--color-text-dim);">Loài phát hiện</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Map and Recent Observations -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:var(--space-md);">
+          <h3 style="color:var(--color-light);">🗺️ Bản Đồ Sinh Thái Quốc Gia</h3>
+          <span style="font-size:0.75rem;color:var(--color-text-dim);background:rgba(255,255,255,0.1);padding:4px 8px;border-radius:12px;">Live Sync</span>
+        </div>
+        
+        <div class="map-container">
+          <!-- Placeholder for actual map implementation (e.g., Leaflet or Google Maps) -->
+          <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Vietnam_location_map.svg/1024px-Vietnam_location_map.svg.png') center/contain no-repeat;opacity:0.3;"></div>
+          <div style="z-index:1;text-align:center;color:var(--color-text-dim);">
+            <div style="font-size:2rem;margin-bottom:8px;">🗺️</div>
+            <div>[Bản Đồ Đa Dạng Sinh Học VN sẽ hiển thị tại đây]</div>
+          </div>
+        </div>
+
+        <h4 style="color:var(--color-light);margin-top:var(--space-xl);margin-bottom:var(--space-md);">🕒 Đóng Góp Mới Nhất</h4>
+        <div id="recentObs" style="max-height:300px;overflow-y:auto;padding-right:8px;"></div>
+      </div>
+      
+    </div>
+  </main>
+
+  <script src="../../scripts/citizen-science.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      updateUI();
+    });
+
+    function previewImage(input) {
+      if (input.files && input.files[0]) {
+        document.getElementById('uploadForm').style.display = 'block';
+        // In real app, we'd show the image preview here
+      }
+    }
+
+    function getLocation() {
+      document.getElementById('obsLocation').value = 'Đang lấy vị trí...';
+      setTimeout(() => {
+        document.getElementById('obsLocation').value = '10.7769° N, 106.7009° E (TP.HCM)';
+      }, 1000);
+    }
+
+    function submitObservation() {
+      const species = document.getElementById('obsSpecies').value || 'Chưa phân loại';
+      const location = document.getElementById('obsLocation').value || 'Unknown';
+      const notes = document.getElementById('obsNotes').value;
+
+      BioLabCitizen.uploadObservation({
+        speciesName: species,
+        location: location,
+        notes: notes,
+        imageIcon: ['🌿','🌸','🦋','🐛','🐸'][Math.floor(Math.random()*5)]
+      });
+
+      // Reset form
+      document.getElementById('obsSpecies').value = '';
+      document.getElementById('obsLocation').value = '';
+      document.getElementById('obsNotes').value = '';
+      document.getElementById('uploadForm').style.display = 'none';
+      alert('Cảm ơn bạn đã đóng góp dữ liệu khoa học! +50 XP');
+
+      updateUI();
+    }
+
+    function updateUI() {
+      const stats = BioLabCitizen.getStats();
+      document.getElementById('statObs').textContent = stats.totalObservations;
+      document.getElementById('statSpecies').textContent = stats.uniqueSpecies;
+
+      const data = BioLabCitizen.getDataset().reverse();
+      let html = '';
+      if (data.length === 0) {
+        html = '<div style="color:var(--color-text-dim);">Chưa có đóng góp nào. Hãy là người đầu tiên!</div>';
+      } else {
+        data.slice(0, 10).forEach(d => {
+          const date = new Date(d.timestamp).toLocaleDateString('vi-VN');
+          html += `
+            <div class="obs-card">
+              <div class="obs-img">${d.imageIcon || '🌿'}</div>
+              <div style="flex:1;">
+                <div style="font-weight:700;color:var(--color-light);">${d.speciesName}</div>
+                <div style="font-size:0.75rem;color:var(--color-text-muted);">📍 ${d.location}</div>
+                <div style="font-size:0.7rem;color:var(--color-text-dim);margin-top:4px;">👤 ${d.studentName} • ${date}</div>
+              </div>
+            </div>
+          `;
+        });
+      }
+      document.getElementById('recentObs').innerHTML = html;
+    }
+  </script>
+</body>
+</html>

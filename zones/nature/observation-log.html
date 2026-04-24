@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📓 Observation Journal — BioVerse</title>
+  <title>📓 Observation Journal — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -17,7 +17,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -158,8 +158,8 @@
 
       // Export
       document.getElementById('btnExportAll').addEventListener('click', () => {
-        if (observations.length > 0 && window.BioVerseEngine) {
-          BioVerseEngine.DataCollector.exportCSV(observations, 'observation_journal.csv');
+        if (observations.length > 0 && window.BioLabEngine) {
+          BioLabEngine.DataCollector.exportCSV(observations, 'observation_journal.csv');
         }
       });
 
@@ -170,16 +170,16 @@
         document.getElementById('aiAnalysisResult').innerHTML = '<div style="color:var(--color-primary);">🤖 AI đang phân tích...</div>';
 
         const summary = observations.map(o => `${o.species} (${o.type}) x${o.count} tại ${o.location}`).join('; ');
-        const result = await BioVerseAI.analyzeData({ observations: summary, totalSpecies: new Set(observations.map(o => o.species)).size, totalCount: observations.length }, '');
+        const result = await BioLabAI.analyzeData({ observations: summary, totalSpecies: new Set(observations.map(o => o.species)).size, totalCount: observations.length }, '');
         
         const reply = result.error ? '⚠️ Không thể kết nối AI.' : (result.analysis || result.reply || 'Không có kết quả.');
         document.getElementById('aiAnalysisResult').innerHTML = reply.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-        if (window.BioVerseData) BioVerseData.Profile.addXP(15, 'AI phân tích thực địa');
+        if (window.BioLabData) BioLabData.Profile.addXP(15, 'AI phân tích thực địa');
       });
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'observation_log' });
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'observation_log' });
       }
     });
   </script>

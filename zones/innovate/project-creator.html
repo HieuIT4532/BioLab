@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📋 Science Project Creator — BioVerse</title>
+  <title>📋 Science Project Creator — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -198,11 +198,11 @@
         generateReport();
         document.getElementById('btnAIReview').disabled = false;
         document.getElementById('btnExportReport').disabled = false;
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(30, 'Tạo dự án khoa học');
-          BioVerseData.Profile.updateZoneProgress('innovate', 'project', 100);
-          BioVerseData.Profile.updateCompetency('scientificThinking', 75);
-          BioVerseData.Profile.updateCompetency('problemSolving', 70);
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(30, 'Tạo dự án khoa học');
+          BioLabData.Profile.updateZoneProgress('innovate', 'project', 100);
+          BioLabData.Profile.updateCompetency('scientificThinking', 75);
+          BioLabData.Profile.updateCompetency('problemSolving', 70);
         }
       });
 
@@ -257,7 +257,7 @@
           <p>${data.conclusion || '<em>Chưa nhập</em>'}</p>
 
           <hr style="border-color:rgba(255,255,255,0.1);margin:16px 0;">
-          <p style="font-size:var(--fs-xs);color:var(--color-text-dim);">Tạo bởi BioVerse Science Project Creator — ${new Date().toLocaleDateString('vi-VN')}</p>
+          <p style="font-size:var(--fs-xs);color:var(--color-text-dim);">Tạo bởi BioLab Science Project Creator — ${new Date().toLocaleDateString('vi-VN')}</p>
         `;
       }
 
@@ -266,16 +266,16 @@
         const report = document.getElementById('reportPreview').innerText;
         if (!report || report.includes('Chưa nhập')) return;
 
-        const result = await BioVerseAI.gradeReport(report);
+        const result = await BioLabAI.gradeReport(report);
         if (result.grading) {
           const g = result.grading;
           alert(`📊 Điểm: ${g.total || 'N/A'}/100\n\n${g.feedback || 'Không có phản hồi.'}`);
         }
       });
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'project_creator' });
-        BioVerseData.Profile.updateZoneProgress('innovate', 'project', 10);
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'project_creator' });
+        BioLabData.Profile.updateZoneProgress('innovate', 'project', 10);
       }
     });
   </script>

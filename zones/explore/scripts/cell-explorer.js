@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Cell Explorer 3D
+﻿/* ============================================================
+   BioLab — Cell Explorer 3D
    Three.js interactive cell models with organelle highlighting
    ============================================================ */
 

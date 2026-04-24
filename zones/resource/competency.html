@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📊 Competency Assessment — BioVerse</title>
+  <title>📊 Competency Assessment — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -17,7 +17,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -115,8 +115,8 @@
       let radarChart = null;
 
       function loadCompetencies() {
-        if (!window.BioVerseData) return;
-        const profile = BioVerseData.Profile.get();
+        if (!window.BioLabData) return;
+        const profile = BioLabData.Profile.get();
         const comp = profile.competencies;
         const labels = ['Nhận thức\nsinh học', 'Thực hành\nthí nghiệm', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'];
         const values = [comp.biologicalKnowledge, comp.experimentalSkills, comp.scientificThinking, comp.problemSolving];
@@ -194,9 +194,9 @@
       loadCompetencies();
       document.getElementById('btnRefresh').addEventListener('click', loadCompetencies);
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'competency' });
-        BioVerseData.Profile.updateZoneProgress('resource', 'competency', 50);
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'competency' });
+        BioLabData.Profile.updateZoneProgress('resource', 'competency', 50);
       }
     });
   </script>

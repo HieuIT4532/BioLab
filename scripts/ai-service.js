@@ -1,11 +1,11 @@
-/* ============================================================
-   BioVerse — AI Service (Frontend)
+﻿/* ============================================================
+   BioLab — AI Service (Frontend)
    Communicates with backend AI proxy routes
    Provides: askTutor, analyzeData, gradeReport, getMentorFeedback
    Includes floating chat UI component
    ============================================================ */
 
-const BioVerseAI = (() => {
+const BioLabAI = (() => {
 
   const API_BASE = '/api/ai';
   let chatHistory = [];
@@ -23,7 +23,7 @@ const BioVerseAI = (() => {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return await res.json();
     } catch (err) {
-      console.error('BioVerse AI Error:', err);
+      console.error('BioLab AI Error:', err);
       return { error: true, message: err.message };
     }
   }
@@ -39,11 +39,11 @@ const BioVerseAI = (() => {
       chatHistory.push({ role: 'user', content: question });
       chatHistory.push({ role: 'assistant', content: result.reply });
       // Track interaction
-      if (window.BioVerseData) {
-        const profile = BioVerseData.Profile.get();
+      if (window.BioLabData) {
+        const profile = BioLabData.Profile.get();
         profile._aiInteractions = (profile._aiInteractions || 0) + 1;
-        BioVerseData.Profile.save(profile);
-        BioVerseData.Analytics.track({ type: 'ai_chat', question: question.substring(0, 100) });
+        BioLabData.Profile.save(profile);
+        BioLabData.Analytics.track({ type: 'ai_chat', question: question.substring(0, 100) });
       }
     }
     return result;
@@ -100,7 +100,7 @@ const BioVerseAI = (() => {
             <span class="bv-chat-avatar">🤖</span>
             <div>
               <div class="bv-chat-name">AI Tutor</div>
-              <div class="bv-chat-status">BioVerse Assistant</div>
+              <div class="bv-chat-status">BioLab Assistant</div>
             </div>
           </div>
           <button class="bv-chat-close" id="bvChatClose">✕</button>
@@ -108,7 +108,7 @@ const BioVerseAI = (() => {
         <div class="bv-chat-messages" id="bvChatMessages">
           <div class="bv-chat-msg bv-chat-msg-ai">
             <div class="bv-chat-msg-content">
-              Xin chào! 👋 Tôi là AI Tutor của BioVerse. Tôi có thể giúp bạn:
+              Xin chào! 👋 Tôi là AI Tutor của BioLab. Tôi có thể giúp bạn:
               <br>• Giải thích khái niệm sinh học
               <br>• Phân tích dữ liệu thí nghiệm
               <br>• Hỏi ngược để bạn tư duy sâu hơn
@@ -206,8 +206,8 @@ const BioVerseAI = (() => {
     messages.scrollTop = messages.scrollHeight;
 
     // XP for asking AI
-    if (window.BioVerseData && !result.error) {
-      BioVerseData.Profile.addXP(5, 'Hỏi AI Tutor');
+    if (window.BioLabData && !result.error) {
+      BioLabData.Profile.addXP(5, 'Hỏi AI Tutor');
     }
   }
 
@@ -241,5 +241,5 @@ const BioVerseAI = (() => {
 })();
 
 if (typeof window !== 'undefined') {
-  window.BioVerseAI = BioVerseAI;
+  window.BioLabAI = BioLabAI;
 }

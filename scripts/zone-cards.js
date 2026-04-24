@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Zone Card Interactions
+﻿/* ============================================================
+   BioLab — Zone Card Interactions
    3D tilt on hover, glow follow cursor, click navigation
    ============================================================ */
 

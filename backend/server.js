@@ -22,7 +22,7 @@ app.use(express.static(path.join(__dirname, '..')));
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'ok',
-    name: 'BioVerse API',
+    name: 'BioLab API',
     version: '2.0.0',
     layers: {
       presentation: 'active',
@@ -43,7 +43,7 @@ app.post('/api/ai/tutor', async (req, res) => {
   try {
     const { question, context, history } = req.body;
 
-    const systemPrompt = `Bạn là AI Tutor của BioVerse — hệ sinh thái giáo dục sinh học số.
+    const systemPrompt = `Bạn là AI Tutor của BioLab — hệ sinh thái giáo dục sinh học số.
 
 NGUYÊN TẮC DẠY HỌC:
 - Dùng phương pháp Socratic: KHÔNG đưa đáp án trực tiếp
@@ -55,7 +55,7 @@ NGUYÊN TẮC DẠY HỌC:
 - Trả lời bằng tiếng Việt
 - Ngắn gọn, dễ hiểu, phù hợp học sinh phổ thông
 
-CONTEXT hiện tại: ${context || 'Trang chủ BioVerse'}`;
+CONTEXT hiện tại: ${context || 'Trang chủ BioLab'}`;
 
     const chatHistory = (history || []).map(h => ({
       role: h.role === 'assistant' ? 'model' : 'user',
@@ -86,7 +86,7 @@ app.post('/api/ai/analyze', async (req, res) => {
   try {
     const { data, hypothesis, type } = req.body;
 
-    const prompt = `Bạn là AI Scientist của BioVerse. Phân tích dữ liệu thí nghiệm sau và đưa ra nhận xét khoa học.
+    const prompt = `Bạn là AI Scientist của BioLab. Phân tích dữ liệu thí nghiệm sau và đưa ra nhận xét khoa học.
 
 DỮ LIỆU THÍ NGHIỆM:
 ${JSON.stringify(data, null, 2)}
@@ -231,13 +231,85 @@ Câu hỏi phải phù hợp chương trình sinh học phổ thông Việt Nam.
   }
 });
 
+// ── AI Auto Curriculum ──
+app.post('/api/ai/curriculum', async (req, res) => {
+  try {
+    const { topic, grade, level } = req.body;
+    const prompt = `Bạn là chuyên gia thiết kế chương trình Sinh học phổ thông Việt Nam.
+
+Hãy thiết kế KẾ HOẠCH BÀI DẠY chi tiết cho chủ đề: "${topic}"
+Khối lớp: ${grade || '10'}
+Mức độ: ${level || 'normal'}
+
+YÊU CẦU (theo chuẩn CT GDPT 2018):
+1. MỤC TIÊU BÀI HỌC (theo 3 năng lực KHTN)
+2. NỘI DUNG CHÍNH (kiến thức cốt lõi)
+3. HOẠT ĐỘNG HỌC TẬP (4-5 hoạt động, mỗi hoạt động có thời gian, phương pháp)
+4. THÍ NGHIỆM GỢI Ý (có thể làm trên BioLab)
+5. CÂU HỎI ĐÁNH GIÁ (3 câu theo Bloom: NB, TH, VD)
+6. HOMEWORK / DỰ ÁN MỞ RỘNG
+
+Trả lời bằng tiếng Việt, format rõ ràng.`;
+
+    const result = await model.generateContent(prompt);
+    res.json({ lesson: result.response.text(), status: 'ok' });
+  } catch (err) {
+    console.error('AI Curriculum error:', err.message);
+    res.json({ lesson: 'Không thể sinh bài học lúc này.', status: 'error' });
+  }
+});
+
+// ── AI Scientist 2.0 (Full Report) ──
+app.post('/api/ai/report', async (req, res) => {
+  try {
+    const { data, hypothesis, title } = req.body;
+    const prompt = `Bạn là AI Scientist. Hãy viết BÁO CÁO KHOA HỌC HOÀN CHỈNH theo format IMRaD.
+
+TIÊU ĐỀ: ${title || 'Báo cáo thí nghiệm'}
+DỮ LIỆU: ${JSON.stringify(data)}
+GIẢ THUYẾT: ${hypothesis || 'Chưa có'}
+
+FORMAT BÁO CÁO:
+1. TÓM TẮT (Abstract)
+2. GIỚI THIỆU (Introduction) - bối cảnh, mục tiêu
+3. PHƯƠNG PHÁP (Methods) - quy trình TN
+4. KẾT QUẢ (Results) - phân tích dữ liệu
+5. THẢO LUẬN (Discussion) - giải thích, so sánh
+6. KẾT LUẬN (Conclusion)
+7. ĐỀ XUẤT THÍ NGHIỆM TIẾP THEO
+
+Viết bằng tiếng Việt, học thuật nhưng dễ hiểu cho HS phổ thông.`;
+
+    const result = await model.generateContent(prompt);
+    res.json({ report: result.response.text(), status: 'ok' });
+  } catch (err) {
+    res.json({ report: 'Lỗi tạo báo cáo.', status: 'error' });
+  }
+});
+
+// ── Teacher In-Memory Store ──
+const teacherStore = { classes: [], assignments: [] };
+
+app.post('/api/teacher/class', (req, res) => {
+  const { name, grade, school } = req.body;
+  const cls = { id: 'cls_' + Date.now(), name, grade, school, createdAt: new Date().toISOString() };
+  teacherStore.classes.push(cls);
+  res.json({ class: cls, status: 'ok' });
+});
+
+app.get('/api/teacher/classes', (req, res) => {
+  res.json({ classes: teacherStore.classes, status: 'ok' });
+});
+
 // SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 app.listen(PORT, () => {
-  console.log(`\n🧬 BioVerse Server v2.0 running at http://localhost:${PORT}`);
+  console.log(`\n🧬 BioLab X Server v3.0 running at http://localhost:${PORT}`);
   console.log(`📡 API Health: http://localhost:${PORT}/api/health`);
+  console.log(`🏫 Teacher Mode: http://localhost:${PORT}/teacher.html`);
+  console.log(`🧠 Digital Twin: http://localhost:${PORT}/zones/profile/digital-twin.html`);
   console.log(`🤖 AI Layer: ${process.env.GEMINI_API_KEY ? '✅ Active' : '⚠️ No API Key'}\n`);
 });

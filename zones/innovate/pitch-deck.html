@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>📊 Pitch Deck Generator — BioVerse</title>
+  <title>📊 Pitch Deck Generator — BioLab</title>
   <link rel="stylesheet" href="../../styles/variables.css">
   <link rel="stylesheet" href="../../styles/base.css">
   <link rel="stylesheet" href="../../styles/components.css">
@@ -16,7 +16,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="../../index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="../../index.html">Trang Chủ</a></li>
@@ -130,9 +130,9 @@
         activeSlide = 0;
         renderSlide();
 
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(20, 'Tạo Pitch Deck');
-          BioVerseData.Profile.updateZoneProgress('innovate', 'pitch', 80);
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(20, 'Tạo Pitch Deck');
+          BioLabData.Profile.updateZoneProgress('innovate', 'pitch', 80);
         }
       });
 
@@ -142,7 +142,7 @@
         const content = {
           0: `<div style="font-size:4rem;margin-bottom:16px;">🧬</div>
               <h2 style="font-size:2rem;background:var(--gradient-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">${name}</h2>
-              <p style="color:var(--color-text-muted);margin-top:12px;">Startup Sinh Học — BioVerse Pitch Deck</p>`,
+              <p style="color:var(--color-text-muted);margin-top:12px;">Startup Sinh Học — BioLab Pitch Deck</p>`,
           1: `<div style="font-size:3rem;margin-bottom:12px;">❗</div>
               <h3 style="color:var(--color-error);margin-bottom:12px;">VẤN ĐỀ</h3>
               <p style="color:var(--color-text);text-align:left;line-height:1.8;">${document.getElementById('slideProblem').value || '<em>Chưa nhập</em>'}</p>`,
@@ -177,17 +177,17 @@
         document.getElementById('aiFeedbackBox').style.display = 'block';
         document.getElementById('aiFeedback').innerHTML = '<div style="color:var(--color-primary);">🤖 AI Mentor đang phân tích...</div>';
 
-        const result = await BioVerseAI.getMentorFeedback(idea);
+        const result = await BioLabAI.getMentorFeedback(idea);
         const feedback = result.error ? '⚠️ Không thể kết nối AI.' : result.feedback;
         document.getElementById('aiFeedback').innerHTML = feedback.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 
-        if (window.BioVerseData) {
-          BioVerseData.Profile.addXP(10, 'AI Mentor Feedback');
+        if (window.BioLabData) {
+          BioLabData.Profile.addXP(10, 'AI Mentor Feedback');
         }
       });
 
-      if (window.BioVerseData) {
-        BioVerseData.Analytics.track({ type: 'module_visit', module: 'pitch_deck' });
+      if (window.BioLabData) {
+        BioLabData.Analytics.track({ type: 'module_visit', module: 'pitch_deck' });
       }
     });
   </script>

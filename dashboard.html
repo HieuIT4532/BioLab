@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BioVerse Dashboard — Learning Analytics, Competency Radar, Activity Timeline">
-  <title>📊 Dashboard — BioVerse</title>
+  <meta name="description" content="BioLab Dashboard — Learning Analytics, Competency Radar, Activity Timeline">
+  <title>📊 Dashboard — BioLab</title>
   <link rel="stylesheet" href="styles/variables.css">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
@@ -29,7 +29,7 @@
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
     <a href="index.html" class="navbar-brand">
-      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioVerse</span>
+      <div class="navbar-logo-icon">🧬</div><span class="navbar-logo">BioLab</span>
     </a>
     <ul class="navbar-links" id="navLinks">
       <li><a href="index.html">Trang Chủ</a></li>
@@ -122,11 +122,11 @@
   <script src="scripts/ai-service.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      if (!window.BioVerseData) return;
-      const profile = BioVerseData.Profile.get();
-      const stats = BioVerseData.Analytics.getStats();
-      const levelInfo = BioVerseData.Profile.getLevelTitle(profile.level);
-      const xpProg = BioVerseData.Profile.getXPProgress();
+      if (!window.BioLabData) return;
+      const profile = BioLabData.Profile.get();
+      const stats = BioLabData.Analytics.getStats();
+      const levelInfo = BioLabData.Profile.getLevelTitle(profile.level);
+      const xpProg = BioLabData.Profile.getXPProgress();
 
       // Stats
       document.getElementById('dLevel').textContent = profile.level;
@@ -189,7 +189,7 @@
       });
 
       // Badges
-      const allBadges = BioVerseData.Badges.getAll();
+      const allBadges = BioLabData.Badges.getAll();
       document.getElementById('dashBadges').innerHTML = allBadges.map(b => `
         <div style="text-align:center;padding:10px 4px;background:rgba(255,255,255,${b.earned?'0.06':'0.02'});border-radius:10px;border:1px solid ${b.earned?'rgba(0,212,170,0.3)':'rgba(255,255,255,0.04)'};opacity:${b.earned?'1':'0.35'};" title="${b.name}: ${b.desc}">
           <div style="font-size:1.6rem;">${b.emoji}</div>

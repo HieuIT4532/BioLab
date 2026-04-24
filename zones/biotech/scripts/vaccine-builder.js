@@ -1,10 +1,10 @@
-/* ============================================================
-   BioVerse — Vaccine Builder Simulation
+﻿/* ============================================================
+   BioLab — Vaccine Builder Simulation
    Immune response modeling, vaccine efficacy comparison
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const Engine = window.BioVerseEngine;
+  const Engine = window.BioLabEngine;
   let immuneChart = null;
   let simulationData = [];
 
@@ -64,8 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('btnExport').addEventListener('click', () => {
     if (simulationData.length > 0 && Engine) {
       Engine.DataCollector.exportCSV(simulationData, 'vaccine_simulation.csv');
-      if (window.BioVerseData) {
-        BioVerseData.Profile.addXP(10, 'Xuất dữ liệu vaccine');
+      if (window.BioLabData) {
+        BioLabData.Profile.addXP(10, 'Xuất dữ liệu vaccine');
       }
     }
   });
@@ -112,12 +112,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Track
-    if (window.BioVerseData) {
-      BioVerseData.Profile.addXP(20, `Mô phỏng vaccine ${vaccine.name}`);
-      BioVerseData.Profile.incrementExperiments();
-      BioVerseData.Profile.updateZoneProgress('biotech', 'vaccine', 75);
-      BioVerseData.Profile.updateCompetency('scientificThinking', 65);
-      BioVerseData.Analytics.track({ type: 'experiment_run', module: 'vaccine', vaccine: vaccine.name });
+    if (window.BioLabData) {
+      BioLabData.Profile.addXP(20, `Mô phỏng vaccine ${vaccine.name}`);
+      BioLabData.Profile.incrementExperiments();
+      BioLabData.Profile.updateZoneProgress('biotech', 'vaccine', 75);
+      BioLabData.Profile.updateCompetency('scientificThinking', 65);
+      BioLabData.Analytics.track({ type: 'experiment_run', module: 'vaccine', vaccine: vaccine.name });
     }
 
     return data;
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Track visit
-  if (window.BioVerseData) {
-    BioVerseData.Analytics.track({ type: 'module_visit', module: 'vaccine_builder' });
+  if (window.BioLabData) {
+    BioLabData.Analytics.track({ type: 'module_visit', module: 'vaccine_builder' });
   }
 });

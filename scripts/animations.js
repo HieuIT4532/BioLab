@@ -1,5 +1,5 @@
-/* ============================================================
-   BioVerse — Scroll Animations
+﻿/* ============================================================
+   BioLab — Scroll Animations
    IntersectionObserver reveals, counter, typewriter
    ============================================================ */
 

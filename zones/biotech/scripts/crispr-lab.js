@@ -1,10 +1,10 @@
-/* ============================================================
-   BioVerse — CRISPR Gene Editor Simulation
+﻿/* ============================================================
+   BioLab — CRISPR Gene Editor Simulation
    PAM site finding, DNA cutting, gene insertion, phenotype
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const Engine = window.BioVerseEngine;
+  const Engine = window.BioLabEngine;
 
   // Gene databases
   const GENES = {
@@ -167,8 +167,8 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSteps(2);
 
     // Track
-    if (window.BioVerseData) {
-      BioVerseData.Analytics.track({ type: 'crispr_pam_select', position: pam.position });
+    if (window.BioLabData) {
+      BioLabData.Analytics.track({ type: 'crispr_pam_select', position: pam.position });
     }
   }
 
@@ -208,9 +208,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 500);
 
     // XP
-    if (window.BioVerseData) {
-      BioVerseData.Profile.addXP(15, 'Cắt DNA bằng CRISPR');
-      BioVerseData.Analytics.track({ type: 'crispr_cut', gene: currentGene.name });
+    if (window.BioLabData) {
+      BioLabData.Profile.addXP(15, 'Cắt DNA bằng CRISPR');
+      BioLabData.Analytics.track({ type: 'crispr_cut', gene: currentGene.name });
     }
   });
 
@@ -260,13 +260,13 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSteps(4);
 
     // XP + Badge
-    if (window.BioVerseData) {
-      BioVerseData.Profile.addXP(25, 'Chèn gene mới');
-      BioVerseData.Profile.updateZoneProgress('biotech', 'crispr', 100);
-      BioVerseData.Profile.updateCompetency('biologicalKnowledge', 70);
-      BioVerseData.Profile.updateCompetency('experimentalSkills', 60);
-      BioVerseData.Badges.check();
-      BioVerseData.Analytics.track({
+    if (window.BioLabData) {
+      BioLabData.Profile.addXP(25, 'Chèn gene mới');
+      BioLabData.Profile.updateZoneProgress('biotech', 'crispr', 100);
+      BioLabData.Profile.updateCompetency('biologicalKnowledge', 70);
+      BioLabData.Profile.updateCompetency('experimentalSkills', 60);
+      BioLabData.Badges.check();
+      BioLabData.Analytics.track({
         type: 'crispr_insert',
         gene: currentGene.name,
         insertion,
@@ -307,8 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Track visit
-  if (window.BioVerseData) {
-    BioVerseData.Analytics.track({ type: 'module_visit', module: 'crispr' });
-    BioVerseData.Profile.updateZoneProgress('biotech', 'crispr', 10);
+  if (window.BioLabData) {
+    BioLabData.Analytics.track({ type: 'module_visit', module: 'crispr' });
+    BioLabData.Profile.updateZoneProgress('biotech', 'crispr', 10);
   }
 });

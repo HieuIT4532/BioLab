@@ -1,9 +1,9 @@
-/* ============================================================
-   BioVerse — Gamification UI
+﻿/* ============================================================
+   BioLab — Gamification UI
    XP bar, level display, badge toasts, achievement notifications
    ============================================================ */
 
-const BioVerseGamification = (() => {
+const BioLabGamification = (() => {
 
   let initialized = false;
 
@@ -61,10 +61,10 @@ const BioVerseGamification = (() => {
 
   // ── Update XP Display ──
   function updateDisplay() {
-    if (!window.BioVerseData) return;
-    const profile = BioVerseData.Profile.get();
-    const progress = BioVerseData.Profile.getXPProgress();
-    const levelInfo = BioVerseData.Profile.getLevelTitle(profile.level);
+    if (!window.BioLabData) return;
+    const profile = BioLabData.Profile.get();
+    const progress = BioLabData.Profile.getXPProgress();
+    const levelInfo = BioLabData.Profile.getLevelTitle(profile.level);
 
     const badge = document.getElementById('bvLevelBadge');
     const title = document.getElementById('bvLevelTitle');
@@ -118,7 +118,7 @@ const BioVerseGamification = (() => {
     const levelEl = document.getElementById('bvLevelUpLevel');
     const titleEl = document.getElementById('bvLevelUpTitle');
 
-    const levelInfo = BioVerseData.Profile.getLevelTitle(level);
+    const levelInfo = BioLabData.Profile.getLevelTitle(level);
     if (emoji) emoji.textContent = levelInfo.emoji;
     if (levelEl) levelEl.textContent = `Level ${level}`;
     if (titleEl) titleEl.textContent = levelInfo.title;
@@ -136,8 +136,8 @@ const BioVerseGamification = (() => {
       }
       // Check badges after XP gain
       setTimeout(() => {
-        if (window.BioVerseData) {
-          const newBadges = BioVerseData.Badges.check();
+        if (window.BioLabData) {
+          const newBadges = BioLabData.Badges.check();
           newBadges.forEach((b, i) => {
             setTimeout(() => showBadge(b), i * 1500);
           });
@@ -159,5 +159,5 @@ const BioVerseGamification = (() => {
 
 // Auto-init when DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  BioVerseGamification.init();
+  BioLabGamification.init();
 });
