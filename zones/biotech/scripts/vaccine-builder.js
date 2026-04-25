@@ -79,25 +79,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let t = 0; t <= hours; t += 2) {
       if (t >= vaccine.responseDelay) {
-        // Growth depends on pathogen presence, with a saturation limit
+        // Growth depends on pathogen presence
         const growthPotential = Math.max(0, pathogenLoad * 0.1);
-        const abGrowth = (growthPotential + 10) * vaccine.antibodyMultiplier;
-        const tcGrowth = (growthPotential * 0.5 + 5) * vaccine.antibodyMultiplier;
+        // Base growth only if pathogen is still active
+        const baseGrowth = pathogenLoad > 1 ? 5 : 0;
+        const abGrowth = (growthPotential + baseGrowth) * vaccine.antibodyMultiplier;
+        const tcGrowth = (growthPotential * 0.5 + baseGrowth * 0.5) * vaccine.antibodyMultiplier;
 
         // Cap maximum values to prevent infinite stretching
-        if (antibodies < 20000) antibodies += abGrowth;
-        if (tcells < 10000) tcells += tcGrowth;
+        if (antibodies < 15000) antibodies += abGrowth;
+        if (tcells < 8000) tcells += tcGrowth;
 
         // Slow decay/stabilization if pathogen is mostly cleared
-        if (pathogenLoad < 10) {
-          antibodies *= 0.998;
-          tcells *= 0.998;
+        if (pathogenLoad < 1) {
+          antibodies *= 0.996;
+          tcells *= 0.996;
         }
       }
 
       const noise = Engine ? Engine.Noise.gaussian(0, pathogenLoad * 0.02) : 0;
-      const killing = (antibodies * 0.015 + tcells * 0.03); // Slightly tuned killing rate
-      pathogenLoad = Math.max(0, pathogenLoad * 1.07 - killing + noise); // Adjusted growth rate to 7%
+      const killing = (antibodies * 0.015 + tcells * 0.03); 
+      pathogenLoad = Math.max(0, pathogenLoad * 1.07 - killing + noise);
 
       data.push({
         time: t,
@@ -106,11 +108,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tcells: Math.round(tcells)
       });
 
-      if (pathogenLoad < 1 && t > vaccine.responseDelay + 24) {
+      if (pathogenLoad < 1 && t > vaccine.responseDelay + 12) {
         // Fill remaining with a stabilizing curve
         for (let r = t + 2; r <= hours; r += 2) {
-          antibodies *= 0.995;
-          tcells *= 0.995;
+          antibodies *= 0.992;
+          tcells *= 0.992;
           data.push({ 
             time: r, 
             pathogen: 0, 
@@ -152,21 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
       let tc = 20;
       for (let t = 0; t <= 168; t += 2) {
         if (t >= vaccine.responseDelay) {
-          const abGrowth = (pLoad * 0.1 + 10) * vaccine.antibodyMultiplier;
-          const tcGrowth = (pLoad * 0.05 + 5) * vaccine.antibodyMultiplier;
-          
-          if (ab < 20000) ab += abGrowth;
-          if (tc < 10000) tc += tcGrowth;
-
-          if (pLoad < 10) {
-            ab *= 0.998;
-            tc *= 0.998;
-          }
+          const abGrowth = (pLoad * 0.1 + (pLoad > 1 ? 5 : 0)) * vaccine.antibodyMultiplier;
+          if (ab < 15000) ab += abGrowth;
+          if (pLoad < 1) ab *= 0.996;
         }
         const killing = ab * 0.015 + tc * 0.03;
         pLoad = Math.max(0, pLoad * 1.07 - killing);
         data.push({ time: t, antibodies: Math.round(ab) });
-        if (pLoad < 1 && t > vaccine.responseDelay + 24) break;
+        if (pLoad < 1 && t > vaccine.responseDelay + 12) break;
       }
       datasets.push({
         label: vaccine.name,
@@ -186,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
     immuneChart = new Chart(ctx, {
       type: 'line',
       data: { datasets },
-      options: getChartOptions('Thời gian (giờ)', 'Kháng thể')
+      options: getChartOptions('Thời gian (giờ)', 'Kháng thể', 15000)
     });
   }
 
@@ -199,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
         labels: data.map(d => d.time + 'h'),
         datasets: [
           {
-            label: 'Pathogen',
+            label: 'Mầm bệnh (Pathogen)',
             data: data.map(d => d.pathogen),
             borderColor: '#FF5252',
             backgroundColor: 'rgba(255,82,82,0.1)',
@@ -213,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
             fill: true, tension: 0.4, pointRadius: 0, borderWidth: 2
           },
           {
-            label: 'T Cells',
+            label: 'Tế bào T (T-Cells)',
             data: data.map(d => d.tcells),
             borderColor: '#7C4DFF',
             backgroundColor: 'rgba(124,77,255,0.1)',
@@ -221,11 +216,11 @@ document.addEventListener('DOMContentLoaded', () => {
           }
         ]
       },
-      options: getChartOptions('Thời gian', 'Số lượng')
+      options: getChartOptions('Thời gian (giờ)', 'Số lượng', 15000)
     });
   }
 
-  function getChartOptions(xLabel, yLabel) {
+  function getChartOptions(xLabel, yLabel, suggestedMaxY = 100) {
     return {
       responsive: true,
       maintainAspectRatio: false,
@@ -242,7 +237,9 @@ document.addEventListener('DOMContentLoaded', () => {
         y: {
           title: { display: true, text: yLabel, color: '#8892B0' },
           ticks: { color: '#5A6380' },
-          grid: { color: 'rgba(255,255,255,0.04)' }
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          min: 0,
+          suggestedMax: suggestedMaxY
         }
       }
     };

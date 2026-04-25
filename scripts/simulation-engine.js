@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Simulation Engine Core
    Central brain for all zone simulations
    Modules: BiologyRules, PhysicsEngine, NoiseGenerator, DataCollector
@@ -165,8 +165,8 @@ const BioLabEngine = (() => {
 
       for (let t = 0; t <= timeHours; t += 1) {
         if (t >= responseDelay) {
-          antibodies += (pathogen * 0.1 + (vaccinated ? 5 : 1)) * (1 + t * 0.01);
-          tcells += pathogen * 0.05 + (vaccinated ? 2 : 0.5);
+          antibodies += (pathogen * 0.1 + (pathogen > 1 ? 5 : 0)) * (vaccinated ? 2 : 1);
+          tcells += pathogen * 0.05 + (pathogen > 1 ? 2 : 0);
         }
         const killing = (antibodies * 0.02 + tcells * 0.05);
         pathogen = Math.max(0, pathogen * 1.1 - killing);
@@ -174,7 +174,8 @@ const BioLabEngine = (() => {
           time: t,
           pathogen: Math.round(pathogen),
           antibodies: Math.round(antibodies),
-          tcells: Math.round(tcells)
+          tcells: Math.round(tcells),
+          labels: { pathogen: 'Mầm bệnh', antibodies: 'Kháng thể', tcells: 'Tế bào T' }
         });
         if (pathogen < 1) break;
       }

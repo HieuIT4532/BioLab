@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Photosynthesis Simulator
    Light response curves for C3, C4, CAM plants
    ============================================================ */
@@ -6,7 +6,7 @@
 (function () {
   const PLANTS = {
     c3: {
-      name: 'C3 (Lúa)',
+      name: 'C3 (Lúa, Đậu)',
       maxRate: 25, // μmol CO₂/m²/s
       lightSaturation: 800,  // light saturation point
       compensationPoint: 50, // light compensation point
@@ -16,7 +16,7 @@
       color: '#4CAF50',
     },
     c4: {
-      name: 'C4 (Ngô)',
+      name: 'C4 (Ngô, Mía)',
       maxRate: 40,
       lightSaturation: 1500,
       compensationPoint: 20,
@@ -26,7 +26,7 @@
       color: '#FFD740',
     },
     cam: {
-      name: 'CAM (Xương rồng)',
+      name: 'CAM (Dứa, Xương rồng)',
       maxRate: 15,
       lightSaturation: 600,
       compensationPoint: 30,
@@ -65,7 +65,8 @@
     // Noise ±3%
     const noise = netRate * (Math.random() * 0.06 - 0.03);
 
-    return Math.max(-respiration, netRate + noise);
+    const finalRate = Math.max(-respiration, netRate + noise);
+    return Math.min(finalRate, 60.0); // Safety cap
   }
 
   function generateLightCurve(plantType, co2, temp) {
@@ -99,6 +100,8 @@
             title: { display: true, text: 'Tốc độ quang hợp ròng (μmol CO₂/m²/s)', color: '#8892B0' },
             grid: { color: 'rgba(255,255,255,0.05)' },
             ticks: { color: '#8892B0' },
+            min: -10,
+            suggestedMax: 50
           }
         },
         plugins: {
@@ -122,7 +125,7 @@
       backgroundColor: color + '15',
       borderWidth: 2,
       fill: true,
-      tension: 0.4,
+      tension: 0.3,
       pointRadius: 0,
       pointHoverRadius: 5,
     });

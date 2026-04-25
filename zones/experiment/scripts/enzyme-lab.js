@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Enzyme Kinetics Simulator
    Michaelis-Menten model with temperature/pH effects
    ============================================================ */
@@ -34,13 +34,14 @@
     const effectiveKm = e.Km * (1 + 0.1 * tempDiff) * (1 + 0.15 * pHDiff);
 
     // Michaelis-Menten: V = Vmax * [S] / (Km + [S])
-    const V0 = effectiveVmax * S / (effectiveKm + S);
+    const V0 = (effectiveVmax * S) / (effectiveKm + S || 0.001);
 
     // Add realistic noise (±5%)
     const noise = V0 * (Math.random() * 0.10 - 0.05);
+    const finalV0 = Math.max(0, V0 + noise);
 
     return {
-      V0: Math.max(0, V0 + noise),
+      V0: Math.min(finalV0, 25.0), // Safety cap
       Vmax: effectiveVmax,
       Km: effectiveKm,
     };
@@ -82,6 +83,7 @@
             grid: { color: 'rgba(255,255,255,0.05)' },
             ticks: { color: '#8892B0' },
             min: 0,
+            suggestedMax: 20,
           }
         },
         plugins: {
@@ -117,7 +119,7 @@
       backgroundColor: c.bg,
       borderWidth: 2,
       fill: true,
-      tension: 0.4,
+      tension: 0.3,
       pointRadius: 1,
       pointHoverRadius: 5,
     });

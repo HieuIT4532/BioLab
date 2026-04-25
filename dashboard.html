@@ -153,7 +153,7 @@
       new Chart(document.getElementById('dashRadar'), {
         type: 'radar',
         data: {
-          labels: ['Nhận thức\nsinh học', 'Thực hành\nTN', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'],
+          labels: ['Nhận thức\nsinh học', 'Thực hành\nthí nghiệm', 'Tư duy\nkhoa học', 'Giải quyết\nvấn đề'],
           datasets: [{
             data: [comp.biologicalKnowledge, comp.experimentalSkills, comp.scientificThinking, comp.problemSolving],
             backgroundColor: 'rgba(0,212,170,0.15)',
@@ -171,7 +171,7 @@
       });
 
       // Zone Progress
-      const zoneNames = ['Explore', 'Experiment', 'BioTech', 'Innovate', 'Nature', 'Resource'];
+      const zoneNames = ['Khám phá', 'Thí nghiệm', 'Công nghệ sinh học', 'Sáng tạo', 'Thiên nhiên', 'Học liệu'];
       const zoneKeys = ['explore', 'experiment', 'biotech', 'innovate', 'nature', 'resource'];
       new Chart(document.getElementById('dashZones'), {
         type: 'bar',
