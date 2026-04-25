@@ -102,6 +102,7 @@
         <button class="control-btn" onclick="spawnObject('dna')">🧬 DNA Model</button>
         <button class="control-btn" onclick="spawnObject('cell')">🦠 Tế Bào</button>
         <button class="control-btn" onclick="spawnObject('virus')">🦠 Virus</button>
+        <button class="control-btn" onclick="spawnObject('chloroplast')">🌿 Lục lạp</button>
         <button class="control-btn" onclick="toggleAutoRotate()">🔄 Auto Rotate</button>
       </div>
     </div>
@@ -248,6 +249,37 @@
         
         group.add(core);
         showInfo('Bacteriophage / Virus', 'Mô hình thể thực khuẩn hoặc virus với lớp vỏ capsid (đỏ) và các gai glycoprotein (vàng) dùng để bám vào tế bào chủ.');
+      }
+      else if (type === 'chloroplast') {
+        // Chloroplast model: Double membrane + Thylakoid stacks (Grana)
+        const outerGeom = new THREE.SphereGeometry(3, 32, 16);
+        const outerMat = new THREE.MeshPhongMaterial({ color: 0x4CAF50, transparent: true, opacity: 0.3, side: THREE.DoubleSide });
+        const outer = new THREE.Mesh(outerGeom, outerMat);
+        group.add(outer);
+
+        const innerGeom = new THREE.SphereGeometry(2.7, 32, 16);
+        const innerMat = new THREE.MeshPhongMaterial({ color: 0x81C784, transparent: true, opacity: 0.2 });
+        const inner = new THREE.Mesh(innerGeom, innerMat);
+        group.add(inner);
+
+        // Thylakoid stacks (Grana)
+        const thylaMat = new THREE.MeshPhongMaterial({ color: 0x2E7D32 });
+        for(let i=0; i<8; i++) {
+          const stack = new THREE.Group();
+          const numDisks = 4 + Math.floor(Math.random() * 4);
+          for(let j=0; j<numDisks; j++) {
+            const disk = new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.1, 16), thylaMat);
+            disk.position.y = j * 0.15;
+            stack.add(disk);
+          }
+          const angle = (i / 8) * Math.PI * 2;
+          const dist = 1.5;
+          stack.position.set(Math.cos(angle) * dist, (Math.random()-0.5)*2, Math.sin(angle) * dist);
+          stack.rotation.x = Math.random() * 0.5;
+          group.add(stack);
+        }
+        
+        showInfo('Lục lạp (Chloroplast)', 'Bào quan thực hiện quang hợp. Cấu tạo gồm màng kép bao bọc khối chất nền (stroma) và các túi thylakoid xếp chồng thành grana — nơi chứa diệp lục hấp thụ ánh sáng.');
       }
 
       currentObject = group;

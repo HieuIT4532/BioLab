@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -82,7 +82,10 @@
 
         <!-- Profile Card -->
         <div class="dash-card dash-card-full">
-          <div class="dash-title">👤 Hồ Sơ Nhà Khoa Học</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md);">
+            <div class="dash-title">👤 Hồ Sơ Nhà Khoa Học</div>
+            <div style="background:var(--color-primary); color:#000; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:800; animation:pulse 2s infinite;">HOT ACTIVITY</div>
+          </div>
           <div style="display:flex;align-items:center;gap:var(--space-xl);flex-wrap:wrap;">
             <div style="text-align:center;">
               <div style="font-size:4rem;" id="dAvatar">🧬</div>
@@ -98,15 +101,17 @@
                   <div class="skill-bar-fill" id="dXPBar" style="width:0%"></div>
                 </div>
               </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:var(--fs-xs);">
-                <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;">
-                  <span style="color:var(--color-text-dim);">Tổng thời gian:</span>
-                  <strong style="color:var(--color-primary);float:right;" id="dTime">0 phút</strong>
-                </div>
-                <div style="padding:8px;background:rgba(255,255,255,0.03);border-radius:6px;">
-                  <span style="color:var(--color-text-dim);">AI Interactions:</span>
-                  <strong style="color:var(--color-accent);float:right;" id="dAI">0</strong>
-                </div>
+              
+              <!-- Featured Links -->
+              <div style="display:flex; gap:10px; margin-top:15px;">
+                <a href="zones/experiment/photosynthesis-lab.html" style="flex:1; padding:12px; background:rgba(0,212,170,0.1); border:1px solid var(--color-primary); border-radius:10px; text-decoration:none; text-align:center; transition:0.3s;" onmouseover="this.style.background='rgba(0,212,170,0.2)'" onmouseout="this.style.background='rgba(0,212,170,0.1)'">
+                   <div style="font-size:1.2rem;">🌿</div>
+                   <div style="font-size:11px; color:var(--color-primary); font-weight:700;">Lab: Quang hợp Pro</div>
+                </a>
+                <a href="zones/metaverse/index.html" style="flex:1; padding:12px; background:rgba(124,77,255,0.1); border:1px solid var(--color-meta); border-radius:10px; text-decoration:none; text-align:center; transition:0.3s;" onmouseover="this.style.background='rgba(124,77,255,0.2)'" onmouseout="this.style.background='rgba(124,77,255,0.1)'">
+                   <div style="font-size:1.2rem;">🌌</div>
+                   <div style="font-size:11px; color:var(--color-meta); font-weight:700;">Meta: Soi Lục lạp 3D</div>
+                </a>
               </div>
             </div>
           </div>

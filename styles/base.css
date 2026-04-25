@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Base Styles
    Reset, Typography, Utilities
    ============================================================ */
@@ -206,4 +206,10 @@ p {
   25% { transform: translate(30px, -20px) scale(1.05); }
   50% { transform: translate(-10px, -40px) scale(0.95); }
   75% { transform: translate(-30px, -10px) scale(1.02); }
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
 }
