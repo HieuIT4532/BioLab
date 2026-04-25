@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Vaccine Builder Simulation
    Immune response modeling, vaccine efficacy comparison
    ============================================================ */
@@ -79,14 +79,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     for (let t = 0; t <= hours; t += 2) {
       if (t >= vaccine.responseDelay) {
-        const elapsed = t - vaccine.responseDelay;
-        antibodies += (pathogenLoad * 0.08 + 5) * vaccine.antibodyMultiplier * (1 + elapsed * 0.005);
-        tcells += pathogenLoad * 0.04 + 2 * vaccine.antibodyMultiplier;
+        // Growth depends on pathogen presence, with a saturation limit
+        const growthPotential = Math.max(0, pathogenLoad * 0.1);
+        const abGrowth = (growthPotential + 10) * vaccine.antibodyMultiplier;
+        const tcGrowth = (growthPotential * 0.5 + 5) * vaccine.antibodyMultiplier;
+
+        // Cap maximum values to prevent infinite stretching
+        if (antibodies < 20000) antibodies += abGrowth;
+        if (tcells < 10000) tcells += tcGrowth;
+
+        // Slow decay/stabilization if pathogen is mostly cleared
+        if (pathogenLoad < 10) {
+          antibodies *= 0.998;
+          tcells *= 0.998;
+        }
       }
 
       const noise = Engine ? Engine.Noise.gaussian(0, pathogenLoad * 0.02) : 0;
-      const killing = (antibodies * 0.02 + tcells * 0.05);
-      pathogenLoad = Math.max(0, pathogenLoad * 1.08 - killing + noise);
+      const killing = (antibodies * 0.015 + tcells * 0.03); // Slightly tuned killing rate
+      pathogenLoad = Math.max(0, pathogenLoad * 1.07 - killing + noise); // Adjusted growth rate to 7%
 
       data.push({
         time: t,
@@ -95,10 +106,17 @@ document.addEventListener('DOMContentLoaded', () => {
         tcells: Math.round(tcells)
       });
 
-      if (pathogenLoad < 1) {
-        // Fill remaining with zeros
+      if (pathogenLoad < 1 && t > vaccine.responseDelay + 24) {
+        // Fill remaining with a stabilizing curve
         for (let r = t + 2; r <= hours; r += 2) {
-          data.push({ time: r, pathogen: 0, antibodies: Math.round(antibodies), tcells: Math.round(tcells) });
+          antibodies *= 0.995;
+          tcells *= 0.995;
+          data.push({ 
+            time: r, 
+            pathogen: 0, 
+            antibodies: Math.round(antibodies), 
+            tcells: Math.round(tcells) 
+          });
         }
         break;
       }
@@ -134,13 +152,21 @@ document.addEventListener('DOMContentLoaded', () => {
       let tc = 20;
       for (let t = 0; t <= 168; t += 2) {
         if (t >= vaccine.responseDelay) {
-          ab += (pLoad * 0.08 + 5) * vaccine.antibodyMultiplier * (1 + (t - vaccine.responseDelay) * 0.005);
-          tc += pLoad * 0.04 + 2 * vaccine.antibodyMultiplier;
+          const abGrowth = (pLoad * 0.1 + 10) * vaccine.antibodyMultiplier;
+          const tcGrowth = (pLoad * 0.05 + 5) * vaccine.antibodyMultiplier;
+          
+          if (ab < 20000) ab += abGrowth;
+          if (tc < 10000) tc += tcGrowth;
+
+          if (pLoad < 10) {
+            ab *= 0.998;
+            tc *= 0.998;
+          }
         }
-        const killing = ab * 0.02 + tc * 0.05;
-        pLoad = Math.max(0, pLoad * 1.08 - killing);
+        const killing = ab * 0.015 + tc * 0.03;
+        pLoad = Math.max(0, pLoad * 1.07 - killing);
         data.push({ time: t, antibodies: Math.round(ab) });
-        if (pLoad < 1) break;
+        if (pLoad < 1 && t > vaccine.responseDelay + 24) break;
       }
       datasets.push({
         label: vaccine.name,
