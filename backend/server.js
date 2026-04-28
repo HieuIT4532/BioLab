@@ -9,7 +9,11 @@ const PORT = process.env.PORT || 5000;
 // ── Gemini AI Setup ──
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash-preview-04-17' });
+// ── Gemini AI Models ──
+// Available: gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-2.5-flash, gemini-2.5-pro
+const modelId = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
+const model = genAI.getGenerativeModel({ model: modelId });
+const proModel = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' }); // For complex analysis
 
 // Middleware
 app.use(cors());
@@ -102,7 +106,7 @@ YÊU CẦU:
 
 Trả lời bằng tiếng Việt, ngắn gọn, khoa học.`;
 
-    const result = await model.generateContent(prompt);
+    const result = await proModel.generateContent(prompt);
     const reply = result.response.text();
 
     res.json({
@@ -143,7 +147,7 @@ Trả lời theo format JSON:
   "improvements": ["..."]
 }`;
 
-    const result = await model.generateContent(prompt);
+    const result = await proModel.generateContent(prompt);
     let reply = result.response.text();
     
     // Try to parse JSON from response
@@ -183,7 +187,7 @@ HÃY:
 
 Trả lời bằng tiếng Việt, phong cách mentor thân thiện nhưng chuyên nghiệp.`;
 
-    const result = await model.generateContent(prompt);
+    const result = await proModel.generateContent(prompt);
     res.json({ feedback: result.response.text(), status: 'ok' });
   } catch (err) {
     console.error('AI Mentor error:', err.message);
@@ -311,5 +315,7 @@ app.listen(PORT, () => {
   console.log(`📡 API Health: http://localhost:${PORT}/api/health`);
   console.log(`🏫 Teacher Mode: http://localhost:${PORT}/teacher.html`);
   console.log(`🧠 Digital Twin: http://localhost:${PORT}/zones/profile/digital-twin.html`);
-  console.log(`🤖 AI Layer: ${process.env.GEMINI_API_KEY ? '✅ Active' : '⚠️ No API Key'}\n`);
+  console.log(`🤖 AI Layer: ${process.env.GEMINI_API_KEY ? '✅ Active (' + modelId + ')' : '⚠️ No API Key'}\n`);
 });
+
+module.exports = app;
