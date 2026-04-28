@@ -88,23 +88,22 @@ app.post('/api/ai/analyze', async (req, res) => {
   try {
     const { data, hypothesis, type } = req.body;
 
-    const prompt = `Bạn là AI Scientist của BioLab. Phân tích dữ liệu thí nghiệm sau và đưa ra nhận xét khoa học.
+    const scientistModel = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      systemInstruction: 'Bạn là Nhà khoa học AI (Scientist) của BioLab. Nhiệm vụ của bạn là phân tích dữ liệu thí nghiệm, đánh giá giả thuyết và đề xuất hướng nghiên cứu tiếp theo.'
+    });
 
-DỮ LIỆU THÍ NGHIỆM:
+    const prompt = `DỮ LIỆU THÍ NGHIỆM:
 ${JSON.stringify(data, null, 2)}
 
 ${hypothesis ? 'GIẢ THUYẾT CỦA HỌC SINH: ' + hypothesis : ''}
 
 YÊU CẦU:
-1. Phân tích xu hướng dữ liệu
-2. Đánh giá giả thuyết (nếu có)
-3. Đề xuất giả thuyết mới
-4. Gợi ý thí nghiệm tiếp theo
-5. Chỉ ra sai số/bất thường
+1. Phân tích xu hướng dữ liệu & nhận xét khoa học
+2. Đánh giá giả thuyết
+3. Đề xuất thí nghiệm tiếp theo hoặc cải tiến.`;
 
-Trả lời bằng tiếng Việt, ngắn gọn, khoa học.`;
-
-    const result = await proModel.generateContent(prompt);
+    const result = await scientistModel.generateContent(prompt);
     const reply = result.response.text();
 
     res.json({
@@ -112,9 +111,9 @@ Trả lời bằng tiếng Việt, ngắn gọn, khoa học.`;
       status: 'ok'
     });
   } catch (err) {
-    console.error('AI Analyze error:', err.message);
+    console.error('AI Analyze Error:', err.message);
     res.json({
-      analysis: 'Không thể phân tích dữ liệu lúc này. Vui lòng thử lại.',
+      analysis: `⚠️ Không thể phân tích dữ liệu lúc này (${err.message}).`,
       status: 'error'
     });
   }
@@ -125,16 +124,19 @@ app.post('/api/ai/grade', async (req, res) => {
   try {
     const { report, rubric } = req.body;
 
-    const prompt = `Bạn là giáo viên sinh học chấm bài. Chấm báo cáo thí nghiệm sau theo rubric chuẩn.
+    const gradingModel = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      systemInstruction: 'Bạn là chuyên gia giáo dục Sinh học. Nhiệm vụ của bạn là chấm điểm báo cáo thí nghiệm của học sinh dựa trên rubric và đưa ra nhận xét xây dựng.'
+    });
 
-BÁO CÁO:
+    const prompt = `BÁO CÁO THÍ NGHIỆM:
 ${report}
 
-RUBRIC ĐÁNH GIÁ:
-1. Nhận thức sinh học (0-25): Hiểu đúng khái niệm, thuật ngữ
-2. Thực hành thí nghiệm (0-25): Mô tả quy trình, biến số
-3. Tư duy khoa học (0-25): Phân tích, suy luận, kết luận
-4. Giải quyết vấn đề (0-25): Đề xuất giải pháp, sáng tạo
+RUBRIC ĐÁNH GIÁ (Thang điểm 100):
+1. Nhận thức sinh học (25đ)
+2. Thực hành thí nghiệm (25đ)
+3. Tư duy khoa học (25đ)
+4. Giải quyết vấn đề (25đ)
 
 Trả lời theo format JSON:
 {
@@ -145,10 +147,9 @@ Trả lời theo format JSON:
   "improvements": ["..."]
 }`;
 
-    const result = await proModel.generateContent(prompt);
+    const result = await gradingModel.generateContent(prompt);
     let reply = result.response.text();
-
-    // Try to parse JSON from response
+    
     try {
       const jsonMatch = reply.match(/\{[\s\S]*\}/);
       if (jsonMatch) {
@@ -160,8 +161,8 @@ Trả lời theo format JSON:
 
     res.json({ grading: { feedback: reply, total: 0 }, status: 'ok' });
   } catch (err) {
-    console.error('AI Grade error:', err.message);
-    res.json({ grading: { feedback: 'Lỗi chấm bài', total: 0 }, status: 'error' });
+    console.error('AI Grade Error:', err.message);
+    res.json({ grading: { feedback: `⚠️ Lỗi chấm bài (${err.message})`, total: 0 }, status: 'error' });
   }
 });
 
@@ -170,26 +171,28 @@ app.post('/api/ai/mentor', async (req, res) => {
   try {
     const { idea } = req.body;
 
-    const prompt = `Bạn là AI Mentor chuyên tư vấn dự án STEM sinh học cho học sinh phổ thông.
+    const mentorModel = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      systemInstruction: 'Bạn là Cố vấn AI (Mentor) chuyên tư vấn dự án STEM sinh học cho học sinh phổ thông Việt Nam. Phong cách thân thiện, chuyên nghiệp, dùng phương pháp Socratic.'
+    });
 
-Ý TƯỞNG DỰ ÁN:
+    const prompt = `Ý TƯỞNG DỰ ÁN:
 ${idea}
 
 HÃY:
 1. Đánh giá tính khả thi (1-10)
-2. Phân tích điểm mạnh
-3. Chỉ ra thách thức
-4. Đặt 3 câu hỏi phản biện (Socratic)
-5. Gợi ý cải tiến
-6. So sánh với dự án tương tự trên thế giới
+2. Phân tích điểm mạnh & thách thức
+3. Đặt 3 câu hỏi phản biện để giúp học sinh tự hoàn thiện ý tưởng
+4. Gợi ý cải tiến & ví dụ thực tế tương tự.`;
 
-Trả lời bằng tiếng Việt, phong cách mentor thân thiện nhưng chuyên nghiệp.`;
-
-    const result = await proModel.generateContent(prompt);
+    const result = await mentorModel.generateContent(prompt);
     res.json({ feedback: result.response.text(), status: 'ok' });
   } catch (err) {
-    console.error('AI Mentor error:', err.message);
-    res.json({ feedback: 'Mentor đang bận. Hãy thử lại sau!', status: 'error' });
+    console.error('AI Mentor Error:', err.message);
+    res.json({ 
+      feedback: `⚠️ Mentor đang gặp sự cố kết nối AI (${err.message}). Vui lòng thử lại sau!`, 
+      status: 'error' 
+    });
   }
 });
 
