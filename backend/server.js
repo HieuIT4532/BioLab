@@ -173,17 +173,42 @@ app.post('/api/ai/mentor', async (req, res) => {
 
     const mentorModel = genAI.getGenerativeModel({ 
       model: 'gemini-3-flash-preview',
-      systemInstruction: 'Bạn là Cố vấn AI (Mentor) chuyên tư vấn dự án STEM sinh học cho học sinh phổ thông Việt Nam. Phong cách thân thiện, chuyên nghiệp, dùng phương pháp Socratic.'
+      systemInstruction: 'Bạn là một Hội đồng Giám khảo Khởi nghiệp Cấp cao và Mentor Chuyên sâu. Nhiệm vụ của bạn là đánh giá các dự án được cung cấp một cách khắt khe, thực tế và đa chiều.'
     });
 
-    const prompt = `Ý TƯỞNG DỰ ÁN:
-${idea}
+    const prompt = `Với dự án sau đây, hãy thực hiện đánh giá chuyên sâu:
+DỰ ÁN: ${idea}
 
-HÃY:
-1. Đánh giá tính khả thi (1-10)
-2. Phân tích điểm mạnh & thách thức
-3. Đặt 3 câu hỏi phản biện để giúp học sinh tự hoàn thiện ý tưởng
-4. Gợi ý cải tiến & ví dụ thực tế tương tự.`;
+HÃY CẤU TRÚC CÂU TRẢ LỜI THEO ĐÚNG 4 PHẦN SAU:
+
+Phần 1: Phân tách Mentor theo Persona (Góc nhìn đa chiều)
+Cung cấp góc nhìn, nhận xét và đặt ra các câu hỏi phản biện sắc bén dưới vai trò của 3 giám khảo:
+- 👨🔬 The Scientist (Kỹ thuật/Khoa học)
+- 💼 The Shark (Kinh doanh/Dòng tiền)
+- 🌍 The Impact Investor (Bền vững/ESG)
+
+Phần 2: Concept Khởi nghiệp Thực tế
+Phân tích dự án dựa trên 2 framework kinh doanh:
+- Quy mô thị trường (TAM/SAM/SOM): Tự đưa ra các giả định hợp lý để ước tính sơ bộ.
+- Lợi thế độc quyền (Unfair Advantage/Moat): Chỉ ra điểm yếu chí mạng và rào cản gia nhập.
+
+Phần 3: Lộ trình Hành động (Actionable Roadmap)
+Xây dựng lộ trình 30-60-90 ngày cụ thể:
+- 30 ngày: Trọng tâm R&D/Prototype.
+- 60 ngày: Thử nghiệm thực tế (Beta test).
+- 90 ngày: Tối ưu giá thành & mở bán/ra mắt.
+
+Phần 4: Chấm điểm Dự án (Chỉ xuất JSON)
+Đánh giá theo thang điểm 10 cho 5 tiêu chí. Trả về định dạng JSON thô (không kèm markdown):
+{
+  "radar_metrics": {
+    "innovation": { "score": 0, "reason": "..." },
+    "market_fit": { "score": 0, "reason": "..." },
+    "technical_feasibility": { "score": 0, "reason": "..." },
+    "environmental_impact": { "score": 0, "reason": "..." },
+    "unfair_advantage": { "score": 0, "reason": "..." }
+  }
+}`;
 
     const result = await mentorModel.generateContent(prompt);
     res.json({ feedback: result.response.text(), status: 'ok' });

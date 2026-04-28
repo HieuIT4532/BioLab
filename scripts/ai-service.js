@@ -213,16 +213,24 @@ const BioLabAI = (() => {
     const agent = document.getElementById('agentSelect').value;
 
     console.log(`%c ✉️ Gửi câu hỏi đến [${agent}]: %c "${question}" `, 'color:#7C4DFF; font-weight:bold;', 'color:#fff; font-style:italic;');
+    const startTime = performance.now();
 
     let result;
     if (agent === 'scientist') result = await analyzeData({ rawData: question }, '');
     else if (agent === 'mentor') result = await getMentorFeedback(question);
     else result = await askTutor(question, pageContext);
 
+    const endTime = performance.now();
+    const duration = ((endTime - startTime) / 1000).toFixed(2);
+    
+    console.log(`%c ⏱️ Thời gian xử lý: ${duration}s`, 'color:#FFD740;');
+
     typing.remove();
 
     if (!result.error) {
-      console.log(`%c ✨ [${agent}] Trả lời: %c "${(result.reply || result.analysis || result.feedback || '').substring(0, 50)}..." `, 'color:#00D4AA; font-weight:bold;', 'color:#fff;');
+      const fullReply = result.reply || result.analysis || result.feedback || '';
+      console.log(`%c ✨ [${agent}] Trả lời (Full Raw):`, 'color:#00D4AA; font-weight:bold;');
+      console.log(fullReply);
     } else {
       console.error(`%c ❌ Lỗi từ [${agent}]:`, 'color:#FF5252; font-weight:bold;', result.message || 'Unknown error');
     }

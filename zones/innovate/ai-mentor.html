@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -12,6 +12,7 @@
   <link rel="stylesheet" href="../../styles/gamification.css">
   <link rel="stylesheet" href="../../styles/ai-tutor.css">
   <link rel="stylesheet" href="../../styles/responsive.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 </head>
 <body class="zone-page">
   <nav class="navbar scrolled" id="navbar">
@@ -63,11 +64,16 @@
       <div class="zone-result-panel">
         <div class="vis-box" style="min-height: 500px;">
           <div class="vis-box-title">💬 Phản Hồi AI Mentor</div>
-          <div class="report-output" id="mentorFeedback" style="min-height: 400px;">
+          <div class="report-output" id="mentorFeedback" style="min-height: 200px;">
             <div style="text-align:center;padding:var(--space-2xl);color:var(--color-text-dim);">
               <div style="font-size:4rem;margin-bottom:16px;">🤖</div>
               <p>AI Mentor đang chờ ý tưởng của bạn.</p>
               <p style="font-size:var(--fs-xs);margin-top:8px;">Mentor sẽ đánh giá khả thi, đặt câu hỏi phản biện, và gợi ý cải tiến.</p>
+            </div>
+          </div>
+          <div id="mentorChartContainer" style="display:none; padding: 20px; border-top: 1px solid var(--glass-border); background: rgba(0,0,0,0.2);">
+            <div style="max-width:400px; margin: 0 auto;">
+              <canvas id="mentorRadarChart"></canvas>
             </div>
           </div>
         </div>
@@ -103,6 +109,8 @@
   <script src="../../scripts/ai-service.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      let mentorChart = null;
+
       document.getElementById('btnSubmitIdea').addEventListener('click', async () => {
         const title = document.getElementById('ideaTitle').value;
         const desc = document.getElementById('ideaDescription').value;
@@ -110,8 +118,11 @@
 
         if (!title || !desc) { alert('Vui lòng nhập tên và mô tả dự án!'); return; }
 
-        const feedback = document.getElementById('mentorFeedback');
-        feedback.innerHTML = `
+        const feedbackEl = document.getElementById('mentorFeedback');
+        const chartContainer = document.getElementById('mentorChartContainer');
+        
+        chartContainer.style.display = 'none';
+        feedbackEl.innerHTML = `
           <div style="text-align:center;padding:var(--space-xl);">
             <div style="font-size:2rem;animation:typingBounce 1.2s infinite;">🤖</div>
             <p style="color:var(--color-primary);margin-top:8px;">AI Mentor đang phân tích ý tưởng...</p>
@@ -120,13 +131,36 @@
 
         const idea = `Tên: ${title}\nLĩnh vực: ${field}\n\n${desc}`;
         const result = await BioLabAI.getMentorFeedback(idea);
-        const reply = result.error
+        let reply = result.error
           ? '⚠️ Không thể kết nối AI Mentor. Vui lòng khởi động server backend.'
           : result.feedback;
 
-        feedback.innerHTML = reply
+        // Extract JSON if present
+        let metrics = null;
+        try {
+          const jsonMatch = reply.match(/\{[\s\S]*"radar_metrics"[\s\S]*\}/);
+          if (jsonMatch) {
+            metrics = JSON.parse(jsonMatch[0]);
+            console.log('%c 📊 Hệ thống đã bóc tách được các tiêu chí chấm điểm:', 'color:#00D4AA; font-weight:bold;');
+            console.table(metrics.radar_metrics);
+            // Remove the raw JSON from the displayed text
+            reply = reply.replace(jsonMatch[0], '').replace(/```json|```/g, '').trim();
+          }
+        } catch (e) {
+          console.warn('Failed to parse radar metrics:', e);
+        }
+
+        feedbackEl.innerHTML = reply
           .replace(/\n/g, '<br>')
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/^- (.*?)$/gm, '• $1')
+          .replace(/^### (.*?)$/gm, '<h4 style="color:var(--color-primary);margin-top:16px;">$1</h4>')
+          .replace(/^## (.*?)$/gm, '<h3 style="color:var(--color-warning);margin-top:20px;">$1</h3>');
+
+        if (metrics && metrics.radar_metrics) {
+          renderRadarChart(metrics.radar_metrics);
+          chartContainer.style.display = 'block';
+        }
 
         if (window.BioLabData) {
           BioLabData.Profile.addXP(20, 'AI Mentor phản biện');
@@ -134,6 +168,59 @@
           BioLabData.Profile.updateCompetency('problemSolving', 65);
         }
       });
+
+      function renderRadarChart(data) {
+        const ctx = document.getElementById('mentorRadarChart').getContext('2d');
+        const labels = [
+          'Sáng tạo',
+          'Thị trường',
+          'Kỹ thuật',
+          'Môi trường',
+          'Lợi thế'
+        ];
+        const scores = [
+          data.innovation.score,
+          data.market_fit.score,
+          data.technical_feasibility.score,
+          data.environmental_impact.score,
+          data.unfair_advantage.score
+        ];
+
+        if (mentorChart) mentorChart.destroy();
+
+        mentorChart = new Chart(ctx, {
+          type: 'radar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Đánh giá Dự án',
+              data: scores,
+              backgroundColor: 'rgba(0, 212, 170, 0.2)',
+              borderColor: '#00D4AA',
+              pointBackgroundColor: '#00D4AA',
+              pointBorderColor: '#fff',
+              pointHoverBackgroundColor: '#fff',
+              pointHoverBorderColor: '#00D4AA'
+            }]
+          },
+          options: {
+            scales: {
+              r: {
+                min: 0,
+                max: 10,
+                beginAtZero: true,
+                grid: { color: 'rgba(255,255,255,0.1)' },
+                angleLines: { color: 'rgba(255,255,255,0.1)' },
+                pointLabels: { color: 'rgba(255,255,255,0.7)', font: { size: 10 } },
+                ticks: { display: false, stepSize: 2 }
+              }
+            },
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+      }
 
       if (window.BioLabData) {
         BioLabData.Analytics.track({ type: 'module_visit', module: 'ai_mentor' });
