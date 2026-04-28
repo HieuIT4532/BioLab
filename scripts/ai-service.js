@@ -99,8 +99,13 @@ const BioLabAI = (() => {
           <div class="bv-chat-header-info">
             <span class="bv-chat-avatar">🤖</span>
             <div>
-              <div class="bv-chat-name">Gia sư AI</div>
-              <div class="bv-chat-status">Trợ lý BioLab</div>
+            <div>
+              <div class="bv-chat-name" id="activeAgentName">Gia sư AI</div>
+              <select class="bv-chat-agent-select" id="agentSelect">
+                <option value="tutor" selected>Gia sư AI</option>
+                <option value="scientist">Nhà khoa học AI</option>
+                <option value="mentor">Cố vấn khởi nghiệp</option>
+              </select>
             </div>
           </div>
           <button class="bv-chat-close" id="bvChatClose">✕</button>
@@ -141,11 +146,26 @@ const BioLabAI = (() => {
     const input = document.getElementById('bvChatInput');
     const sendBtn = document.getElementById('bvChatSend');
 
+    const agentSelect = document.getElementById('agentSelect');
+    const agentName = document.getElementById('activeAgentName');
+
     bubble.addEventListener('click', () => toggleChat());
     closeBtn.addEventListener('click', () => toggleChat(false));
     sendBtn.addEventListener('click', () => sendMessage());
     input.addEventListener('keypress', (e) => {
       if (e.key === 'Enter') sendMessage();
+    });
+
+    agentSelect.addEventListener('change', (e) => {
+      const selected = e.target.value;
+      const name = e.target.options[e.target.selectedIndex].text;
+      agentName.textContent = name;
+      console.log(`%c 🔄 Chuyển sang Chatbot: ${name} `, 'background:#7C4DFF; color:#fff; font-weight:bold;');
+      
+      // Clear history or context if needed?
+      chatHistory = []; 
+      const messages = document.getElementById('bvChatMessages');
+      messages.innerHTML += `<div class="bv-chat-system">Đã chuyển sang ${name}</div>`;
     });
   }
 
@@ -190,13 +210,32 @@ const BioLabAI = (() => {
 
     // Get current page context
     const pageContext = document.title + ' | ' + (document.querySelector('h1')?.textContent || '');
+    const agent = document.getElementById('agentSelect').value;
 
-    const result = await askTutor(question, pageContext);
+    console.log(`%c ✉️ Gửi câu hỏi đến [${agent}]: %c "${question}" `, 'color:#7C4DFF; font-weight:bold;', 'color:#fff; font-style:italic;');
+
+    let result;
+    if (agent === 'scientist') result = await analyzeData({ rawData: question }, '');
+    else if (agent === 'mentor') result = await getMentorFeedback(question);
+    else result = await askTutor(question, pageContext);
+
     typing.remove();
 
-    const reply = result.error
-      ? '⚠️ Không thể kết nối AI. Vui lòng kiểm tra server backend.'
-      : (result.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bạn có thể hỏi lại không?');
+    if (!result.error) {
+      console.log(`%c ✨ [${agent}] Trả lời: %c "${(result.reply || result.analysis || result.feedback || '').substring(0, 50)}..." `, 'color:#00D4AA; font-weight:bold;', 'color:#fff;');
+    } else {
+      console.error(`%c ❌ Lỗi từ [${agent}]:`, 'color:#FF5252; font-weight:bold;', result.message || 'Unknown error');
+    }
+
+    // Determine the reply to show
+    let reply = '';
+    if (result.error) {
+      // If we have a reply from the server (e.g. Gemini error message), use it
+      // Otherwise use the generic connection error
+      reply = result.reply || '⚠️ Không thể kết nối AI. Vui lòng kiểm tra server backend.';
+    } else {
+      reply = result.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bạn có thể hỏi lại không?';
+    }
 
     messages.innerHTML += `
       <div class="bv-chat-msg bv-chat-msg-ai">
@@ -224,10 +263,70 @@ const BioLabAI = (() => {
       .replace(/`(.*?)`/g, '<code>$1</code>');
   }
 
-  // Auto-init chat
+  async function checkAgents() {
+    console.log('%c 🤖 BIOLAB AI SYSTEM: Đang kiểm tra danh sách Chatbot... ', 'background:#1A1F3A; color:#FFD740; font-weight:bold; padding:4px; border-radius:4px;');
+    
+    try {
+      const res = await fetch('/api/health');
+      const data = await res.json();
+      
+      if (data.agents) {
+        data.agents.forEach(agent => {
+          const statusIcon = agent.status === 'ready' ? '✅' : '❌';
+          const statusColor = agent.status === 'ready' ? '#00D4AA' : '#FF5252';
+          console.log(
+            `%c ${statusIcon} %c ${agent.name.padEnd(20)} %c [${agent.model}] %c Status: ${agent.status} `,
+            'font-size:12px;',
+            'color:#fff; font-weight:bold;',
+            'color:#7C4DFF;',
+            `color:${statusColor}; font-weight:bold;`
+          );
+        });
+        
+        const readyCount = data.agents.filter(a => a.status === 'ready').length;
+        if (readyCount === 0) {
+          console.warn('⚠️ CẢNH BÁO: Không có Chatbot nào sẵn sàng. Vui lòng kiểm tra GEMINI_API_KEY.');
+        } else {
+          console.log(`%c 🚀 ${readyCount}/${data.agents.length} Chatbot đã sẵn sàng hoạt động! `, 'color:#00D4AA; font-weight:bold;');
+        }
+      }
+    } catch (err) {
+      console.error('❌ Lỗi kết nối hệ thống AI:', err.message);
+    }
+  }
+
+  // Auto-init chat and check agents
   document.addEventListener('DOMContentLoaded', () => {
     initChatUI();
+    checkAgents();
   });
+
+  // Add CSS for agent select
+  const style = document.createElement('style');
+  style.textContent = `
+    .bv-chat-agent-select {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.5);
+      font-size: 10px;
+      padding: 2px 4px;
+      border-radius: 4px;
+      cursor: pointer;
+      outline: none;
+      margin-top: 2px;
+      width: 100%;
+    }
+    .bv-chat-agent-select:hover { background: rgba(255,255,255,0.1); color: #fff; }
+    .bv-chat-system {
+      font-size: 10px;
+      color: var(--color-primary);
+      text-align: center;
+      margin: 10px 0;
+      font-style: italic;
+      opacity: 0.7;
+    }
+  `;
+  document.head.appendChild(style);
 
   return {
     askTutor,

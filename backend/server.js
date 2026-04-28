@@ -11,9 +11,9 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 // ── Gemini AI Models ──
 // Available: gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-2.5-flash, gemini-2.5-pro
-const modelId = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+const modelId = process.env.GEMINI_MODEL || 'gemini-3-1b-it';
 const model = genAI.getGenerativeModel({ model: modelId });
-const proModel = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' }); // For complex analysis
+const proModel = genAI.getGenerativeModel({ model: 'gemini-3-1b-it' }); // Fallback / complex analysis
 
 // Middleware
 app.use(cors());
@@ -24,16 +24,15 @@ app.use(express.static(path.join(__dirname, '..')));
 
 // ── Health Check ──
 app.get('/api/health', (req, res) => {
+  const hasKey = !!process.env.GEMINI_API_KEY;
   res.json({
     status: 'ok',
-    name: 'BioLab API',
-    version: '2.0.0',
-    layers: {
-      presentation: 'active',
-      simulation: 'active',
-      ai: process.env.GEMINI_API_KEY ? 'active' : 'no_key',
-      data: 'active'
-    },
+    name: 'BioLab AI Gateway',
+    agents: [
+      { id: 'tutor', name: 'Gia sư AI', model: modelId, status: hasKey ? 'ready' : 'missing_key' },
+      { id: 'scientist', name: 'Nhà khoa học AI', model: 'gemini-1.5-pro', status: hasKey ? 'ready' : 'missing_key' },
+      { id: 'mentor', name: 'Cố vấn khởi nghiệp', model: 'gemini-1.5-flash', status: hasKey ? 'ready' : 'missing_key' }
+    ],
     timestamp: new Date().toISOString()
   });
 });
@@ -47,28 +46,27 @@ app.post('/api/ai/tutor', async (req, res) => {
   try {
     const { question, context, history } = req.body;
 
-    const systemPrompt = `Bạn là AI Tutor của BioLab — hệ sinh thái giáo dục sinh học số.
-
+    const systemPrompt = `Bạn là Gia sư AI của BioLab — hệ sinh thái giáo dục sinh học số.
 NGUYÊN TẮC DẠY HỌC:
-- Dùng phương pháp Socratic: KHÔNG đưa đáp án trực tiếp
-- Hỏi ngược để học sinh tự tư duy
-- Gợi ý từng bước, từ dễ đến khó
-- Phát hiện sai lầm và sửa nhẹ nhàng
-- Khen ngợi khi học sinh đúng
-- Sử dụng ví dụ thực tế từ đời sống
-- Trả lời bằng tiếng Việt
-- Ngắn gọn, dễ hiểu, phù hợp học sinh phổ thông
-
+- Dùng phương pháp Socratic: KHÔNG đưa đáp án trực tiếp.
+- Hỏi ngược để học sinh tự tư duy.
+- Gợi ý từng bước, từ dễ đến khó.
+- Trả lời bằng tiếng Việt, ngắn gọn, dễ hiểu.
 CONTEXT hiện tại: ${context || 'Trang chủ BioLab'}`;
+
+    // Initialize model with system instruction
+    const tutorModel = genAI.getGenerativeModel({
+      model: modelId,
+      systemInstruction: systemPrompt
+    });
 
     const chatHistory = (history || []).map(h => ({
       role: h.role === 'assistant' ? 'model' : 'user',
       parts: [{ text: h.content }]
     }));
 
-    const chat = model.startChat({
-      history: chatHistory,
-      systemInstruction: systemPrompt
+    const chat = tutorModel.startChat({
+      history: chatHistory
     });
 
     const result = await chat.sendMessage(question);
@@ -78,7 +76,7 @@ CONTEXT hiện tại: ${context || 'Trang chủ BioLab'}`;
   } catch (err) {
     console.error('AI Tutor error:', err.message);
     res.json({
-      reply: 'Xin lỗi, tôi đang gặp sự cố kỹ thuật. Hãy thử lại sau nhé! 🔧',
+      reply: 'Xin lỗi, tôi đang gặp sự cố kết nối với bộ não AI. Hãy thử lại sau nhé! 🧠🔧',
       status: 'error',
       error: err.message
     });
@@ -149,7 +147,7 @@ Trả lời theo format JSON:
 
     const result = await proModel.generateContent(prompt);
     let reply = result.response.text();
-    
+
     // Try to parse JSON from response
     try {
       const jsonMatch = reply.match(/\{[\s\S]*\}/);
