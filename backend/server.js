@@ -13,7 +13,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 // Available: gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-2.5-flash, gemini-2.5-pro
 const modelId = process.env.GEMINI_MODEL || 'gemini-3-1b-it';
 const model = genAI.getGenerativeModel({ model: modelId });
-const proModel = genAI.getGenerativeModel({ model: 'gemini-3-1b-it' }); // Fallback / complex analysis
+const flashModel = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
 // Middleware
 app.use(cors());
@@ -30,8 +30,8 @@ app.get('/api/health', (req, res) => {
     name: 'BioLab AI Gateway',
     agents: [
       { id: 'tutor', name: 'Gia sư AI', model: modelId, status: hasKey ? 'ready' : 'missing_key' },
-      { id: 'scientist', name: 'Nhà khoa học AI', model: 'gemini-1.5-pro', status: hasKey ? 'ready' : 'missing_key' },
-      { id: 'mentor', name: 'Cố vấn khởi nghiệp', model: 'gemini-1.5-flash', status: hasKey ? 'ready' : 'missing_key' }
+      { id: 'scientist', name: 'Nhà khoa học AI', model: 'gemini-3-1b-it', status: hasKey ? 'ready' : 'missing_key' },
+      { id: 'mentor', name: 'Cố vấn khởi nghiệp', model: 'gemini-3-flash-preview', status: hasKey ? 'ready' : 'missing_key' }
     ],
     timestamp: new Date().toISOString()
   });
@@ -89,7 +89,7 @@ app.post('/api/ai/analyze', async (req, res) => {
     const { data, hypothesis, type } = req.body;
 
     const scientistModel = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3-1b-it',
       systemInstruction: 'Bạn là Nhà khoa học AI (Scientist) của BioLab. Nhiệm vụ của bạn là phân tích dữ liệu thí nghiệm, đánh giá giả thuyết và đề xuất hướng nghiên cứu tiếp theo.'
     });
 
@@ -125,7 +125,7 @@ app.post('/api/ai/grade', async (req, res) => {
     const { report, rubric } = req.body;
 
     const gradingModel = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3-flash-preview',
       systemInstruction: 'Bạn là chuyên gia giáo dục Sinh học. Nhiệm vụ của bạn là chấm điểm báo cáo thí nghiệm của học sinh dựa trên rubric và đưa ra nhận xét xây dựng.'
     });
 
@@ -172,7 +172,7 @@ app.post('/api/ai/mentor', async (req, res) => {
     const { idea } = req.body;
 
     const mentorModel = genAI.getGenerativeModel({ 
-      model: 'gemini-1.5-flash',
+      model: 'gemini-3-1b-it',
       systemInstruction: 'Bạn là Cố vấn AI (Mentor) chuyên tư vấn dự án STEM sinh học cho học sinh phổ thông Việt Nam. Phong cách thân thiện, chuyên nghiệp, dùng phương pháp Socratic.'
     });
 
