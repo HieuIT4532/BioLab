@@ -52,63 +52,91 @@
       <a href="index.html" class="back-btn">← Quay lại Zone 1</a>
     </div>
 
-    <div class="container" style="padding: var(--space-xl) 0;">
-      <div class="glass-card" style="padding: var(--space-2xl);">
-        <h2 style="margin-bottom: var(--space-xl); text-align: center;">🔬 <span class="text-gradient">So Sánh Cấu Trúc Tế Bào</span></h2>
+    <div class="container" style="padding-bottom: var(--space-3xl);">
+      <div class="glass-card" style="margin-bottom: var(--space-xl); padding: var(--space-lg); text-align: center;">
+        <h2 style="margin-bottom: var(--space-md);">🔬 <span class="text-gradient">Khám Phá Tế Bào 360°</span></h2>
+        <p style="color: var(--color-text-muted); margin-bottom: var(--space-lg);">Chọn loại tế bào để xem mô hình 3D chi tiết và tương tác.</p>
         
-        <table class="platform-table" style="font-size: var(--fs-body);">
-          <thead>
-            <tr>
-              <th style="width: 250px;">Loại Tế Bào</th>
-              <th>Mô Hình 3D Tương Tác (360°)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Animal Cell -->
-            <tr>
-              <td>
-                <div style="font-weight: 800; color: var(--color-primary); font-size: 1.2rem; margin-bottom: 8px;">🧫 Tế Bào Động Vật</div>
-                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Tế bào nhân thực (Eukaryote), không có thành tế bào, có trung thể.</p>
-              </td>
-              <td>
-                <div class="sketchfab-embed-wrapper">
-                  <iframe title="Eukaryotic Cell" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/b7d84e5f2d5e411fbb195ab2742f2256/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
-                </div>
-              </td>
-            </tr>
-            
-            <!-- Plant Cell -->
-            <tr>
-              <td>
-                <div style="font-weight: 800; color: var(--color-success); font-size: 1.2rem; margin-bottom: 8px;">🌱 Tế Bào Thực Vật</div>
-                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Có thành tế bào cellulose, lục lạp để quang hợp và không bào trung tâm lớn.</p>
-              </td>
-              <td>
-                <div class="sketchfab-embed-wrapper">
-                  <iframe title="Eukaryotic Cell- Plant Cell" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/d3170e515d97427883c90539655f4633/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
-                </div>
-              </td>
-            </tr>
-            
-            <!-- Bacteria -->
-            <tr>
-              <td>
-                <div style="font-weight: 800; color: var(--color-accent-warm); font-size: 1.2rem; margin-bottom: 8px;">🦠 Vi Khuẩn</div>
-                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Tế bào nhân sơ (Prokaryote), không có màng nhân và các bào quan có màng bao bọc.</p>
-              </td>
-              <td>
-                <div class="sketchfab-embed-wrapper">
-                  <iframe title="Bacterial cell structure" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/42439edc90cd4d87b8ae322a4dcee8de/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <div class="cell-tabs">
+          <button class="cell-tab-btn active" data-cell="animal">🧫 Tế Bào Động Vật</button>
+          <button class="cell-tab-btn" data-cell="plant">🌱 Tế Bào Thực Vật</button>
+          <button class="cell-tab-btn" data-cell="bacteria">🦠 Vi Khuẩn</button>
+        </div>
+      </div>
+
+      <div class="glass-card" style="padding: 0; overflow: hidden; height: 75vh; position: relative; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);" id="modelContainer">
+        <iframe id="cellIframe" title="Cell Model" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/b7d84e5f2d5e411fbb195ab2742f2256/embed" style="width: 100%; height: 100%; border: none;"></iframe>
+        
+        <!-- Fullscreen Toggle -->
+        <button id="btnFullscreen" title="Toàn màn hình" style="position: absolute; bottom: 20px; right: 20px; width: 44px; height: 44px; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.2); color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; backdrop-filter: blur(5px); z-index: 5; transition: all 0.3s;">
+          ⛶
+        </button>
+        
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay" style="position: absolute; inset: 0; background: var(--color-dark); display: none; flex-direction: column; align-items: center; justify-content: center; z-index: 10;">
+          <div class="navbar-logo-icon" style="margin-bottom: 20px; animation: pulse 1.5s infinite;">🧬</div>
+          <p style="color: var(--color-primary); font-family: var(--font-heading); font-weight: 700; letter-spacing: 2px;">ĐANG TẢI MÔ HÌNH...</p>
+        </div>
       </div>
     </div>
   </div>
 
+  <style>
+    .cell-tabs {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+    .cell-tab-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--glass-border);
+      color: var(--color-text-muted);
+      padding: 16px 32px;
+      border-radius: var(--radius-xl);
+      cursor: pointer;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1rem;
+      transition: all 0.4s var(--transition-base);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .cell-tab-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--color-light);
+      border-color: rgba(255, 255, 255, 0.2);
+      transform: translateY(-4px);
+    }
+    .cell-tab-btn.active {
+      background: var(--gradient-primary);
+      color: var(--color-dark);
+      border-color: transparent;
+      box-shadow: 0 10px 25px rgba(0, 212, 170, 0.4);
+    }
+    #modelContainer.fullscreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      height: 100vh !important;
+      width: 100vw !important;
+      border-radius: 0;
+      margin: 0;
+    }
+    #btnFullscreen:hover {
+      background: var(--color-primary);
+      color: var(--color-dark);
+      transform: scale(1.1);
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
 
+  <script src="scripts/cell-explorer.js"></script>
   <script src="../../scripts/main.js"></script>
 </body>
 </html>
