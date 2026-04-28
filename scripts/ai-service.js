@@ -240,9 +240,9 @@ const BioLabAI = (() => {
     if (result.error) {
       // If we have a reply from the server (e.g. Gemini error message), use it
       // Otherwise use the generic connection error
-      reply = result.reply || '⚠️ Không thể kết nối AI. Vui lòng kiểm tra server backend.';
+      reply = result.reply || result.analysis || result.feedback || '⚠️ Không thể kết nối AI. Vui lòng kiểm tra server backend.';
     } else {
-      reply = result.reply || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bạn có thể hỏi lại không?';
+      reply = result.reply || result.analysis || result.feedback || 'Xin lỗi, tôi chưa hiểu câu hỏi. Bạn có thể hỏi lại không?';
     }
 
     messages.innerHTML += `
