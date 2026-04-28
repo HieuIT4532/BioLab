@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -10,8 +10,22 @@
   <link rel="stylesheet" href="../../styles/components.css">
   <link rel="stylesheet" href="styles/zone-explore.css">
   <link rel="stylesheet" href="../../styles/responsive.css">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" defer></script>
+  <style>
+    .platform-table td {
+      vertical-align: top;
+      padding: var(--space-xl) var(--space-md);
+    }
+    .sketchfab-embed-wrapper {
+      box-shadow: var(--shadow-lg);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    @media (max-width: 992px) {
+      .platform-table thead { display: none; }
+      .platform-table tr { display: flex; flex-direction: column; gap: var(--space-md); margin-bottom: var(--space-2xl); border-bottom: 2px solid var(--glass-border); }
+      .platform-table td { width: 100% !important; padding: var(--space-md) 0; }
+    }
+  </style>
 </head>
 <body class="zone-page">
 
@@ -38,63 +52,63 @@
       <a href="index.html" class="back-btn">← Quay lại Zone 1</a>
     </div>
 
-    <div class="explorer-layout">
-      <!-- Sidebar: Cell Type Selection -->
-      <div class="explorer-sidebar">
-        <button class="cell-type-btn active" data-cell="animal">
-          <span class="cell-emoji">🧫</span>
-          <div>
-            <span class="cell-name">Tế Bào Động Vật</span>
-            <span class="cell-latin">Animal Cell</span>
-          </div>
-        </button>
-        <button class="cell-type-btn" data-cell="plant">
-          <span class="cell-emoji">🌱</span>
-          <div>
-            <span class="cell-name">Tế Bào Thực Vật</span>
-            <span class="cell-latin">Plant Cell</span>
-          </div>
-        </button>
-        <button class="cell-type-btn" data-cell="bacteria">
-          <span class="cell-emoji">🦠</span>
-          <div>
-            <span class="cell-name">Vi Khuẩn</span>
-            <span class="cell-latin">Bacteria (Prokaryote)</span>
-          </div>
-        </button>
-      </div>
-
-      <!-- 3D Viewport -->
-      <div class="explorer-viewport" id="cellViewport">
-        <canvas class="viewport-canvas" id="cellCanvas"></canvas>
-        <div class="viewport-label" id="viewportLabel">🧫 Tế Bào Động Vật</div>
-
-        <div class="viewport-controls">
-          <button class="viewport-ctrl-btn" id="btnRotate" title="Tự động xoay">🔄</button>
-          <button class="viewport-ctrl-btn" id="btnZoomIn" title="Phóng to">🔍</button>
-          <button class="viewport-ctrl-btn" id="btnZoomOut" title="Thu nhỏ">🔎</button>
-          <button class="viewport-ctrl-btn" id="btnReset" title="Reset">↺</button>
-        </div>
-      </div>
-
-      <!-- Info Panel -->
-      <div class="explorer-info">
-        <div class="info-panel">
-          <h3>📋 Bào Quan</h3>
-          <div class="organelle-list" id="organelleList">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <div class="organelle-detail" id="organelleDetail">
-          <h4 id="detailTitle">Chọn một bào quan</h4>
-          <p id="detailDesc">Click vào bào quan trong danh sách hoặc trên mô hình 3D để xem chi tiết.</p>
-        </div>
+    <div class="container" style="padding: var(--space-xl) 0;">
+      <div class="glass-card" style="padding: var(--space-2xl);">
+        <h2 style="margin-bottom: var(--space-xl); text-align: center;">🔬 <span class="text-gradient">So Sánh Cấu Trúc Tế Bào</span></h2>
+        
+        <table class="platform-table" style="font-size: var(--fs-body);">
+          <thead>
+            <tr>
+              <th style="width: 250px;">Loại Tế Bào</th>
+              <th>Mô Hình 3D Tương Tác (360°)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Animal Cell -->
+            <tr>
+              <td>
+                <div style="font-weight: 800; color: var(--color-primary); font-size: 1.2rem; margin-bottom: 8px;">🧫 Tế Bào Động Vật</div>
+                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Tế bào nhân thực (Eukaryote), không có thành tế bào, có trung thể.</p>
+              </td>
+              <td>
+                <div class="sketchfab-embed-wrapper">
+                  <iframe title="Eukaryotic Cell" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/b7d84e5f2d5e411fbb195ab2742f2256/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Plant Cell -->
+            <tr>
+              <td>
+                <div style="font-weight: 800; color: var(--color-success); font-size: 1.2rem; margin-bottom: 8px;">🌱 Tế Bào Thực Vật</div>
+                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Có thành tế bào cellulose, lục lạp để quang hợp và không bào trung tâm lớn.</p>
+              </td>
+              <td>
+                <div class="sketchfab-embed-wrapper">
+                  <iframe title="Eukaryotic Cell- Plant Cell" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/d3170e515d97427883c90539655f4633/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
+                </div>
+              </td>
+            </tr>
+            
+            <!-- Bacteria -->
+            <tr>
+              <td>
+                <div style="font-weight: 800; color: var(--color-accent-warm); font-size: 1.2rem; margin-bottom: 8px;">🦠 Vi Khuẩn</div>
+                <p style="font-size: var(--fs-xs); color: var(--color-text-dim);">Tế bào nhân sơ (Prokaryote), không có màng nhân và các bào quan có màng bao bọc.</p>
+              </td>
+              <td>
+                <div class="sketchfab-embed-wrapper">
+                  <iframe title="Bacterial cell structure" frameborder="0" allowfullscreen mozallowfullscreen="true" webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share src="https://sketchfab.com/models/42439edc90cd4d87b8ae322a4dcee8de/embed" style="width: 100%; height: 450px; border-radius: 12px;"></iframe>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
   </div>
 
-  <script src="scripts/cell-explorer.js"></script>
+
   <script src="../../scripts/main.js"></script>
 </body>
 </html>
