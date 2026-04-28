@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — AI Service (Frontend)
    Communicates with backend AI proxy routes
    Provides: askTutor, analyzeData, gradeReport, getMentorFeedback
@@ -99,8 +99,8 @@ const BioLabAI = (() => {
           <div class="bv-chat-header-info">
             <span class="bv-chat-avatar">🤖</span>
             <div>
-              <div class="bv-chat-name">AI Tutor</div>
-              <div class="bv-chat-status">BioLab Assistant</div>
+              <div class="bv-chat-name">Gia sư AI</div>
+              <div class="bv-chat-status">Trợ lý BioLab</div>
             </div>
           </div>
           <button class="bv-chat-close" id="bvChatClose">✕</button>
@@ -108,7 +108,7 @@ const BioLabAI = (() => {
         <div class="bv-chat-messages" id="bvChatMessages">
           <div class="bv-chat-msg bv-chat-msg-ai">
             <div class="bv-chat-msg-content">
-              Xin chào! 👋 Tôi là AI Tutor của BioLab. Tôi có thể giúp bạn:
+              Xin chào! 👋 Tôi là Gia sư AI của BioLab. Tôi có thể giúp bạn:
               <br>• Giải thích khái niệm sinh học
               <br>• Phân tích dữ liệu thí nghiệm
               <br>• Hỏi ngược để bạn tư duy sâu hơn
@@ -118,7 +118,7 @@ const BioLabAI = (() => {
         </div>
         <div class="bv-chat-input-wrap">
           <input type="text" class="bv-chat-input" id="bvChatInput"
-            placeholder="Hỏi AI Tutor..." autocomplete="off">
+            placeholder="Hỏi Gia sư AI..." autocomplete="off">
           <button class="bv-chat-send" id="bvChatSend">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>

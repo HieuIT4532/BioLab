@@ -11,9 +11,9 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 // ── Gemini AI Models ──
 // Available: gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-2.5-flash, gemini-2.5-pro
-const modelId = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
+const modelId = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
 const model = genAI.getGenerativeModel({ model: modelId });
-const proModel = genAI.getGenerativeModel({ model: 'gemini-3.1-pro-preview' }); // For complex analysis
+const proModel = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' }); // For complex analysis
 
 // Middleware
 app.use(cors());

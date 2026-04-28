@@ -17,7 +17,7 @@ const BioLabScientist = (() => {
 
   function injectUI() {
     const html = `
-      <button class="bvs-fab" id="bvsToggle" title="AI Scientist Mode">
+      <button class="bvs-fab" id="bvsToggle" title="Chế độ Nhà khoa học AI">
         <span>🔬</span>
       </button>
       <div class="bvs-panel" id="bvsPanel">
@@ -25,8 +25,8 @@ const BioLabScientist = (() => {
           <div style="display:flex;align-items:center;gap:10px;">
             <span style="font-size:1.4rem;">🔬</span>
             <div>
-              <div style="font-weight:700;color:var(--color-light);">AI Scientist Mode</div>
-              <div style="font-size:0.65rem;color:var(--color-warning);">🔥 EXPERIMENTAL</div>
+              <div style="font-weight:700;color:var(--color-light);">Chế độ Nhà khoa học AI</div>
+              <div style="font-size:0.65rem;color:var(--color-warning);">🔥 ĐANG THỬ NGHIỆM</div>
             </div>
           </div>
           <button class="bvs-close" id="bvsClose">✕</button>
