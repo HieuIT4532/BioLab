@@ -11,7 +11,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 // ── Gemini AI Models ──
 // Available: gemini-3-flash-preview, gemini-3.1-pro-preview, gemini-2.5-flash, gemini-2.5-pro
-const modelId = process.env.GEMINI_MODEL || 'gemini-3-1b-it';
+const modelId = process.env.GEMINI_MODEL || 'gemini-3-flash-preview';
 const model = genAI.getGenerativeModel({ model: modelId });
 const flashModel = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
@@ -29,8 +29,8 @@ app.get('/api/health', (req, res) => {
     status: 'ok',
     name: 'BioLab AI Gateway',
     agents: [
-      { id: 'tutor', name: 'Gia sư AI', model: modelId, status: hasKey ? 'ready' : 'missing_key' },
-      { id: 'scientist', name: 'Nhà khoa học AI', model: 'gemini-3-1b-it', status: hasKey ? 'ready' : 'missing_key' },
+      { id: 'tutor', name: 'Gia sư AI', model: 'gemini-3-flash-preview', status: hasKey ? 'ready' : 'missing_key' },
+      { id: 'scientist', name: 'Nhà khoa học AI', model: 'gemini-3-flash-preview', status: hasKey ? 'ready' : 'missing_key' },
       { id: 'mentor', name: 'Cố vấn khởi nghiệp', model: 'gemini-3-flash-preview', status: hasKey ? 'ready' : 'missing_key' }
     ],
     timestamp: new Date().toISOString()
@@ -89,7 +89,7 @@ app.post('/api/ai/analyze', async (req, res) => {
     const { data, hypothesis, type } = req.body;
 
     const scientistModel = genAI.getGenerativeModel({ 
-      model: 'gemini-3-1b-it',
+      model: 'gemini-3-flash-preview',
       systemInstruction: 'Bạn là Nhà khoa học AI (Scientist) của BioLab. Nhiệm vụ của bạn là phân tích dữ liệu thí nghiệm, đánh giá giả thuyết và đề xuất hướng nghiên cứu tiếp theo.'
     });
 
@@ -172,7 +172,7 @@ app.post('/api/ai/mentor', async (req, res) => {
     const { idea } = req.body;
 
     const mentorModel = genAI.getGenerativeModel({ 
-      model: 'gemini-3-1b-it',
+      model: 'gemini-3-flash-preview',
       systemInstruction: 'Bạn là Cố vấn AI (Mentor) chuyên tư vấn dự án STEM sinh học cho học sinh phổ thông Việt Nam. Phong cách thân thiện, chuyên nghiệp, dùng phương pháp Socratic.'
     });
 
