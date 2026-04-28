@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Zone Shared Styles (Future Lab, Startup Lab, etc.)
    Premium zone page styling
    ============================================================ */
@@ -128,6 +128,11 @@
   padding: var(--space-xl);
   backdrop-filter: var(--glass-blur);
   min-height: 300px;
+}
+
+.vis-box-chart {
+  height: 450px;
+  position: relative;
 }
 
 .vis-box-title {
