@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
@@ -42,7 +42,7 @@
           <div style="text-align:center;padding:var(--space-md);">
             <div style="font-size:3rem;margin-bottom:8px;" id="profileAvatar">🧬</div>
             <div style="font-size:var(--fs-h4);font-weight:700;color:var(--color-light);" id="profileName">Nhà Khoa Học</div>
-            <div style="font-size:var(--fs-small);color:var(--color-primary);margin-top:4px;" id="profileLevel">Level 1</div>
+            <div style="font-size:var(--fs-small);color:var(--color-primary);margin-top:4px;" id="profileLevel">Cấp độ 1</div>
             <div style="margin-top:12px;">
               <div style="font-size:var(--fs-xs);color:var(--color-text-muted);margin-bottom:4px;" id="profileXP">0/100 XP</div>
               <div class="skill-bar" style="height:8px;">
@@ -96,7 +96,7 @@
       // Profile
       document.getElementById('profileAvatar').textContent = levelInfo.emoji;
       document.getElementById('profileName').textContent = profile.name;
-      document.getElementById('profileLevel').textContent = `${levelInfo.emoji} ${levelInfo.title} — Level ${profile.level}`;
+      document.getElementById('profileLevel').textContent = `${levelInfo.emoji} ${levelInfo.title} — Cấp độ ${profile.level}`;
       document.getElementById('profileXP').textContent = `${xpProgress.current}/${xpProgress.needed} XP`;
       document.getElementById('profileXPBar').style.width = `${xpProgress.percent}%`;
 

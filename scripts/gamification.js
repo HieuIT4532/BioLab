@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Gamification UI
    XP bar, level display, badge toasts, achievement notifications
    ============================================================ */
@@ -48,8 +48,8 @@ const BioLabGamification = (() => {
       <div class="bv-levelup-content">
         <div class="bv-levelup-particles"></div>
         <div class="bv-levelup-emoji" id="bvLevelUpEmoji">🎉</div>
-        <h2>LEVEL UP!</h2>
-        <div class="bv-levelup-level" id="bvLevelUpLevel">Level 2</div>
+        <h2>LÊN CẤP!</h2>
+        <div class="bv-levelup-level" id="bvLevelUpLevel">Cấp độ 2</div>
         <div class="bv-levelup-title" id="bvLevelUpTitle">Trợ Lý Nghiên Cứu</div>
         <button class="bv-levelup-btn" onclick="document.getElementById('bioverse-levelup').classList.remove('active')">
           Tuyệt vời! →
@@ -120,7 +120,7 @@ const BioLabGamification = (() => {
 
     const levelInfo = BioLabData.Profile.getLevelTitle(level);
     if (emoji) emoji.textContent = levelInfo.emoji;
-    if (levelEl) levelEl.textContent = `Level ${level}`;
+    if (levelEl) levelEl.textContent = `Cấp độ ${level}`;
     if (titleEl) titleEl.textContent = levelInfo.title;
 
     if (overlay) overlay.classList.add('active');

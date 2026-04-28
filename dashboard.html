@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="BioLab Dashboard — Learning Analytics, Competency Radar, Activity Timeline">
-  <title>📊 Dashboard — BioLab</title>
+  <meta name="description" content="Bảng điều khiển BioLab — Phân tích học tập, Biểu đồ năng lực, Lịch sử hoạt động">
+  <title>📊 Bảng điều khiển — BioLab</title>
   <link rel="stylesheet" href="styles/variables.css">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
@@ -34,21 +34,21 @@
     <ul class="navbar-links" id="navLinks">
       <li><a href="index.html">Trang Chủ</a></li>
       <li><a href="index.html#zones">Khu Vực</a></li>
-      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+      <li><a href="dashboard.html" class="active">Bảng điều khiển</a></li>
     </ul>
     <div class="nav-toggle" id="navToggle"><span></span><span></span><span></span></div>
   </nav>
 
   <div style="padding-top: var(--navbar-height);">
     <div class="container" style="padding-top: var(--space-lg);">
-      <h2>📊 <span class="text-gradient">Learning Analytics Dashboard</span></h2>
+      <h2>📊 <span class="text-gradient">Bảng Điều Khiển Phân Tích Học Tập</span></h2>
       <p style="color: var(--color-text-muted); margin-bottom: var(--space-xl);">Tổng quan tiến độ học tập, năng lực và thành tựu của bạn.</p>
     </div>
 
     <div class="container">
       <!-- Stats Row -->
       <div class="dash-stat-row" style="margin-bottom: var(--space-lg);">
-        <div class="dash-stat"><div class="dash-stat-val" id="dLevel">1</div><div class="dash-stat-label">Level</div></div>
+        <div class="dash-stat"><div class="dash-stat-val" id="dLevel">1</div><div class="dash-stat-label">Cấp độ</div></div>
         <div class="dash-stat"><div class="dash-stat-val" id="dTotalXP">0</div><div class="dash-stat-label">Tổng XP</div></div>
         <div class="dash-stat"><div class="dash-stat-val" id="dExperiments">0</div><div class="dash-stat-label">Thí Nghiệm</div></div>
         <div class="dash-stat"><div class="dash-stat-val" id="dBadges">0</div><div class="dash-stat-label">Huy Hiệu</div></div>
@@ -84,7 +84,7 @@
         <div class="dash-card dash-card-full">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-md);">
             <div class="dash-title">👤 Hồ Sơ Nhà Khoa Học</div>
-            <div style="background:var(--color-primary); color:#000; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:800; animation:pulse 2s infinite;">HOT ACTIVITY</div>
+            <div style="background:var(--color-primary); color:#000; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:800; animation:pulse 2s infinite;">HOẠT ĐỘNG NỔI BẬT</div>
           </div>
           <div style="display:flex;align-items:center;gap:var(--space-xl);flex-wrap:wrap;">
             <div style="text-align:center;">
@@ -95,7 +95,7 @@
             <div style="flex:1;min-width:300px;">
               <div style="margin-bottom:12px;">
                 <div style="display:flex;justify-content:space-between;font-size:var(--fs-xs);color:var(--color-text-muted);margin-bottom:4px;">
-                  <span>XP Progress</span><span id="dXPText">0/100</span>
+                  <span>Tiến trình XP</span><span id="dXPText">0/100</span>
                 </div>
                 <div class="skill-bar" style="height:10px;">
                   <div class="skill-bar-fill" id="dXPBar" style="width:0%"></div>
@@ -142,7 +142,7 @@
       // Profile
       document.getElementById('dAvatar').textContent = levelInfo.emoji;
       document.getElementById('dName').textContent = profile.name;
-      document.getElementById('dTitle').textContent = `${levelInfo.title} — Level ${profile.level}`;
+      document.getElementById('dTitle').textContent = `${levelInfo.title} — Cấp độ ${profile.level}`;
       document.getElementById('dXPText').textContent = `${xpProg.current}/${xpProg.needed}`;
       document.getElementById('dXPBar').style.width = `${xpProg.percent}%`;
       document.getElementById('dTime').textContent = `${stats.timeSpent || 0} phút`;

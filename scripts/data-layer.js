@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    BioLab — Data Layer
    Student profiles, learning analytics, progress tracking
    Persisted in localStorage for demo (Firebase-ready structure)
@@ -256,17 +256,17 @@ const BioLabData = (() => {
   const Badges = {
     definitions: [
       { id: 'first_experiment', name: 'Thí Nghiệm Đầu Tiên', emoji: '🧪', desc: 'Hoàn thành thí nghiệm đầu tiên', condition: p => p.experimentCount >= 1 },
-      { id: 'lab_expert', name: 'Lab Expert', emoji: '⚗️', desc: 'Hoàn thành 10 thí nghiệm', condition: p => p.experimentCount >= 10 },
-      { id: 'genetics_master', name: 'Genetics Master', emoji: '🧬', desc: 'Hoàn thành module CRISPR', condition: p => p.zones.biotech?.modules?.crispr >= 100 },
-      { id: 'explorer', name: 'Explorer', emoji: '🔍', desc: 'Khám phá tất cả khu vực', condition: p => Object.values(p.zones).every(z => z.visited) },
-      { id: 'scientist', name: 'Nhà Khoa Học', emoji: '👨‍🔬', desc: 'Đạt level 5', condition: p => p.level >= 5 },
-      { id: 'data_analyst', name: 'Data Analyst', emoji: '📊', desc: 'Xuất 5 bộ dữ liệu CSV', condition: p => (p._csvExports || 0) >= 5 },
-      { id: 'innovator', name: 'Innovator', emoji: '💡', desc: 'Tạo dự án khoa học đầu tiên', condition: p => p.zones.innovate?.modules?.project >= 50 },
-      { id: 'citizen_scientist', name: 'Citizen Scientist', emoji: '🌿', desc: 'Upload 3 quan sát thực địa', condition: p => (p._observations || 0) >= 3 },
-      { id: 'ai_whisperer', name: 'AI Whisperer', emoji: '🤖', desc: 'Tương tác AI Tutor 20 lần', condition: p => (p._aiInteractions || 0) >= 20 },
-      { id: 'vaccine_hero', name: 'Vaccine Hero', emoji: '💉', desc: 'Xây dựng vaccine thành công', condition: p => p.zones.biotech?.modules?.vaccine >= 100 },
-      { id: 'perfect_score', name: 'Perfect Score', emoji: '🏅', desc: 'Đạt 100% quiz', condition: p => (p._perfectQuizzes || 0) >= 1 },
-      { id: 'streak_7', name: '7-Day Streak', emoji: '🔥', desc: 'Học 7 ngày liên tục', condition: p => (p._streak || 0) >= 7 }
+      { id: 'lab_expert', name: 'Chuyên gia Lab', emoji: '⚗️', desc: 'Hoàn thành 10 thí nghiệm', condition: p => p.experimentCount >= 10 },
+      { id: 'genetics_master', name: 'Bậc thầy Di truyền', emoji: '🧬', desc: 'Hoàn thành module CRISPR', condition: p => p.zones.biotech?.modules?.crispr >= 100 },
+      { id: 'explorer', name: 'Người Khám phá', emoji: '🔍', desc: 'Khám phá tất cả khu vực', condition: p => Object.values(p.zones).every(z => z.visited) },
+      { id: 'scientist', name: 'Nhà Khoa Học', emoji: '👨‍🔬', desc: 'Đạt cấp độ 5', condition: p => p.level >= 5 },
+      { id: 'data_analyst', name: 'Nhà phân tích dữ liệu', emoji: '📊', desc: 'Xuất 5 bộ dữ liệu CSV', condition: p => (p._csvExports || 0) >= 5 },
+      { id: 'innovator', name: 'Nhà đổi mới', emoji: '💡', desc: 'Tạo dự án khoa học đầu tiên', condition: p => p.zones.innovate?.modules?.project >= 50 },
+      { id: 'citizen_scientist', name: 'Nhà khoa học cộng đồng', emoji: '🌿', desc: 'Tải lên 3 quan sát thực địa', condition: p => (p._observations || 0) >= 3 },
+      { id: 'ai_whisperer', name: 'Bậc thầy AI', emoji: '🤖', desc: 'Tương tác Gia sư AI 20 lần', condition: p => (p._aiInteractions || 0) >= 20 },
+      { id: 'vaccine_hero', name: 'Người hùng Vaccine', emoji: '💉', desc: 'Xây dựng vaccine thành công', condition: p => p.zones.biotech?.modules?.vaccine >= 100 },
+      { id: 'perfect_score', name: 'Điểm tuyệt đối', emoji: '🏅', desc: 'Đạt 100% câu hỏi trắc nghiệm', condition: p => (p._perfectQuizzes || 0) >= 1 },
+      { id: 'streak_7', name: 'Chuỗi 7 ngày', emoji: '🔥', desc: 'Học 7 ngày liên tục', condition: p => (p._streak || 0) >= 7 }
     ],
 
     check() {

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🏫 Teacher Mode — BioLab X</title>
+  <title>🏫 Chế độ Giáo viên — BioLab X</title>
   <link rel="stylesheet" href="styles/variables.css">
   <link rel="stylesheet" href="styles/base.css">
   <link rel="stylesheet" href="styles/components.css">
@@ -19,7 +19,7 @@
     <ul class="navbar-links" id="navLinks">
       <li><a href="index.html">Trang Chủ</a></li>
       <li><a href="index.html#zones">Khu Vực</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
+      <li><a href="dashboard.html">Bảng điều khiển</a></li>
       <li><a href="teacher.html" class="active">Giáo Viên</a></li>
     </ul>
   </nav>
@@ -28,13 +28,13 @@
     <div class="teacher-layout">
       <!-- Sidebar -->
       <aside class="teacher-sidebar" id="teacherSidebar">
-        <div class="teacher-sidebar-title">🏫 Teacher Mode</div>
+        <div class="teacher-sidebar-title">🏫 Chế độ Giáo viên</div>
         <button class="teacher-nav-item active" data-tab="overview"><span class="nav-icon">📊</span>Tổng Quan</button>
         <button class="teacher-nav-item" data-tab="classes"><span class="nav-icon">🏫</span>Lớp Học<span class="nav-badge" id="classCount">0</span></button>
         <button class="teacher-nav-item" data-tab="students"><span class="nav-icon">👨‍🎓</span>Học Sinh</button>
         <button class="teacher-nav-item" data-tab="assignments"><span class="nav-icon">📝</span>Bài Tập</button>
         <button class="teacher-nav-item" data-tab="reports"><span class="nav-icon">📈</span>Báo Cáo</button>
-        <button class="teacher-nav-item" data-tab="curriculum"><span class="nav-icon">🤖</span>AI Curriculum</button>
+        <button class="teacher-nav-item" data-tab="curriculum"><span class="nav-icon">🤖</span>Chương trình AI</button>
         <div style="flex:1;"></div>
         <button class="teacher-nav-item" onclick="location.href='index.html'" style="color:var(--color-text-dim);"><span class="nav-icon">←</span>Quay Lại</button>
       </aside>
@@ -56,7 +56,7 @@
           <!-- Charts -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-lg);">
             <div class="twin-card"><div class="twin-card-title">🎯 Năng Lực Trung Bình</div><canvas id="overviewRadar" height="260"></canvas></div>
-            <div class="twin-card"><div class="twin-card-title">📊 Phân Bổ Level</div><canvas id="overviewLevels" height="260"></canvas></div>
+            <div class="twin-card"><div class="twin-card-title">📊 Phân Bổ Cấp độ</div><canvas id="overviewLevels" height="260"></canvas></div>
           </div>
         </div>
 
@@ -99,7 +99,7 @@
         <!-- Tab: AI Curriculum -->
         <div class="teacher-tab" id="tab-curriculum" style="display:none;">
           <div class="teacher-header">
-            <h2>🤖 <span class="text-gradient">AI Auto Curriculum</span></h2>
+            <h2>🤖 <span class="text-gradient">Chương trình học tự động AI</span></h2>
           </div>
           <div class="assign-builder">
             <div class="assign-form-group">
@@ -148,11 +148,11 @@
       <div class="assign-form-group"><label>Tiêu đề</label><input type="text" id="newAssignTitle" placeholder="VD: Thí nghiệm Enzyme Amylase"></div>
       <div class="assign-form-group"><label>Mô tả</label><textarea id="newAssignDesc" rows="3" placeholder="Hướng dẫn cho học sinh..."></textarea></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-md);">
-        <div class="assign-form-group"><label>Loại</label><select id="newAssignType"><option value="experiment">Thí nghiệm</option><option value="quiz">Quiz</option><option value="project">Dự án</option><option value="report">Báo cáo</option></select></div>
-        <div class="assign-form-group"><label>Khu vực</label><select id="newAssignZone"><option value="experiment">Digital Twin Lab</option><option value="explore">Immersive Biology</option><option value="biotech">Future Lab</option><option value="nature">Citizen Science</option></select></div>
+        <div class="assign-form-group"><label>Loại</label><select id="newAssignType"><option value="experiment">Thí nghiệm</option><option value="quiz">Câu hỏi trắc nghiệm</option><option value="project">Dự án</option><option value="report">Báo cáo</option></select></div>
+        <div class="assign-form-group"><label>Khu vực</label><select id="newAssignZone"><option value="experiment">Phòng lab Bản sao số</option><option value="explore">Sinh học Nhập vai</option><option value="biotech">Phòng lab Tương lai</option><option value="nature">Khoa học Cộng đồng</option></select></div>
       </div>
       <div class="assign-form-group"><label>Lớp</label><select id="newAssignClass"></select></div>
-      <div class="assign-form-group"><label>Deadline</label><input type="date" id="newAssignDeadline"></div>
+      <div class="assign-form-group"><label>Hạn chót</label><input type="date" id="newAssignDeadline"></div>
       <div style="display:flex;gap:var(--space-md);justify-content:flex-end;margin-top:var(--space-lg);">
         <button class="btn-outline-teacher" onclick="closeModal('createAssignModal')">Hủy</button>
         <button class="btn-teacher" onclick="doCreateAssignment()">Giao Bài</button>
@@ -281,7 +281,7 @@
           <div class="student-avatar">${s.avatar}</div>
           <div>
             <div class="student-name"><span class="student-status ${s.status}"></span>${s.name}</div>
-            <div class="student-level">Lv.${s.level} · ${s.totalXP} XP</div>
+            <div class="student-level">Cấp độ ${s.level} · ${s.totalXP} XP</div>
           </div>
         </div>
         <div class="student-stats">
@@ -318,10 +318,10 @@
       <div class="twin-card" style="margin-bottom:var(--space-lg);">
         <div class="twin-card-title">📊 Báo cáo: ${report.className} — ${report.school}</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--space-md);margin-bottom:var(--space-lg);">
-          ${[{v:report.totalStudents,l:'Học sinh'},{v:report.avgLevel,l:'Level TB'},{v:report.avgXP,l:'XP TB'},{v:report.avgScore,l:'Điểm TB'}].map(s=>`<div style="text-align:center;padding:var(--space-md);background:rgba(255,255,255,0.02);border-radius:var(--radius-md);"><div style="font-size:var(--fs-h3);font-weight:800;color:var(--color-teacher);">${s.v}</div><div style="font-size:var(--fs-xs);color:var(--color-text-dim);">${s.l}</div></div>`).join('')}
+          ${[{v:report.totalStudents,l:'Học sinh'},{v:report.avgLevel,l:'Cấp độ TB'},{v:report.avgXP,l:'XP TB'},{v:report.avgScore,l:'Điểm TB'}].map(s=>`<div style="text-align:center;padding:var(--space-md);background:rgba(255,255,255,0.02);border-radius:var(--radius-md);"><div style="font-size:var(--fs-h3);font-weight:800;color:var(--color-teacher);">${s.v}</div><div style="font-size:var(--fs-xs);color:var(--color-text-dim);">${s.l}</div></div>`).join('')}
         </div>
         <h4 style="color:var(--color-light);margin-bottom:var(--space-sm);">⭐ Top 5 Học Sinh</h4>
-        <table class="platform-table"><thead><tr><th>Tên</th><th>Level</th><th>XP</th><th>Điểm</th></tr></thead><tbody>
+        <table class="platform-table"><thead><tr><th>Tên</th><th>Cấp độ</th><th>XP</th><th>Điểm</th></tr></thead><tbody>
         ${report.topStudents.map(s=>`<tr><td style="color:var(--color-light);">${s.avatar} ${s.name}</td><td>${s.level}</td><td>${s.totalXP}</td><td>${s.avgScore}</td></tr>`).join('')}
         </tbody></table>
         ${report.needHelp.length>0?`<h4 style="color:var(--color-error);margin:var(--space-lg) 0 var(--space-sm);">⚠️ Cần Hỗ Trợ (${report.needHelp.length} HS)</h4><div style="font-size:var(--fs-xs);color:var(--color-text-muted);">${report.needHelp.map(s=>s.name).join(', ')}</div>`:''}
