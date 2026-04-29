@@ -98,7 +98,6 @@ const BioLabAI = (() => {
         <div class="bv-chat-header">
           <div class="bv-chat-header-info" style="display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1;">
             <span class="bv-chat-avatar">🤖</span>
-            <div>
             <div style="display: flex; flex-direction: column; gap: 2px; min-width: 0;">
               <div class="bv-chat-name" id="activeAgentName" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Gia sư AI</div>
               <select class="bv-chat-agent-select" id="agentSelect">
